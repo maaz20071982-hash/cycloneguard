@@ -1,0 +1,121 @@
+{
+  "version": "2.0.0",
+  "strategy": "storm_wise_stratified_by_lifecycle",
+  "seasons": [2013, 2014, 2015],
+  "basin": "NI",
+  "description": "Historical North Indian Ocean storm-wise partition for HURSAT-B1 satellite coincidence expansion",
+  "train_storms": [
+    "2013281N12098",
+    "2013322N13090",
+    "2014279N11096",
+    "2014297N11062"
+  ],
+  "val_storms": [
+    "2015309N14067"
+  ],
+  "test_storms": [
+    "2015301N11065"
+  ],
+  "storm_metadata": {
+    "2013281N12098": {
+      "name": "PHAILIN",
+      "season": 2013,
+      "subbasin": "BB",
+      "role": "TRAIN",
+      "track_observations": 55,
+      "supervised_24h_samples": 45,
+      "ri_positive_count": 11,
+      "notes": "Extremely Severe Cyclonic Storm in Bay of Bengal with rapid intensification"
+    },
+    "2013322N13090": {
+      "name": "HELEN",
+      "season": 2013,
+      "subbasin": "BB",
+      "role": "TRAIN",
+      "track_observations": 43,
+      "supervised_24h_samples": 36,
+      "ri_positive_count": 0,
+      "notes": "Severe Cyclonic Storm in Bay of Bengal; non-RI lifecycle benchmark"
+    },
+    "2014279N11096": {
+      "name": "HUDHUD",
+      "season": 2014,
+      "subbasin": "BB",
+      "role": "TRAIN",
+      "track_observations": 66,
+      "supervised_24h_samples": 57,
+      "ri_positive_count": 1,
+      "notes": "Very Severe Cyclonic Storm making landfall near Visakhapatnam"
+    },
+    "2014297N11062": {
+      "name": "NILOFAR",
+      "season": 2014,
+      "subbasin": "AS",
+      "role": "TRAIN",
+      "track_observations": 73,
+      "supervised_24h_samples": 66,
+      "ri_positive_count": 11,
+      "notes": "Extremely Severe Cyclonic Storm in Arabian Sea with rapid intensification"
+    },
+    "2015309N14067": {
+      "name": "MEGH",
+      "season": 2015,
+      "subbasin": "AS",
+      "role": "VAL",
+      "track_observations": 49,
+      "supervised_24h_samples": 42,
+      "ri_positive_count": 6,
+      "notes": "Extremely Severe Cyclonic Storm; positive RI benchmark for validation"
+    },
+    "2015301N11065": {
+      "name": "CHAPALA",
+      "season": 2015,
+      "subbasin": "AS",
+      "role": "TEST",
+      "track_observations": 61,
+      "supervised_24h_samples": 53,
+      "ri_positive_count": 10,
+      "notes": "Extremely Severe Cyclonic Storm; held-out evaluation test storm with prominent RI"
+    }
+  },
+  "partition_statistics": {
+    "train": {
+      "num_storms": 4,
+      "total_track_observations": 237,
+      "supervised_24h_samples": 204,
+      "ri_positive_samples": 23,
+      "ri_negative_samples": 181,
+      "ri_prevalence_pct": 11.27
+    },
+    "val": {
+      "num_storms": 1,
+      "total_track_observations": 49,
+      "supervised_24h_samples": 42,
+      "ri_positive_samples": 6,
+      "ri_negative_samples": 36,
+      "ri_prevalence_pct": 14.29
+    },
+    "test": {
+      "num_storms": 1,
+      "total_track_observations": 61,
+      "supervised_24h_samples": 53,
+      "ri_positive_samples": 10,
+      "ri_negative_samples": 43,
+      "ri_prevalence_pct": 18.87
+    },
+    "total": {
+      "num_storms": 6,
+      "total_track_observations": 347,
+      "supervised_24h_samples": 299,
+      "ri_positive_samples": 39,
+      "ri_negative_samples": 260,
+      "ri_prevalence_pct": 13.04
+    }
+  },
+  "leakage_invariants": {
+    "train_val_disjoint": true,
+    "train_test_disjoint": true,
+    "val_test_disjoint": true,
+    "shared_storms": 0
+  }
+}

@@ -1,0 +1,186 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@layer base {
+  :root {
+    /* -------------------------------------------------------------------------
+       CYCLONEGUARD DESIGN SYSTEM — SPRINT 1.5 TOKENS
+       Concept: Meteorological Operations Center + Modern Editorial Interface
+       Light-First, Calm, Precise, Information-Focused
+       ------------------------------------------------------------------------- */
+
+    /* Core Canvas & Surfaces */
+    --background: #f8f9fa;             /* Warm, off-white calm canvas */
+    --surface: #ffffff;                /* Crisp white panel / card surface */
+    --surface-elevated: #ffffff;       /* Slightly elevated container */
+    --surface-muted: #f1f3f4;          /* Subtle table header & secondary fill */
+    --surface-sunken: #eaedef;         /* Inset maps / data visualization frames */
+
+    /* Typography / Foregrounds */
+    --foreground: #182026;             /* Deep charcoal (high legibility, not harsh black) */
+    --foreground-muted: #5a6872;       /* Muted slate for captions, subtitles, labels */
+    --foreground-subtle: #7d8c97;      /* Subtle slate for metadata & tertiary info */
+    --foreground-inverse: #ffffff;     /* White text on dark elements */
+
+    /* Restrained Borders & Dividers */
+    --border: #e2e6e9;                 /* Light architectural boundary */
+    --border-strong: #cbd2d6;          /* Form inputs & active container outlines */
+    --border-subtle: #edf0f2;          /* Subtle internal cell dividers */
+
+    /* Primary Meteorological Brand: Deep Ocean Teal */
+    --brand: #0f5b6c;                  /* Deep ocean teal (authoritative, scientific) */
+    --brand-hover: #0a4350;            /* Dark ocean teal hover */
+    --brand-subtle: #edf5f7;           /* Pale teal background tint */
+    --brand-border: #bcdbe2;           /* Soft ocean border */
+    --brand-foreground: #ffffff;
+
+    /* Semantic Status Colors (Restrained, Not Neon) */
+    --warning: #b45309;                /* Restrained amber for warnings & advisory alerts */
+    --warning-subtle: #fef8ee;         /* Pale amber tint */
+    --warning-border: #fbd38d;
+
+    --danger: #b91c1c;                 /* Controlled crimson for critical cyclone thresholds */
+    --danger-subtle: #fef2f2;          /* Pale red tint */
+    --danger-border: #fecaca;
+
+    --success: #1b7a4f;                /* Muted forest green for operational / healthy status */
+    --success-subtle: #f0fdf4;         /* Pale green tint */
+    --success-border: #bbf7d0;
+
+    --info: #1f5f7c;                   /* Maritime slate blue for informational banners */
+    --info-subtle: #f0f6fa;            /* Pale info tint */
+    --info-border: #bae6fd;
+
+    /* Restrained Shadows */
+    --shadow-subtle: 0 1px 2px 0 rgba(24, 32, 38, 0.05);
+    --shadow-elevated: 0 4px 12px 0 rgba(24, 32, 38, 0.08);
+
+    /* Restrained Radius Tokens */
+    --radius-xs: 2px;
+    --radius-sm: 4px;                  /* Standard for cards, buttons, panels */
+    --radius-md: 6px;                  /* Moderate container radius */
+    --radius-lg: 8px;                  /* Maximum allowed container radius */
+    --radius-full: 9999px;             /* Strictly for status pills / tags */
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+}
+
+/* Tabular figures for numerical precision */
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Editorial Map Frame / Meteorological Observation Texture */
+.meteorological-map-canvas {
+  background-color: #0b1520;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(15, 91, 108, 0.12) 0%, transparent 70%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 100% 100%, 48px 48px, 48px 48px;
+}
+
+/* Subtle scientific scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd2d6;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9aa7af;
+}
+
+/* Cyclone radar pulse animation */
+@keyframes cyclone-radar-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.radar-ping {
+  animation: cyclone-radar-pulse 2s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+
+@keyframes cyclone-vortex-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.vortex-spin {
+  animation: cyclone-vortex-spin 6s linear infinite;
+}
+
+/* Custom dark sleek Leaflet Popup styling */
+.leaflet-popup-content-wrapper {
+  background: #182026 !important;
+  color: #f1f5f9 !important;
+  border: 1px solid #334155 !important;
+  border-radius: 4px !important;
+  padding: 0 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6) !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: 1.4 !important;
+}
+
+.leaflet-popup-tip {
+  background: #182026 !important;
+  border: 1px solid #334155 !important;
+}
+
+.leaflet-container {
+  font-family: inherit;
+  background: #0b1520 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 380px !important;
+  position: relative !important;
+  z-index: 1;
+}
+
+.leaflet-tile-container img {
+  visibility: inherit !important;
+}
+
+.leaflet-bar a {
+  background-color: #182026 !important;
+  color: #94a3b8 !important;
+  border-bottom: 1px solid #334155 !important;
+}
+
+.leaflet-bar a:hover {
+  background-color: #0f172a !important;
+  color: #38bdf8 !important;
+}
+

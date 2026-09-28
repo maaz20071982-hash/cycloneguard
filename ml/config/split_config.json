@@ -1,0 +1,41 @@
+{
+  "version": "1.0.0",
+  "strategy": "storm_wise_stratified_by_identity",
+  "season": 2023,
+  "basin": "NI",
+  "random_seed": 42,
+  "train_storms": [
+    "2023293N12089",
+    "2023160N20092",
+    "2023156N10067",
+    "2023292N11063",
+    "2023273N16073",
+    "2023334N08088",
+    "2023317N10094"
+  ],
+  "val_storms": [
+    "2023212N19090",
+    "2023030N08087"
+  ],
+  "test_storms": [
+    "2023129N08091"
+  ],
+  "storm_metadata": {
+    "2023129N08091": {"name": "MOCHA", "role": "test", "notes": "Category 5 Extreme Rapid Intensification benchmark"},
+    "2023156N10067": {"name": "BIPARJOY", "role": "train", "notes": "Prolonged Arabian Sea storm, gradual intensification"},
+    "2023292N11063": {"name": "TEJ", "role": "train", "notes": "Rapid intensification Arabian Sea"},
+    "2023293N12089": {"name": "HAMOON", "role": "train", "notes": "Rapid intensification Bay of Bengal"},
+    "2023317N10094": {"name": "MIDHILI", "role": "train", "notes": "Moderate Bay of Bengal storm"},
+    "2023334N08088": {"name": "MICHAUNG", "role": "train", "notes": "Severe cyclonic storm Andhra Pradesh"},
+    "2023160N20092": {"name": "UNNAMED", "role": "train", "notes": "Monsoon depression"},
+    "2023273N16073": {"name": "UNNAMED", "role": "train", "notes": "Short-lived system"},
+    "2023212N19090": {"name": "UNNAMED", "role": "val", "notes": "Validation non-RI benchmark"},
+    "2023030N08087": {"name": "UNNAMED", "role": "val", "notes": "Validation low-intensity baseline"}
+  },
+  "leakage_invariants": {
+    "train_val_disjoint": true,
+    "train_test_disjoint": true,
+    "val_test_disjoint": true,
+    "shared_storms": 0
+  }
+}
