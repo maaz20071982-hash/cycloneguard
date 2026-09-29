@@ -16,23 +16,7 @@ services:
         generateValue: true
       - key: DATABASE_URL
         value: sqlite:///cycloneguard.db
+      - key: PYTHONPATH
+        value: ".:backend"
       - key: CORS_ORIGINS
         value: "https://frontend-two-rho-74.vercel.app,http://localhost:3000"
-
-  # CycloneGuard Frontend (Next.js 16 Editorial Portal)
-  - type: web
-    name: cycloneguard-web
-    env: node
-    region: oregon
-    plan: free
-    rootDir: frontend
-    buildCommand: npm ci && npm run build
-    startCommand: npm start
-    envVars:
-      - key: NODE_VERSION
-        value: 20.18.0
-      - key: NEXT_PUBLIC_API_URL
-        fromService:
-          type: web
-          name: cycloneguard-api
-          property: host
