@@ -1,0 +1,34 @@
+{
+  "source_id": "noaa_hursat_b1",
+  "dataset_name": "NOAA HURSAT-B1 Cyclone Mocha Sample",
+  "version": "v06",
+  "download_time_utc": "2026-09-26T02:24:49.228103Z",
+  "file_name": "hursat_b1_sample_mocha.nc",
+  "file_path": "C:\\Users\\maaz2\\OneDrive\\Desktop\\storm\\data\\samples\\hursat_b1_sample_mocha.nc",
+  "file_size_bytes": 124536,
+  "checksum_sha256": "30804c88a252026043e0ed725fb738b21e553d33ec54d512dd58f0bf675f7b15",
+  "time_range": {
+    "start": "2023-05-12T06:00:00Z",
+    "end": "2023-05-12T06:00:00Z"
+  },
+  "spatial_range": {
+    "lat_min": 9.5,
+    "lat_max": 17.5,
+    "lon_min": 84.5,
+    "lon_max": 92.5
+  },
+  "variables": [
+    "lat",
+    "lon",
+    "IRWIN",
+    "IRWVP",
+    "VSCHN"
+  ],
+  "record_count": 1,
+  "status": "VERIFIED",
+  "metadata": {
+    "storm_id": "2023129N08091",
+    "storm_name": "MOCHA",
+    "spatial_resolution": "8 km"
+  }
+}

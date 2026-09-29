@@ -1,0 +1,121 @@
+{
+  "model_name": "CycloneGuard-RI-Spatial-v2",
+  "version": "v2.0.0-spatial",
+  "model_type": "logistic_regression",
+  "feature_family": "Spatial Satellite Proxies (Families A-E)",
+  "feature_count": 38,
+  "forecast_horizon_hours": 24.0,
+  "ri_threshold_kts": 30.0,
+  "decision_threshold": 0.27499999999999997,
+  "calibration_status": "Uncalibrated (Validation cohort N=42 with 6 positives is insufficient for statistically reliable calibration)",
+  "training_dataset": "NOAA HURSAT-B1 v06 historical cyclones (PHAILIN, HELEN, HUDHUD, NILOFAR)",
+  "validation_storm": "MEGH (2015, AS, N=42, 6 RI+)",
+  "test_storm": "CHAPALA (2015, AS, N=53, 10 RI+)",
+  "timestamp_utc": "2026-09-27T03:47:28.131285+00:00",
+  "validation_metrics": {
+    "threshold": 0.275,
+    "accuracy": 0.7381,
+    "precision": 0.3333,
+    "recall": 0.8333,
+    "f1": 0.4762,
+    "roc_auc": 0.7407,
+    "pr_auc": 0.4251,
+    "brier_score": 0.1247,
+    "confusion_matrix": {
+      "tn": 26,
+      "fp": 10,
+      "fn": 1,
+      "tp": 5
+    },
+    "sample_count": 42,
+    "positive_count": 6,
+    "prevalence_pct": 14.29
+  },
+  "test_metrics": {
+    "threshold": 0.275,
+    "accuracy": 0.5472,
+    "precision": 0.2308,
+    "recall": 0.6,
+    "f1": 0.3333,
+    "roc_auc": 0.4488,
+    "pr_auc": 0.1777,
+    "brier_score": 0.1946,
+    "confusion_matrix": {
+      "tn": 23,
+      "fp": 20,
+      "fn": 4,
+      "tp": 6
+    },
+    "sample_count": 53,
+    "positive_count": 10,
+    "prevalence_pct": 18.87
+  },
+  "top_features": [
+    {
+      "feature": "irwin_core_very_cold_frac",
+      "standardized_coefficient": 0.4952,
+      "magnitude": 0.4952,
+      "direction": "positive_association (higher value associated with RI)"
+    },
+    {
+      "feature": "irwin_max",
+      "standardized_coefficient": 0.4121,
+      "magnitude": 0.4121,
+      "direction": "positive_association (higher value associated with RI)"
+    },
+    {
+      "feature": "irwin_spatial_entropy",
+      "standardized_coefficient": 0.4064,
+      "magnitude": 0.4064,
+      "direction": "positive_association (higher value associated with RI)"
+    },
+    {
+      "feature": "irwin_min",
+      "standardized_coefficient": 0.4054,
+      "magnitude": 0.4054,
+      "direction": "positive_association (higher value associated with RI)"
+    },
+    {
+      "feature": "irwin_ring_cold_frac",
+      "standardized_coefficient": 0.3879,
+      "magnitude": 0.3879,
+      "direction": "positive_association (higher value associated with RI)"
+    },
+    {
+      "feature": "ir_wv_diff_mean",
+      "standardized_coefficient": -0.3849,
+      "magnitude": 0.3849,
+      "direction": "negative_association (lower value associated with RI)"
+    },
+    {
+      "feature": "ir_wv_spatial_corr",
+      "standardized_coefficient": 0.3578,
+      "magnitude": 0.3578,
+      "direction": "positive_association (higher value associated with RI)"
+    },
+    {
+      "feature": "irwin_local_variance",
+      "standardized_coefficient": -0.3315,
+      "magnitude": 0.3315,
+      "direction": "negative_association (lower value associated with RI)"
+    },
+    {
+      "feature": "irwin_p75",
+      "standardized_coefficient": -0.3298,
+      "magnitude": 0.3298,
+      "direction": "negative_association (lower value associated with RI)"
+    },
+    {
+      "feature": "irwin_grad_mean",
+      "standardized_coefficient": 0.2887,
+      "magnitude": 0.2887,
+      "direction": "positive_association (higher value associated with RI)"
+    }
+  ],
+  "limitations": [
+    "Dataset restricted to 6 unique historical storm lifecycles (4 training storms).",
+    "Pure spatial features underperform temporal kinematics due to inter-storm cloud-top temperature variability.",
+    "Visible channel is missing during night passes; represented via explicit availability indicator without zero-filling.",
+    "Features are satellite-derived structural proxies, not direct physical measurements of surface winds."
+  ]
+}

@@ -1,0 +1,665 @@
+{
+  "config_name": "Model STE (Full Multimodal Fusion)",
+  "feature_count": 74,
+  "feature_names": [
+    "track_latitude_val",
+    "track_latitude_is_observed",
+    "track_longitude_val",
+    "track_longitude_is_observed",
+    "track_wind_speed_val",
+    "track_wind_speed_is_observed",
+    "track_pressure_val",
+    "track_pressure_is_observed",
+    "track_translation_speed_kts_val",
+    "track_translation_speed_kts_is_observed",
+    "track_translation_bearing_deg_val",
+    "track_translation_bearing_deg_is_observed",
+    "temp_delta_wind_6h_val",
+    "temp_delta_wind_6h_is_observed",
+    "temp_delta_wind_12h_val",
+    "temp_delta_wind_12h_is_observed",
+    "temp_delta_pressure_6h_val",
+    "temp_delta_pressure_6h_is_observed",
+    "temp_wind_change_rate_per_hour_val",
+    "temp_wind_change_rate_per_hour_is_observed",
+    "temp_delta_ir_min_6h_val",
+    "temp_delta_ir_min_6h_is_observed",
+    "quality_track_available",
+    "irwin_mean",
+    "irwin_std",
+    "irwin_min",
+    "irwin_p10",
+    "irwin_p25",
+    "irwin_p50",
+    "irwin_p75",
+    "irwin_max",
+    "irwin_temp_range",
+    "irwin_cold_cloud_fraction_233k",
+    "irwin_very_cold_cloud_fraction_219k",
+    "irwin_overshooting_fraction_203k",
+    "irwin_core_mean",
+    "irwin_core_min",
+    "irwin_core_cold_frac",
+    "irwin_core_very_cold_frac",
+    "irwin_ring_mean",
+    "irwin_ring_min",
+    "irwin_ring_cold_frac",
+    "irwin_outer_mean",
+    "irwin_core_ring_diff",
+    "irwin_core_outer_diff",
+    "irwin_azimuthal_std_core",
+    "irwin_grad_mean",
+    "irwin_grad_max",
+    "irwin_local_variance",
+    "irwin_spatial_entropy",
+    "has_irwvp",
+    "irwvp_mean",
+    "irwvp_min",
+    "irwvp_core_mean",
+    "ir_wv_diff_mean",
+    "ir_wv_core_diff",
+    "ir_wv_spatial_corr",
+    "has_vschn",
+    "vschn_mean",
+    "vschn_core_mean",
+    "vschn_std",
+    "env_sst_celsius",
+    "env_sst_potential_above_26c",
+    "env_sst_is_observed",
+    "env_vws_magnitude_kts",
+    "env_vws_direction_deg",
+    "env_wind_speed_850hpa_kts",
+    "env_wind_speed_200hpa_kts",
+    "env_vws_delta_6h_kts",
+    "env_vws_is_observed",
+    "env_relative_humidity_700hpa",
+    "env_relative_humidity_500hpa",
+    "env_rh_is_observed",
+    "env_dt_minutes"
+  ],
+  "optimal_threshold": 0.39999999999999997,
+  "validation_metrics": {
+    "threshold": 0.4,
+    "accuracy": 0.7619,
+    "precision": 0.3571,
+    "recall": 0.8333,
+    "f1": 0.5,
+    "roc_auc": 0.7731,
+    "pr_auc": 0.3267,
+    "brier_score": 0.197,
+    "confusion_matrix": {
+      "tn": 27,
+      "fp": 9,
+      "fn": 1,
+      "tp": 5
+    },
+    "sample_count": 42,
+    "positive_count": 6,
+    "prevalence_pct": 14.29
+  },
+  "test_metrics": {
+    "threshold": 0.4,
+    "accuracy": 0.6038,
+    "precision": 0.2105,
+    "recall": 0.4,
+    "f1": 0.2759,
+    "roc_auc": 0.507,
+    "pr_auc": 0.2333,
+    "brier_score": 0.2562,
+    "confusion_matrix": {
+      "tn": 28,
+      "fp": 15,
+      "fn": 6,
+      "tp": 4
+    },
+    "sample_count": 53,
+    "positive_count": 10,
+    "prevalence_pct": 18.87
+  },
+  "test_metrics_default_threshold": {
+    "threshold": 0.5,
+    "accuracy": 0.6415,
+    "precision": 0.2353,
+    "recall": 0.4,
+    "f1": 0.2963,
+    "roc_auc": 0.507,
+    "pr_auc": 0.2333,
+    "brier_score": 0.2562,
+    "confusion_matrix": {
+      "tn": 30,
+      "fp": 13,
+      "fn": 6,
+      "tp": 4
+    },
+    "sample_count": 53,
+    "positive_count": 10,
+    "prevalence_pct": 18.87
+  },
+  "feature_importance": [
+    {
+      "feature": "env_vws_direction_deg",
+      "coefficient": -1.957,
+      "odds_ratio": 0.1413,
+      "abs_importance": 1.957,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwin_core_very_cold_frac",
+      "coefficient": 1.4714,
+      "odds_ratio": 4.3555,
+      "abs_importance": 1.4714,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_wind_speed_200hpa_kts",
+      "coefficient": -1.4671,
+      "odds_ratio": 0.2306,
+      "abs_importance": 1.4671,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "env_relative_humidity_500hpa",
+      "coefficient": -1.2662,
+      "odds_ratio": 0.2819,
+      "abs_importance": 1.2662,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "ir_wv_diff_mean",
+      "coefficient": -1.1531,
+      "odds_ratio": 0.3157,
+      "abs_importance": 1.1531,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwin_min",
+      "coefficient": 1.0914,
+      "odds_ratio": 2.9784,
+      "abs_importance": 1.0914,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_relative_humidity_700hpa",
+      "coefficient": 1.0737,
+      "odds_ratio": 2.9261,
+      "abs_importance": 1.0737,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "track_longitude_val",
+      "coefficient": -1.0712,
+      "odds_ratio": 0.3426,
+      "abs_importance": 1.0712,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "track_pressure_val",
+      "coefficient": 0.9297,
+      "odds_ratio": 2.5336,
+      "abs_importance": 0.9297,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "track_wind_speed_val",
+      "coefficient": -0.925,
+      "odds_ratio": 0.3965,
+      "abs_importance": 0.925,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwin_grad_mean",
+      "coefficient": 0.8807,
+      "odds_ratio": 2.4125,
+      "abs_importance": 0.8807,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_wind_speed_850hpa_kts",
+      "coefficient": -0.8678,
+      "odds_ratio": 0.4199,
+      "abs_importance": 0.8678,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwin_std",
+      "coefficient": -0.7806,
+      "odds_ratio": 0.4581,
+      "abs_importance": 0.7806,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwin_spatial_entropy",
+      "coefficient": 0.7488,
+      "odds_ratio": 2.1145,
+      "abs_importance": 0.7488,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwin_max",
+      "coefficient": 0.7215,
+      "odds_ratio": 2.0576,
+      "abs_importance": 0.7215,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwin_ring_cold_frac",
+      "coefficient": 0.6984,
+      "odds_ratio": 2.0105,
+      "abs_importance": 0.6984,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwin_ring_mean",
+      "coefficient": -0.6412,
+      "odds_ratio": 0.5267,
+      "abs_importance": 0.6412,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "env_sst_potential_above_26c",
+      "coefficient": 0.6096,
+      "odds_ratio": 1.8397,
+      "abs_importance": 0.6096,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_sst_celsius",
+      "coefficient": 0.5869,
+      "odds_ratio": 1.7984,
+      "abs_importance": 0.5869,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwin_core_cold_frac",
+      "coefficient": 0.5847,
+      "odds_ratio": 1.7945,
+      "abs_importance": 0.5847,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwin_p75",
+      "coefficient": -0.5809,
+      "odds_ratio": 0.5594,
+      "abs_importance": 0.5809,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "track_translation_bearing_deg_val",
+      "coefficient": -0.5581,
+      "odds_ratio": 0.5723,
+      "abs_importance": 0.5581,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "ir_wv_spatial_corr",
+      "coefficient": 0.5543,
+      "odds_ratio": 1.7407,
+      "abs_importance": 0.5543,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwin_core_outer_diff",
+      "coefficient": 0.4841,
+      "odds_ratio": 1.6227,
+      "abs_importance": 0.4841,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwin_very_cold_cloud_fraction_219k",
+      "coefficient": -0.4399,
+      "odds_ratio": 0.6441,
+      "abs_importance": 0.4399,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwin_p50",
+      "coefficient": -0.425,
+      "odds_ratio": 0.6537,
+      "abs_importance": 0.425,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwin_core_mean",
+      "coefficient": -0.4058,
+      "odds_ratio": 0.6665,
+      "abs_importance": 0.4058,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwvp_core_mean",
+      "coefficient": -0.4032,
+      "odds_ratio": 0.6682,
+      "abs_importance": 0.4032,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "env_dt_minutes",
+      "coefficient": -0.3982,
+      "odds_ratio": 0.6715,
+      "abs_importance": 0.3982,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "track_latitude_val",
+      "coefficient": 0.3959,
+      "odds_ratio": 1.4858,
+      "abs_importance": 0.3959,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "temp_delta_wind_12h_is_observed",
+      "coefficient": 0.3814,
+      "odds_ratio": 1.4643,
+      "abs_importance": 0.3814,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwin_ring_min",
+      "coefficient": -0.3765,
+      "odds_ratio": 0.6863,
+      "abs_importance": 0.3765,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwin_core_ring_diff",
+      "coefficient": -0.3686,
+      "odds_ratio": 0.6917,
+      "abs_importance": 0.3686,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "track_translation_speed_kts_val",
+      "coefficient": -0.3519,
+      "odds_ratio": 0.7033,
+      "abs_importance": 0.3519,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwin_mean",
+      "coefficient": -0.3387,
+      "odds_ratio": 0.7127,
+      "abs_importance": 0.3387,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwin_overshooting_fraction_203k",
+      "coefficient": -0.3189,
+      "odds_ratio": 0.7269,
+      "abs_importance": 0.3189,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwin_local_variance",
+      "coefficient": -0.3063,
+      "odds_ratio": 0.7362,
+      "abs_importance": 0.3063,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "ir_wv_core_diff",
+      "coefficient": -0.3056,
+      "odds_ratio": 0.7367,
+      "abs_importance": 0.3056,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwin_p25",
+      "coefficient": 0.2893,
+      "odds_ratio": 1.3354,
+      "abs_importance": 0.2893,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_vws_delta_6h_kts",
+      "coefficient": 0.2867,
+      "odds_ratio": 1.332,
+      "abs_importance": 0.2867,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwvp_min",
+      "coefficient": 0.2645,
+      "odds_ratio": 1.3028,
+      "abs_importance": 0.2645,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_sst_is_observed",
+      "coefficient": 0.2558,
+      "odds_ratio": 1.2915,
+      "abs_importance": 0.2558,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwin_azimuthal_std_core",
+      "coefficient": 0.2262,
+      "odds_ratio": 1.2538,
+      "abs_importance": 0.2262,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_vws_magnitude_kts",
+      "coefficient": 0.221,
+      "odds_ratio": 1.2473,
+      "abs_importance": 0.221,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwvp_mean",
+      "coefficient": 0.2194,
+      "odds_ratio": 1.2453,
+      "abs_importance": 0.2194,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "temp_delta_wind_12h_val",
+      "coefficient": -0.2118,
+      "odds_ratio": 0.8091,
+      "abs_importance": 0.2118,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "vschn_std",
+      "coefficient": -0.1869,
+      "odds_ratio": 0.8295,
+      "abs_importance": 0.1869,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "track_translation_speed_kts_is_observed",
+      "coefficient": 0.1557,
+      "odds_ratio": 1.1685,
+      "abs_importance": 0.1557,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "track_translation_bearing_deg_is_observed",
+      "coefficient": 0.1557,
+      "odds_ratio": 1.1685,
+      "abs_importance": 0.1557,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "temp_delta_wind_6h_is_observed",
+      "coefficient": 0.1424,
+      "odds_ratio": 1.153,
+      "abs_importance": 0.1424,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "temp_delta_pressure_6h_is_observed",
+      "coefficient": 0.1424,
+      "odds_ratio": 1.153,
+      "abs_importance": 0.1424,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "temp_wind_change_rate_per_hour_is_observed",
+      "coefficient": 0.1424,
+      "odds_ratio": 1.153,
+      "abs_importance": 0.1424,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwin_grad_max",
+      "coefficient": 0.1387,
+      "odds_ratio": 1.1488,
+      "abs_importance": 0.1387,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwin_cold_cloud_fraction_233k",
+      "coefficient": 0.1179,
+      "odds_ratio": 1.1251,
+      "abs_importance": 0.1179,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwin_outer_mean",
+      "coefficient": -0.1064,
+      "odds_ratio": 0.8991,
+      "abs_importance": 0.1064,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwin_temp_range",
+      "coefficient": 0.1047,
+      "odds_ratio": 1.1104,
+      "abs_importance": 0.1047,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "temp_delta_pressure_6h_val",
+      "coefficient": -0.0813,
+      "odds_ratio": 0.9219,
+      "abs_importance": 0.0813,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "irwin_core_min",
+      "coefficient": 0.0617,
+      "odds_ratio": 1.0637,
+      "abs_importance": 0.0617,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "irwin_p10",
+      "coefficient": -0.051,
+      "odds_ratio": 0.9503,
+      "abs_importance": 0.051,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "has_vschn",
+      "coefficient": -0.04,
+      "odds_ratio": 0.9608,
+      "abs_importance": 0.04,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "vschn_core_mean",
+      "coefficient": 0.0298,
+      "odds_ratio": 1.0303,
+      "abs_importance": 0.0298,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "temp_delta_wind_6h_val",
+      "coefficient": 0.0194,
+      "odds_ratio": 1.0196,
+      "abs_importance": 0.0194,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "temp_wind_change_rate_per_hour_val",
+      "coefficient": 0.019,
+      "odds_ratio": 1.0192,
+      "abs_importance": 0.019,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_vws_is_observed",
+      "coefficient": 0.0056,
+      "odds_ratio": 1.0056,
+      "abs_importance": 0.0056,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_rh_is_observed",
+      "coefficient": 0.0056,
+      "odds_ratio": 1.0056,
+      "abs_importance": 0.0056,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "vschn_mean",
+      "coefficient": 0.0003,
+      "odds_ratio": 1.0003,
+      "abs_importance": 0.0003,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "track_latitude_is_observed",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "track_longitude_is_observed",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "track_wind_speed_is_observed",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "track_pressure_is_observed",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "temp_delta_ir_min_6h_val",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "temp_delta_ir_min_6h_is_observed",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "quality_track_available",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "has_irwvp",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    }
+  ],
+  "sample_counts": {
+    "train_samples": 204,
+    "val_samples": 42,
+    "test_samples": 53,
+    "test_positive_count": 10
+  },
+  "trained_at_utc": "2026-09-27T05:03:03.226534+00:00"
+}

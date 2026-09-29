@@ -1,0 +1,126 @@
+{
+  "manifest_version": "1.0.0",
+  "created_at_utc": "2026-09-26T05:48:57.548552Z",
+  "source": "NOAA IBTrACS v04r01 (North Indian Ocean)",
+  "total_target_storms": 6,
+  "total_track_observations": 347,
+  "seasons_represented": [
+    2013,
+    2014,
+    2015
+  ],
+  "subbasins_represented": [
+    "AS",
+    "BB"
+  ],
+  "target_storms": [
+    {
+      "storm_id": "2013281N12098",
+      "storm_name": "PHAILIN",
+      "season": 2013,
+      "basin": "NI",
+      "subbasin": "BB",
+      "start_time_utc": "2013-10-07T12:00:00Z",
+      "end_time_utc": "2013-10-14T06:00:00Z",
+      "number_of_track_observations": 55,
+      "max_wind_kts": 115.0,
+      "min_pressure_mb": 940.0,
+      "expected_hursat_matching_window": {
+        "window_start_utc": "2013-10-07T12:00:00Z",
+        "window_end_utc": "2013-10-14T06:00:00Z",
+        "temporal_tolerance_minutes": 30.0
+      },
+      "tarball_pattern": "HURSAT_b1_v06_2013281N12098_PHAILIN*.tar.gz"
+    },
+    {
+      "storm_id": "2013322N13090",
+      "storm_name": "HELEN",
+      "season": 2013,
+      "basin": "NI",
+      "subbasin": "BB",
+      "start_time_utc": "2013-11-18T00:00:00Z",
+      "end_time_utc": "2013-11-23T06:00:00Z",
+      "number_of_track_observations": 43,
+      "max_wind_kts": 55.0,
+      "min_pressure_mb": 990.0,
+      "expected_hursat_matching_window": {
+        "window_start_utc": "2013-11-18T00:00:00Z",
+        "window_end_utc": "2013-11-23T06:00:00Z",
+        "temporal_tolerance_minutes": 30.0
+      },
+      "tarball_pattern": "HURSAT_b1_v06_2013322N13090_HELEN*.tar.gz"
+    },
+    {
+      "storm_id": "2014279N11096",
+      "storm_name": "HUDHUD",
+      "season": 2014,
+      "basin": "NI",
+      "subbasin": "BB",
+      "start_time_utc": "2014-10-06T06:00:00Z",
+      "end_time_utc": "2014-10-14T09:00:00Z",
+      "number_of_track_observations": 66,
+      "max_wind_kts": 100.0,
+      "min_pressure_mb": 950.0,
+      "expected_hursat_matching_window": {
+        "window_start_utc": "2014-10-06T06:00:00Z",
+        "window_end_utc": "2014-10-14T09:00:00Z",
+        "temporal_tolerance_minutes": 30.0
+      },
+      "tarball_pattern": "HURSAT_b1_v06_2014279N11096_HUDHUD*.tar.gz"
+    },
+    {
+      "storm_id": "2014297N11062",
+      "storm_name": "NILOFAR",
+      "season": 2014,
+      "basin": "NI",
+      "subbasin": "AS",
+      "start_time_utc": "2014-10-23T12:00:00Z",
+      "end_time_utc": "2014-11-01T12:00:00Z",
+      "number_of_track_observations": 73,
+      "max_wind_kts": 110.0,
+      "min_pressure_mb": 950.0,
+      "expected_hursat_matching_window": {
+        "window_start_utc": "2014-10-23T12:00:00Z",
+        "window_end_utc": "2014-11-01T12:00:00Z",
+        "temporal_tolerance_minutes": 30.0
+      },
+      "tarball_pattern": "HURSAT_b1_v06_2014297N11062_NILOFAR*.tar.gz"
+    },
+    {
+      "storm_id": "2015301N11065",
+      "storm_name": "CHAPALA",
+      "season": 2015,
+      "basin": "NI",
+      "subbasin": "AS",
+      "start_time_utc": "2015-10-27T12:00:00Z",
+      "end_time_utc": "2015-11-04T00:00:00Z",
+      "number_of_track_observations": 61,
+      "max_wind_kts": 115.0,
+      "min_pressure_mb": 940.0,
+      "expected_hursat_matching_window": {
+        "window_start_utc": "2015-10-27T12:00:00Z",
+        "window_end_utc": "2015-11-04T00:00:00Z",
+        "temporal_tolerance_minutes": 30.0
+      },
+      "tarball_pattern": "HURSAT_b1_v06_2015301N11065_CHAPALA*.tar.gz"
+    },
+    {
+      "storm_id": "2015309N14067",
+      "storm_name": "MEGH",
+      "season": 2015,
+      "basin": "NI",
+      "subbasin": "AS",
+      "start_time_utc": "2015-11-04T12:00:00Z",
+      "end_time_utc": "2015-11-10T12:00:00Z",
+      "number_of_track_observations": 49,
+      "max_wind_kts": 95.0,
+      "min_pressure_mb": 964.0,
+      "expected_hursat_matching_window": {
+        "window_start_utc": "2015-11-04T12:00:00Z",
+        "window_end_utc": "2015-11-10T12:00:00Z",
+        "temporal_tolerance_minutes": 30.0
+      },
+      "tarball_pattern": "HURSAT_b1_v06_2015309N14067_MEGH*.tar.gz"
+    }
+  ]
+}

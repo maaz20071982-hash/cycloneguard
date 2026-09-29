@@ -1,0 +1,42 @@
+{
+  "source_id": "noaa_ibtracs",
+  "dataset_name": "NOAA IBTrACS v04r01 North Indian Ocean Sample",
+  "version": "v04r01",
+  "download_time_utc": "2026-09-26T02:24:49.227204Z",
+  "file_name": "ibtracs_sample_ni.csv",
+  "file_path": "C:\\Users\\maaz2\\OneDrive\\Desktop\\storm\\data\\samples\\ibtracs_sample_ni.csv",
+  "file_size_bytes": 189245,
+  "checksum_sha256": "1a3e344963904665818bc3e6c881e5e292721afc53d3151b8f0726bfdea048fc",
+  "time_range": {
+    "start": "2023-01-30T03:00:00Z",
+    "end": "2023-12-04T00:00:00Z"
+  },
+  "spatial_range": {
+    "lat_min": 6.3,
+    "lat_max": 26.3,
+    "lon_min": 51.3,
+    "lon_max": 97.8
+  },
+  "variables": [
+    "SID",
+    "NAME",
+    "ISO_TIME",
+    "LAT",
+    "LON",
+    "WMO_WIND",
+    "WMO_PRES",
+    "NEWDELHI_WIND",
+    "NEWDELHI_PRES",
+    "NEWDELHI_GRADE"
+  ],
+  "record_count": 400,
+  "status": "VERIFIED",
+  "metadata": {
+    "basin": "NI",
+    "subbasins": [
+      "Bay of Bengal",
+      "Arabian Sea"
+    ],
+    "storm_count": 10
+  }
+}

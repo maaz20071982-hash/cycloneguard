@@ -1,0 +1,16 @@
+{
+  "source_id": "noaa_ibtracs",
+  "dataset_name": "IBTrACS Sample NI",
+  "version": "v01",
+  "download_time_utc": "2026-09-26T02:51:09.940420Z",
+  "file_name": "ibtracs_sample_ni.csv",
+  "file_path": "C:\\Users\\maaz2\\OneDrive\\Desktop\\storm\\data\\samples\\ibtracs_sample_ni.csv",
+  "file_size_bytes": 189245,
+  "checksum_sha256": "1a3e344963904665818bc3e6c881e5e292721afc53d3151b8f0726bfdea048fc",
+  "time_range": null,
+  "spatial_range": null,
+  "variables": [],
+  "record_count": 0,
+  "status": "VERIFIED",
+  "metadata": {}
+}

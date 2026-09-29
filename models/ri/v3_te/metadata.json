@@ -1,0 +1,361 @@
+{
+  "config_name": "Model TE (Temporal + Environmental)",
+  "feature_count": 36,
+  "feature_names": [
+    "track_latitude_val",
+    "track_latitude_is_observed",
+    "track_longitude_val",
+    "track_longitude_is_observed",
+    "track_wind_speed_val",
+    "track_wind_speed_is_observed",
+    "track_pressure_val",
+    "track_pressure_is_observed",
+    "track_translation_speed_kts_val",
+    "track_translation_speed_kts_is_observed",
+    "track_translation_bearing_deg_val",
+    "track_translation_bearing_deg_is_observed",
+    "temp_delta_wind_6h_val",
+    "temp_delta_wind_6h_is_observed",
+    "temp_delta_wind_12h_val",
+    "temp_delta_wind_12h_is_observed",
+    "temp_delta_pressure_6h_val",
+    "temp_delta_pressure_6h_is_observed",
+    "temp_wind_change_rate_per_hour_val",
+    "temp_wind_change_rate_per_hour_is_observed",
+    "temp_delta_ir_min_6h_val",
+    "temp_delta_ir_min_6h_is_observed",
+    "quality_track_available",
+    "env_sst_celsius",
+    "env_sst_potential_above_26c",
+    "env_sst_is_observed",
+    "env_vws_magnitude_kts",
+    "env_vws_direction_deg",
+    "env_wind_speed_850hpa_kts",
+    "env_wind_speed_200hpa_kts",
+    "env_vws_delta_6h_kts",
+    "env_vws_is_observed",
+    "env_relative_humidity_700hpa",
+    "env_relative_humidity_500hpa",
+    "env_rh_is_observed",
+    "env_dt_minutes"
+  ],
+  "optimal_threshold": 0.625,
+  "validation_metrics": {
+    "threshold": 0.625,
+    "accuracy": 0.5714,
+    "precision": 0.25,
+    "recall": 1.0,
+    "f1": 0.4,
+    "roc_auc": 0.5972,
+    "pr_auc": 0.1823,
+    "brier_score": 0.4161,
+    "confusion_matrix": {
+      "tn": 18,
+      "fp": 18,
+      "fn": 0,
+      "tp": 6
+    },
+    "sample_count": 42,
+    "positive_count": 6,
+    "prevalence_pct": 14.29
+  },
+  "test_metrics": {
+    "threshold": 0.625,
+    "accuracy": 0.4528,
+    "precision": 0.1935,
+    "recall": 0.6,
+    "f1": 0.2927,
+    "roc_auc": 0.5512,
+    "pr_auc": 0.2311,
+    "brier_score": 0.4256,
+    "confusion_matrix": {
+      "tn": 18,
+      "fp": 25,
+      "fn": 4,
+      "tp": 6
+    },
+    "sample_count": 53,
+    "positive_count": 10,
+    "prevalence_pct": 18.87
+  },
+  "test_metrics_default_threshold": {
+    "threshold": 0.5,
+    "accuracy": 0.3774,
+    "precision": 0.1892,
+    "recall": 0.7,
+    "f1": 0.2979,
+    "roc_auc": 0.5512,
+    "pr_auc": 0.2311,
+    "brier_score": 0.4256,
+    "confusion_matrix": {
+      "tn": 13,
+      "fp": 30,
+      "fn": 3,
+      "tp": 7
+    },
+    "sample_count": 53,
+    "positive_count": 10,
+    "prevalence_pct": 18.87
+  },
+  "feature_importance": [
+    {
+      "feature": "env_vws_direction_deg",
+      "coefficient": -2.5135,
+      "odds_ratio": 0.081,
+      "abs_importance": 2.5135,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "env_wind_speed_200hpa_kts",
+      "coefficient": -1.8164,
+      "odds_ratio": 0.1626,
+      "abs_importance": 1.8164,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "env_relative_humidity_500hpa",
+      "coefficient": -1.6139,
+      "odds_ratio": 0.1991,
+      "abs_importance": 1.6139,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "track_longitude_val",
+      "coefficient": -1.4229,
+      "odds_ratio": 0.241,
+      "abs_importance": 1.4229,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "env_sst_is_observed",
+      "coefficient": 1.1829,
+      "odds_ratio": 3.264,
+      "abs_importance": 1.1829,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "track_pressure_val",
+      "coefficient": 1.1172,
+      "odds_ratio": 3.0563,
+      "abs_importance": 1.1172,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_relative_humidity_700hpa",
+      "coefficient": 1.0537,
+      "odds_ratio": 2.8684,
+      "abs_importance": 1.0537,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_wind_speed_850hpa_kts",
+      "coefficient": -0.986,
+      "odds_ratio": 0.3731,
+      "abs_importance": 0.986,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "temp_delta_wind_12h_is_observed",
+      "coefficient": 0.7629,
+      "odds_ratio": 2.1445,
+      "abs_importance": 0.7629,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "track_latitude_val",
+      "coefficient": 0.7193,
+      "odds_ratio": 2.053,
+      "abs_importance": 0.7193,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_sst_potential_above_26c",
+      "coefficient": 0.6709,
+      "odds_ratio": 1.956,
+      "abs_importance": 0.6709,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_sst_celsius",
+      "coefficient": 0.6455,
+      "odds_ratio": 1.907,
+      "abs_importance": 0.6455,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "track_translation_bearing_deg_val",
+      "coefficient": -0.6407,
+      "odds_ratio": 0.5269,
+      "abs_importance": 0.6407,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "track_wind_speed_val",
+      "coefficient": -0.5033,
+      "odds_ratio": 0.6046,
+      "abs_importance": 0.5033,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "env_vws_delta_6h_kts",
+      "coefficient": 0.3589,
+      "odds_ratio": 1.4317,
+      "abs_importance": 0.3589,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_vws_magnitude_kts",
+      "coefficient": 0.3562,
+      "odds_ratio": 1.4279,
+      "abs_importance": 0.3562,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "temp_delta_wind_6h_val",
+      "coefficient": 0.2841,
+      "odds_ratio": 1.3286,
+      "abs_importance": 0.2841,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "temp_wind_change_rate_per_hour_val",
+      "coefficient": 0.2839,
+      "odds_ratio": 1.3282,
+      "abs_importance": 0.2839,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "track_translation_speed_kts_val",
+      "coefficient": -0.1431,
+      "odds_ratio": 0.8667,
+      "abs_importance": 0.1431,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "temp_delta_pressure_6h_val",
+      "coefficient": 0.1352,
+      "odds_ratio": 1.1448,
+      "abs_importance": 0.1352,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "temp_delta_wind_12h_val",
+      "coefficient": 0.1158,
+      "odds_ratio": 1.1227,
+      "abs_importance": 0.1158,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "temp_delta_wind_6h_is_observed",
+      "coefficient": 0.1102,
+      "odds_ratio": 1.1165,
+      "abs_importance": 0.1102,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "temp_delta_pressure_6h_is_observed",
+      "coefficient": 0.1102,
+      "odds_ratio": 1.1165,
+      "abs_importance": 0.1102,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "temp_wind_change_rate_per_hour_is_observed",
+      "coefficient": 0.1102,
+      "odds_ratio": 1.1165,
+      "abs_importance": 0.1102,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "track_translation_speed_kts_is_observed",
+      "coefficient": 0.0932,
+      "odds_ratio": 1.0977,
+      "abs_importance": 0.0932,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "track_translation_bearing_deg_is_observed",
+      "coefficient": 0.0932,
+      "odds_ratio": 1.0977,
+      "abs_importance": 0.0932,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_dt_minutes",
+      "coefficient": -0.0861,
+      "odds_ratio": 0.9175,
+      "abs_importance": 0.0861,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "env_vws_is_observed",
+      "coefficient": 0.0207,
+      "odds_ratio": 1.0209,
+      "abs_importance": 0.0207,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_rh_is_observed",
+      "coefficient": 0.0207,
+      "odds_ratio": 1.0209,
+      "abs_importance": 0.0207,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "track_latitude_is_observed",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "track_longitude_is_observed",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "track_wind_speed_is_observed",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "track_pressure_is_observed",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "temp_delta_ir_min_6h_val",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "temp_delta_ir_min_6h_is_observed",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "quality_track_available",
+      "coefficient": 0.0,
+      "odds_ratio": 1.0,
+      "abs_importance": 0.0,
+      "direction": "protective_negative"
+    }
+  ],
+  "sample_counts": {
+    "train_samples": 204,
+    "val_samples": 42,
+    "test_samples": 53,
+    "test_positive_count": 10
+  },
+  "trained_at_utc": "2026-09-27T05:03:03.226534+00:00"
+}

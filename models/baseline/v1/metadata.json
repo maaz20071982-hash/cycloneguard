@@ -1,0 +1,46 @@
+{
+  "model_type": "logistic_regression",
+  "timestamp_utc": "2026-09-26T03:11:22.047320Z",
+  "training_metadata": {
+    "train_storms": [
+      "2023293N12089",
+      "2023160N20092",
+      "2023156N10067",
+      "2023292N11063",
+      "2023273N16073",
+      "2023334N08088",
+      "2023317N10094"
+    ],
+    "val_storms": [
+      "2023212N19090",
+      "2023030N08087"
+    ],
+    "test_storms": [
+      "2023129N08091"
+    ],
+    "train_samples": 227,
+    "val_samples": 33,
+    "test_samples": 43,
+    "random_seed": 42,
+    "ri_threshold_kts": 30.0,
+    "forecast_horizon_hours": 24.0
+  },
+  "evaluation_metrics": {
+    "accuracy": 0.6744,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "roc_auc": 0.6619,
+    "pr_auc": 0.3372,
+    "best_f1": 0.4706,
+    "best_threshold": 0.05,
+    "confusion_matrix": {
+      "tn": 29,
+      "fp": 3,
+      "fn": 11,
+      "tp": 0
+    },
+    "sample_count": 43,
+    "positive_count": 11
+  }
+}

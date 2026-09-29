@@ -1,0 +1,177 @@
+{
+  "config_name": "Model E (Environmental Only)",
+  "feature_count": 13,
+  "feature_names": [
+    "env_sst_celsius",
+    "env_sst_potential_above_26c",
+    "env_sst_is_observed",
+    "env_vws_magnitude_kts",
+    "env_vws_direction_deg",
+    "env_wind_speed_850hpa_kts",
+    "env_wind_speed_200hpa_kts",
+    "env_vws_delta_6h_kts",
+    "env_vws_is_observed",
+    "env_relative_humidity_700hpa",
+    "env_relative_humidity_500hpa",
+    "env_rh_is_observed",
+    "env_dt_minutes"
+  ],
+  "optimal_threshold": 0.39999999999999997,
+  "validation_metrics": {
+    "threshold": 0.4,
+    "accuracy": 0.5,
+    "precision": 0.2222,
+    "recall": 1.0,
+    "f1": 0.3636,
+    "roc_auc": 0.4769,
+    "pr_auc": 0.1493,
+    "brier_score": 0.4198,
+    "confusion_matrix": {
+      "tn": 15,
+      "fp": 21,
+      "fn": 0,
+      "tp": 6
+    },
+    "sample_count": 42,
+    "positive_count": 6,
+    "prevalence_pct": 14.29
+  },
+  "test_metrics": {
+    "threshold": 0.4,
+    "accuracy": 0.2642,
+    "precision": 0.2041,
+    "recall": 1.0,
+    "f1": 0.339,
+    "roc_auc": 0.3581,
+    "pr_auc": 0.1582,
+    "brier_score": 0.6295,
+    "confusion_matrix": {
+      "tn": 4,
+      "fp": 39,
+      "fn": 0,
+      "tp": 10
+    },
+    "sample_count": 53,
+    "positive_count": 10,
+    "prevalence_pct": 18.87
+  },
+  "test_metrics_default_threshold": {
+    "threshold": 0.5,
+    "accuracy": 0.2642,
+    "precision": 0.2041,
+    "recall": 1.0,
+    "f1": 0.339,
+    "roc_auc": 0.3581,
+    "pr_auc": 0.1582,
+    "brier_score": 0.6295,
+    "confusion_matrix": {
+      "tn": 4,
+      "fp": 39,
+      "fn": 0,
+      "tp": 10
+    },
+    "sample_count": 53,
+    "positive_count": 10,
+    "prevalence_pct": 18.87
+  },
+  "feature_importance": [
+    {
+      "feature": "env_relative_humidity_500hpa",
+      "coefficient": -2.033,
+      "odds_ratio": 0.1309,
+      "abs_importance": 2.033,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "env_wind_speed_200hpa_kts",
+      "coefficient": -1.7973,
+      "odds_ratio": 0.1657,
+      "abs_importance": 1.7973,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "env_vws_direction_deg",
+      "coefficient": -1.078,
+      "odds_ratio": 0.3403,
+      "abs_importance": 1.078,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "env_sst_is_observed",
+      "coefficient": 0.843,
+      "odds_ratio": 2.3233,
+      "abs_importance": 0.843,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_relative_humidity_700hpa",
+      "coefficient": 0.8323,
+      "odds_ratio": 2.2986,
+      "abs_importance": 0.8323,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_vws_magnitude_kts",
+      "coefficient": 0.7634,
+      "odds_ratio": 2.1456,
+      "abs_importance": 0.7634,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_wind_speed_850hpa_kts",
+      "coefficient": -0.6246,
+      "odds_ratio": 0.5355,
+      "abs_importance": 0.6246,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "env_sst_potential_above_26c",
+      "coefficient": 0.6033,
+      "odds_ratio": 1.8281,
+      "abs_importance": 0.6033,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_sst_celsius",
+      "coefficient": 0.586,
+      "odds_ratio": 1.7968,
+      "abs_importance": 0.586,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_vws_is_observed",
+      "coefficient": 0.1975,
+      "odds_ratio": 1.2184,
+      "abs_importance": 0.1975,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_rh_is_observed",
+      "coefficient": 0.1975,
+      "odds_ratio": 1.2184,
+      "abs_importance": 0.1975,
+      "direction": "positive_risk"
+    },
+    {
+      "feature": "env_dt_minutes",
+      "coefficient": -0.1344,
+      "odds_ratio": 0.8742,
+      "abs_importance": 0.1344,
+      "direction": "protective_negative"
+    },
+    {
+      "feature": "env_vws_delta_6h_kts",
+      "coefficient": -0.026,
+      "odds_ratio": 0.9743,
+      "abs_importance": 0.026,
+      "direction": "protective_negative"
+    }
+  ],
+  "sample_counts": {
+    "train_samples": 204,
+    "val_samples": 42,
+    "test_samples": 53,
+    "test_positive_count": 10
+  },
+  "trained_at_utc": "2026-09-27T05:03:03.226534+00:00"
+}
