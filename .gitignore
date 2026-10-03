@@ -42,6 +42,10 @@ htmlcov/
 junit/
 
 # Node / Next.js
+node_modules/
+.next/
+out/
+.vercel/
 frontend/node_modules/
 frontend/.next/
 frontend/out/
@@ -84,3 +88,6 @@ data/processed/satellite_patches/
 # Preserve small test samples and manifests
 !data/samples/
 !data/manifests/
+
+# Scratch workspace
+scratch/
