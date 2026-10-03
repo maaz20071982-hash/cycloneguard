@@ -5,17 +5,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  async rewrites() {
-    if (process.env.BACKEND_INTERNAL_URL) {
-      return [
-        {
-          source: "/api/v1/:path*",
-          destination: `${process.env.BACKEND_INTERNAL_URL}/api/v1/:path*`,
-        },
-      ];
-    }
-    return [];
-  },
 };
 
 export default nextConfig;

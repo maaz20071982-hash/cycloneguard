@@ -31,11 +31,14 @@ export function getApiBaseUrl(): string {
   if (process.env.NEXT_PUBLIC_API_URL) {
     return process.env.NEXT_PUBLIC_API_URL.replace(/\/+$/, "");
   }
-  // Client-side: use relative path so Next.js proxies to backend from ANY host/tunnel/device
+  // Client-side: use relative path
   if (typeof window !== "undefined") {
     return "/api/v1";
   }
-  // Server-side internal fetch fallback
+  // Server-side internal fetch fallback on Vercel
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}/api/v1`;
+  }
   return process.env.BACKEND_INTERNAL_URL
     ? `${process.env.BACKEND_INTERNAL_URL}/api/v1`
     : "http://127.0.0.1:8000/api/v1";
