@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" width="760" height="440">
+  <style>
+    .bg { fill: #0f172a; }
+    .card { fill: #1e293b; rx: 8px; stroke: #334155; stroke-width: 1px; }
+    .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 18px; font-weight: 700; fill: #f8fafc; }
+    .subtitle { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #94a3b8; }
+    .axis { stroke: #475569; stroke-width: 1px; }
+    .grid { stroke: #334155; stroke-dasharray: 4,4; stroke-width: 1px; }
+    .tick-label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; fill: #cbd5e1; }
+    .legend-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; fill: #e2e8f0; }
+  </style>
+  <rect width="760" height="440" class="bg"/>
+  <text x="35" y="38" class="title">Leave-One-Storm-Out ROC-AUC by Cyclone Lifecycle</text>
+  <text x="35" y="58" class="subtitle">Finalist T (Temporal, 23 feats) vs. Finalist TS (Temporal + Spatial, 61 feats) | Excludes Helen (0 RI+)</text>
+  <rect x="500" y="32" width="14" height="14" fill="#38bdf8" rx="2"/>
+  <text x="522" y="44" class="legend-text">Finalist T (Temporal)</text>
+  <rect x="635" y="32" width="14" height="14" fill="#10b981" rx="2"/>
+  <text x="657" y="44" class="legend-text">Finalist TS (T + S)</text>
+  <line x1="70" y1="90" x2="70" y2="380" class="axis"/>
+  <line x1="70" y1="380" x2="710" y2="380" class="axis"/>
+  <line x1="70" y1="380" x2="710" y2="380" class="grid"/>
+  <text x="60" y="384" text-anchor="end" class="tick-label">0.0</text>
+  <line x1="70" y1="322" x2="710" y2="322" class="grid"/>
+  <text x="60" y="326" text-anchor="end" class="tick-label">0.2</text>
+  <line x1="70" y1="264" x2="710" y2="264" class="grid"/>
+  <text x="60" y="268" text-anchor="end" class="tick-label">0.4</text>
+  <line x1="70" y1="235" x2="710" y2="235" class="grid"/>
+  <text x="60" y="239" text-anchor="end" class="tick-label">0.5</text>
+  <line x1="70" y1="206" x2="710" y2="206" class="grid"/>
+  <text x="60" y="210" text-anchor="end" class="tick-label">0.6</text>
+  <line x1="70" y1="148" x2="710" y2="148" class="grid"/>
+  <text x="60" y="152" text-anchor="end" class="tick-label">0.8</text>
+  <line x1="70" y1="90" x2="710" y2="90" class="grid"/>
+  <text x="60" y="94" text-anchor="end" class="tick-label">1.0</text>
+  <line x1="70" y1="235" x2="710" y2="235" stroke="#ef4444" stroke-dasharray="3,3" stroke-width="1.5"/>
+  <text x="705" y="229" text-anchor="end" font-family="sans-serif" font-size="10px" fill="#ef4444">Chance Level (0.50)</text>
+  <rect x="96.0" y="146" width="34" height="234" fill="#38bdf8" rx="3"/>
+  <text x="113.0" y="141" text-anchor="middle" class="tick-label" font-weight="bold">0.807</text>
+  <rect x="138.0" y="134" width="34" height="246" fill="#10b981" rx="3"/>
+  <text x="155.0" y="129" text-anchor="middle" class="tick-label" font-weight="bold">0.850</text>
+  <text x="134.0" y="400" text-anchor="middle" class="tick-label" font-weight="600">PHAILIN</text>
+  <text x="134.0" y="415" text-anchor="middle" font-family="sans-serif" font-size="10px" fill="#64748b">Prev: 24.44%</text>
+  <rect x="224.0" y="256" width="34" height="124" fill="#38bdf8" rx="3"/>
+  <text x="241.0" y="251" text-anchor="middle" class="tick-label" font-weight="bold">0.429</text>
+  <rect x="266.0" y="215" width="34" height="165" fill="#10b981" rx="3"/>
+  <text x="283.0" y="210" text-anchor="middle" class="tick-label" font-weight="bold">0.571</text>
+  <text x="262.0" y="400" text-anchor="middle" class="tick-label" font-weight="600">HUDHUD</text>
+  <text x="262.0" y="415" text-anchor="middle" font-family="sans-serif" font-size="10px" fill="#64748b">Prev: 1.75%</text>
+  <rect x="352.0" y="226" width="34" height="154" fill="#38bdf8" rx="3"/>
+  <text x="369.0" y="221" text-anchor="middle" class="tick-label" font-weight="bold">0.534</text>
+  <rect x="394.0" y="179" width="34" height="201" fill="#10b981" rx="3"/>
+  <text x="411.0" y="174" text-anchor="middle" class="tick-label" font-weight="bold">0.696</text>
+  <text x="390.0" y="400" text-anchor="middle" class="tick-label" font-weight="600">NILOFAR</text>
+  <text x="390.0" y="415" text-anchor="middle" font-family="sans-serif" font-size="10px" fill="#64748b">Prev: 16.67%</text>
+  <rect x="480.0" y="193" width="34" height="187" fill="#38bdf8" rx="3"/>
+  <text x="497.0" y="188" text-anchor="middle" class="tick-label" font-weight="bold">0.648</text>
+  <rect x="522.0" y="206" width="34" height="174" fill="#10b981" rx="3"/>
+  <text x="539.0" y="201" text-anchor="middle" class="tick-label" font-weight="bold">0.602</text>
+  <text x="518.0" y="400" text-anchor="middle" class="tick-label" font-weight="600">MEGH</text>
+  <text x="518.0" y="415" text-anchor="middle" font-family="sans-serif" font-size="10px" fill="#64748b">Prev: 14.29%</text>
+  <rect x="608.0" y="138" width="34" height="242" fill="#38bdf8" rx="3"/>
+  <text x="625.0" y="133" text-anchor="middle" class="tick-label" font-weight="bold">0.835</text>
+  <rect x="650.0" y="155" width="34" height="225" fill="#10b981" rx="3"/>
+  <text x="667.0" y="150" text-anchor="middle" class="tick-label" font-weight="bold">0.779</text>
+  <text x="646.0" y="400" text-anchor="middle" class="tick-label" font-weight="600">CHAPALA</text>
+  <text x="646.0" y="415" text-anchor="middle" font-family="sans-serif" font-size="10px" fill="#64748b">Prev: 18.87%</text>
+</svg>

@@ -42,6 +42,13 @@ export interface LeafletMapProps {
     r64_nm?: number;
   };
   forecastPath?: MapTrackPoint[];
+  markers?: Array<{
+    lat: number;
+    lon: number;
+    label: string;
+    sublabel?: string;
+    type?: "landfall" | "center" | "station";
+  }>;
   showWindRadii?: boolean;
   showForecastCone?: boolean;
   showTrackPoints?: boolean;
@@ -150,6 +157,7 @@ export function LeafletMap({
   onSelectPoint,
   windRadii,
   forecastPath = [],
+  markers = [],
   showWindRadii = true,
   showForecastCone = true,
   showTrackPoints = true,
@@ -489,35 +497,131 @@ export function LeafletMap({
       }
     }
 
-    // Render Projected Forecast / RI Uncertainty Cone
+    // Render Projected Forecast / RI Uncertainty Cone Corridor & Circles
     if (showForecastCone && forecastPath.length > 0) {
       const fLatLngs = forecastPath.map((p) => [p.lat, p.lon] as [number, number]);
       fLatLngs.forEach(([la, lo]) => allLatLons.push(L.latLng(la, lo)));
 
+      // Construct Uncertainty Cone Corridor Polygon
+      if (forecastPath.length >= 2) {
+        const leftPoints: [number, number][] = [];
+        const rightPoints: [number, number][] = [];
+
+        forecastPath.forEach((fp, idx) => {
+          const radiusKm = 25 + idx * 45;
+          const radLat = radiusKm / 111.0;
+          const radLon = radiusKm / (111.0 * Math.max(0.1, Math.cos((fp.lat * Math.PI) / 180)));
+
+          let dLat = 0;
+          let dLon = 0;
+          if (idx < forecastPath.length - 1) {
+            dLat = forecastPath[idx + 1].lat - fp.lat;
+            dLon = forecastPath[idx + 1].lon - fp.lon;
+          } else {
+            dLat = fp.lat - forecastPath[idx - 1].lat;
+            dLon = fp.lon - forecastPath[idx - 1].lon;
+          }
+          const angle = Math.atan2(dLat, dLon);
+          const normalLeft = angle + Math.PI / 2;
+          const normalRight = angle - Math.PI / 2;
+
+          leftPoints.push([fp.lat + radLat * Math.sin(normalLeft), fp.lon + radLon * Math.cos(normalLeft)]);
+          rightPoints.push([fp.lat + radLat * Math.sin(normalRight), fp.lon + radLon * Math.cos(normalRight)]);
+        });
+
+        const conePolygon: [number, number][] = [...leftPoints, ...rightPoints.reverse()];
+
+        L.polygon(conePolygon, {
+          color: "#0284c7",
+          weight: 1.5,
+          dashArray: "4, 4",
+          fillColor: "#38bdf8",
+          fillOpacity: 0.16,
+        })
+          .bindTooltip("Forecast Uncertainty Cone (JTWC/IMD Standard Envelope)", { sticky: true })
+          .addTo(group);
+      }
+
+      // Draw Forecast Track Line
       L.polyline(fLatLngs, {
         color: "#38bdf8",
         weight: 3,
         dashArray: "6, 8",
-        opacity: 0.85,
+        opacity: 0.9,
       }).addTo(group);
 
-      forecastPath.forEach((fp) => {
+      // Forecast points with expanding uncertainty circles
+      forecastPath.forEach((fp, idx) => {
+        const radiusKm = 25 + idx * 45;
+        L.circle([fp.lat, fp.lon], {
+          radius: radiusKm * 1000,
+          color: "#0284c7",
+          weight: 1,
+          dashArray: "3, 5",
+          fillColor: "#0284c7",
+          fillOpacity: 0.04,
+        }).addTo(group);
+
         L.circleMarker([fp.lat, fp.lon], {
-          radius: 5,
+          radius: 5.5,
           fillColor: "#38bdf8",
           color: "#0369a1",
           weight: 1.5,
-          fillOpacity: 0.9,
+          fillOpacity: 0.95,
         })
           .bindPopup(`
-            <div style="font-family: monospace; font-size: 11px; padding: 6px 8px; background: #182026; color: #fff;">
+            <div style="font-family: monospace; font-size: 11px; padding: 6px 8px; background: #182026; color: #fff; border-radius: 3px;">
               <strong style="color: #38bdf8;">PROJECTED FORECAST POINT</strong>
-              <div>Time: ${fp.time}</div>
-              <div>Pos: ${fp.lat.toFixed(1)}°N, ${fp.lon.toFixed(1)}°E</div>
-              <div>Exp. Intensity: ${fp.intensity_kts || '—'} kt</div>
+              <div>Time: ${fp.time.replace("T", " ").slice(0, 16)} UTC</div>
+              <div>Pos: ${fp.lat.toFixed(2)}°N, ${fp.lon.toFixed(2)}°E</div>
+              <div>Exp. Intensity: ${fp.intensity_kts || "—"} kt (${fp.category || "Forecast"})</div>
+              <div style="color: #7dd3fc; font-size: 10px; margin-top: 3px;">Uncertainty Radius: ±${radiusKm} km</div>
             </div>
           `)
           .addTo(group);
+      });
+    }
+
+    // Render Custom Markers (e.g. Landfall Target Marker)
+    if (markers && markers.length > 0) {
+      markers.forEach((m) => {
+        allLatLons.push(L.latLng(m.lat, m.lon));
+
+        const isLandfall = m.type === "landfall" || m.label.toLowerCase().includes("landfall");
+        const markerColor = isLandfall ? "#dc2626" : "#0f5b6c";
+
+        const markerHtml = `
+          <div style="display: flex; flex-direction: column; align-items: center; cursor: pointer;">
+            <div style="background: ${markerColor}; color: white; font-family: monospace; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.7); box-shadow: 0 2px 6px rgba(0,0,0,0.4); white-space: nowrap; display: flex; align-items: center; gap: 4px;">
+              <span>${isLandfall ? "🎯" : "📍"}</span>
+              <span>${m.label}</span>
+            </div>
+            <div style="width: 2px; height: 10px; background: ${markerColor};"></div>
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: ${markerColor}; border: 2px solid white; box-shadow: 0 0 6px ${markerColor};"></div>
+          </div>
+        `;
+
+        const customIcon = L.divIcon({
+          className: "custom-gis-marker",
+          html: markerHtml,
+          iconSize: [140, 40],
+          iconAnchor: [70, 36],
+        });
+
+        const lMarker = L.marker([m.lat, m.lon], {
+          icon: customIcon,
+          zIndexOffset: 1200,
+        }).addTo(group);
+
+        lMarker.bindPopup(`
+          <div style="font-family: monospace; font-size: 11px; padding: 6px 8px; background: #182026; color: #fff; border-radius: 3px;">
+            <div style="font-weight: bold; color: ${isLandfall ? "#f87171" : "#38bdf8"}; margin-bottom: 2px;">
+              ${m.label}
+            </div>
+            <div>Position: ${m.lat.toFixed(2)}°N, ${m.lon.toFixed(2)}°E</div>
+            ${m.sublabel ? `<div style="color: #cbd5e1; margin-top: 3px;">${m.sublabel}</div>` : ""}
+          </div>
+        `);
       });
     }
 
@@ -552,6 +656,7 @@ export function LeafletMap({
     activeStormId,
     windRadii,
     forecastPath,
+    markers,
     showWindRadii,
     showForecastCone,
     showTrackPoints,

@@ -2,31 +2,32 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: "brand" | "default" | "secondary" | "success" | "warning" | "danger" | "neutral" | "outline";
+  variant?: "brand" | "default" | "secondary" | "success" | "warning" | "danger" | "neutral" | "outline" | "cyan";
   shape?: "square" | "pill";
 }
 
-export function Badge({ className, variant = "default", shape = "square", ...props }: BadgeProps) {
+export function Badge({ className, variant = "default", shape = "pill", ...props }: BadgeProps) {
   const variants = {
-    brand: "bg-[#edf5f7] text-[#0f5b6c] border border-[#bcdbe2]",
-    default: "bg-[#edf5f7] text-[#0f5b6c] border border-[#bcdbe2]",
-    secondary: "bg-[#f1f3f4] text-[#5a6872] border border-[#e2e6e9]",
-    success: "bg-[#f0fdf4] text-[#1b7a4f] border border-[#bbf7d0]",
-    warning: "bg-[#fef8ee] text-[#b45309] border border-[#fbd38d]",
-    danger: "bg-[#fef2f2] text-[#b91c1c] border border-[#fecaca]",
-    neutral: "bg-[#f8f9fa] text-[#5a6872] border border-[#e2e6e9]",
-    outline: "bg-transparent text-[#5a6872] border border-[#cbd2d6]",
+    brand: "bg-cyan-950/70 text-cyan-300 border border-cyan-500/30",
+    cyan: "bg-cyan-950/70 text-cyan-300 border border-cyan-500/30",
+    default: "bg-cyan-950/70 text-cyan-300 border border-cyan-500/30",
+    secondary: "bg-slate-800/80 text-slate-300 border border-slate-700/70",
+    success: "bg-emerald-950/70 text-emerald-300 border border-emerald-500/30",
+    warning: "bg-amber-950/70 text-amber-300 border border-amber-500/30",
+    danger: "bg-rose-950/70 text-rose-300 border border-rose-500/30",
+    neutral: "bg-slate-800/60 text-slate-300 border border-slate-700/50",
+    outline: "bg-transparent text-slate-300 border border-slate-700",
   };
 
   const shapes = {
-    square: "rounded-[2px]",
+    square: "rounded-md",
     pill: "rounded-full",
   };
 
   return (
     <span
       className={cn(
-        "inline-flex items-center px-2 py-0.5 text-[10px] font-medium tracking-wide uppercase font-mono select-none",
+        "inline-flex items-center px-2.5 py-0.5 text-[11px] font-medium tracking-normal font-sans select-none shadow-xs",
         variants[variant],
         shapes[shape],
         className

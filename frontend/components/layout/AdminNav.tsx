@@ -11,11 +11,10 @@ import {
   AlertTriangle,
   Users,
   Server,
-  LogOut,
   Shield,
   Activity,
+  ArrowLeft,
 } from "lucide-react";
-import { useAuth } from "@/lib/auth-context";
 import { Badge } from "@/components/ui/Badge";
 
 interface AdminNavProps {
@@ -24,27 +23,26 @@ interface AdminNavProps {
 
 export function AdminNav({ onNavigate }: AdminNavProps) {
   const pathname = usePathname();
-  const { user, logout } = useAuth();
 
   const operationsLinks = [
-    { label: "Dashboard", href: "/admin/dashboard", icon: <LayoutDashboard className="h-3.5 w-3.5" /> },
-    { label: "Data Sources", href: "/admin/data", icon: <Database className="h-3.5 w-3.5" /> },
-    { label: "Models", href: "/admin/models", icon: <Cpu className="h-3.5 w-3.5" /> },
-    { label: "Predictions", href: "/admin/predictions", icon: <TrendingUp className="h-3.5 w-3.5" /> },
-    { label: "Alerts", href: "/admin/alerts", icon: <AlertTriangle className="h-3.5 w-3.5" /> },
+    { label: "Overview", href: "/admin/dashboard", icon: <LayoutDashboard className="h-4 w-4" /> },
+    { label: "Data Sources", href: "/admin/data", icon: <Database className="h-4 w-4" /> },
+    { label: "Neural Models", href: "/admin/models", icon: <Cpu className="h-4 w-4" /> },
+    { label: "Predictions Log", href: "/admin/predictions", icon: <TrendingUp className="h-4 w-4" /> },
+    { label: "Alert Dispatch", href: "/admin/alerts", icon: <AlertTriangle className="h-4 w-4" /> },
   ];
 
   const managementLinks = [
-    { label: "Users", href: "/admin/users", icon: <Users className="h-3.5 w-3.5" /> },
+    { label: "Authorized Personnel", href: "/admin/users", icon: <Users className="h-4 w-4" /> },
   ];
 
   const systemLinks = [
-    { label: "System", href: "/admin/system", icon: <Server className="h-3.5 w-3.5" /> },
+    { label: "System Telemetry", href: "/admin/system", icon: <Server className="h-4 w-4" /> },
   ];
 
   const renderNavGroup = (title: string, links: typeof operationsLinks) => (
     <div className="space-y-1">
-      <div className="text-[10px] font-mono uppercase tracking-widest text-[#5f6b7c] px-2.5 py-1 font-semibold">
+      <div className="text-[11px] font-sans uppercase tracking-wider text-slate-400 px-3 py-1 font-semibold">
         {title}
       </div>
       {links.map((item) => {
@@ -56,10 +54,10 @@ export function AdminNav({ onNavigate }: AdminNavProps) {
             key={item.href}
             href={item.href}
             onClick={onNavigate}
-            className={`flex items-center gap-2.5 px-2.5 py-1.5 rounded-[3px] transition-colors text-xs font-mono ${
+            className={`flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-xs font-sans ${
               isActive
-                ? "bg-[#0f5b6c] text-white font-semibold shadow-xs"
-                : "text-[#5f6b7c] hover:text-[#182026] hover:bg-[#eaedef]"
+                ? "bg-rose-950/60 text-rose-300 font-semibold border border-rose-800/60 shadow-xs"
+                : "text-slate-300 hover:text-white hover:bg-slate-800/60"
             }`}
           >
             {item.icon}
@@ -71,19 +69,21 @@ export function AdminNav({ onNavigate }: AdminNavProps) {
   );
 
   return (
-    <aside className="w-56 border-r border-[#e2e6e9] bg-[#f8f9fa] flex flex-col justify-between shrink-0 h-full min-h-[calc(100vh-3.5rem)] text-xs font-mono">
+    <aside className="w-60 border-r border-slate-800/80 bg-[#080d16] flex flex-col justify-between shrink-0 h-full min-h-[calc(100vh-4rem)] text-xs font-sans">
       <div className="p-4 space-y-5">
-        {/* CycloneGuard Branding & Role Indicator */}
-        <div className="pb-3 border-b border-[#e2e6e9]">
+        {/* Brand & Role Header */}
+        <div className="pb-3 border-b border-slate-800/80">
           <div className="flex items-center justify-between gap-1 mb-1">
-            <div className="flex items-center gap-1.5 text-[#0f5b6c] font-bold text-xs uppercase tracking-wider">
-              <Shield className="h-4 w-4" />
-              CycloneGuard
+            <div className="flex items-center gap-2 text-white font-bold text-xs tracking-tight">
+              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-rose-600 text-white shadow-xs">
+                <Shield className="h-3.5 w-3.5" />
+              </div>
+              <span>Admin Console</span>
             </div>
-            <Badge variant="danger" className="text-[9px] px-1 py-0">ADMIN</Badge>
+            <Badge variant="danger" className="text-[10px] px-2 py-0.5">OPS ROOT</Badge>
           </div>
-          <div className="text-[10px] uppercase tracking-widest text-[#5f6b7c]">
-            Operations Console
+          <div className="text-[11px] text-slate-400 font-sans mt-1">
+            CycloneSense AI Governance
           </div>
         </div>
 
@@ -91,28 +91,22 @@ export function AdminNav({ onNavigate }: AdminNavProps) {
         <nav className="space-y-4" aria-label="Admin Navigation">
           {renderNavGroup("OPERATIONS", operationsLinks)}
           {renderNavGroup("MANAGEMENT", managementLinks)}
-          {renderNavGroup("SYSTEM", systemLinks)}
+          {renderNavGroup("INFRASTRUCTURE", systemLinks)}
         </nav>
       </div>
 
-      {/* Admin Session Identity & Sign Out */}
-      <div className="p-4 border-t border-[#e2e6e9] space-y-2 bg-[#ffffff]">
-        <div className="text-[11px] truncate">
-          <div className="flex items-center justify-between">
-            <span className="font-semibold text-[#182026] block truncate">
-              {user?.name || "Admin Officer"}
-            </span>
-            <span className="h-1.5 w-1.5 rounded-full bg-[#1b7a4f]" title="Active Session" />
-          </div>
-          <span className="text-[10px] text-[#5f6b7c] block truncate">{user?.email}</span>
+      {/* Switch to User Portal Link at Bottom */}
+      <div className="p-4 border-t border-slate-800/80 space-y-2 bg-[#0b121e]">
+        <div className="text-xs text-slate-400">
+          Operational Role: <span className="text-white font-semibold">Chief Forecaster</span>
         </div>
-        <button
-          onClick={logout}
-          className="flex w-full items-center gap-1.5 text-[11px] text-[#b91c1c] hover:underline pt-1 cursor-pointer font-mono font-medium"
+        <Link
+          href="/user/dashboard"
+          className="flex items-center gap-2 text-xs text-cyan-400 hover:text-cyan-300 pt-1 font-medium transition-colors"
         >
-          <LogOut className="h-3 w-3" />
-          Sign Out
-        </button>
+          <ArrowLeft className="h-3.5 w-3.5" />
+          <span>Switch to User Portal</span>
+        </Link>
       </div>
     </aside>
   );

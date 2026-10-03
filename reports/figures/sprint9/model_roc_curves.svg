@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 500" width="700" height="500" style="background-color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;">
+<rect width="700" height="500" fill="#ffffff"/>
+<text x="70" y="32" font-size="16" font-weight="bold" fill="#182026">Test Storm ROC Curves (Cyclone Chapala, N=53, 10 RI+)</text>
+<text x="70" y="48" font-size="11" fill="#5f6b7c">24-Hour Rapid Intensification (Delta V &gt;= 30 kts) · Whole-Storm Evaluation</text>
+<rect x="70" y="60" width="450" height="380" fill="#fcfcfd" stroke="#d1d5db" stroke-width="1"/>
+<line x1="70.0" y1="60" x2="70.0" y2="440" stroke="#e5e7eb" stroke-width="1"/>
+<text x="70.0" y="458" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="middle">0.0</text>
+<line x1="70" y1="440.0" x2="520" y2="440.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62" y="444.0" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="end">0.0</text>
+<line x1="160.0" y1="60" x2="160.0" y2="440" stroke="#e5e7eb" stroke-width="1"/>
+<text x="160.0" y="458" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="middle">0.2</text>
+<line x1="70" y1="364.0" x2="520" y2="364.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62" y="368.0" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="end">0.2</text>
+<line x1="250.0" y1="60" x2="250.0" y2="440" stroke="#e5e7eb" stroke-width="1"/>
+<text x="250.0" y="458" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="middle">0.4</text>
+<line x1="70" y1="288.0" x2="520" y2="288.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62" y="292.0" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="end">0.4</text>
+<line x1="340.0" y1="60" x2="340.0" y2="440" stroke="#e5e7eb" stroke-width="1"/>
+<text x="340.0" y="458" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="middle">0.6</text>
+<line x1="70" y1="212.0" x2="520" y2="212.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62" y="216.0" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="end">0.6</text>
+<line x1="430.0" y1="60" x2="430.0" y2="440" stroke="#e5e7eb" stroke-width="1"/>
+<text x="430.0" y="458" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="middle">0.8</text>
+<line x1="70" y1="136.0" x2="520" y2="136.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62" y="140.0" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="end">0.8</text>
+<line x1="520.0" y1="60" x2="520.0" y2="440" stroke="#e5e7eb" stroke-width="1"/>
+<text x="520.0" y="458" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="middle">1.0</text>
+<line x1="70" y1="60.0" x2="520" y2="60.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62" y="64.0" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="end">1.0</text>
+<text x="295.0" y="485" font-size="12" font-weight="600" fill="#374151" text-anchor="middle">False Positive Rate (1 - Specificity)</text>
+<text x="20" y="250.0" font-size="12" font-weight="600" fill="#374151" text-anchor="middle" transform="rotate(-90 20 250.0)">True Positive Rate (Sensitivity / Recall)</text>
+<line x1="70.0" y1="440.0" x2="520.0" y2="60.0" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4,4"/>
+<polyline points="70.0,440.0 80.5,440.0 111.9,440.0 111.9,402.0 132.8,402.0 132.8,250.0 143.3,250.0 143.3,212.0 164.2,212.0 164.2,174.0 185.1,174.0 185.1,98.0 227.0,98.0 227.0,60.0 520.0,60.0" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<line x1="535" y1="80" x2="555" y2="80" stroke="#2563eb" stroke-width="2.5"/>
+<text x="562" y="84" font-size="11" font-weight="600" fill="#1f2937">Model T (Temporal)</text>
+<text x="562" y="98" font-size="10" font-family="monospace" fill="#5f6b7c">AUC = 0.8116</text>
+<polyline points="70.0,440.0 80.5,440.0 90.9,440.0 90.9,402.0 101.4,402.0 101.4,288.0 111.9,288.0 111.9,212.0 174.7,212.0 174.7,174.0 310.7,174.0 310.7,136.0 363.0,136.0 363.0,98.0 457.2,98.0 457.2,60.0 520.0,60.0" fill="none" stroke="#0f5b6c" stroke-width="2.5"/>
+<line x1="535" y1="118" x2="555" y2="118" stroke="#0f5b6c" stroke-width="2.5"/>
+<text x="562" y="122" font-size="11" font-weight="600" fill="#1f2937">Model ST (Combined)</text>
+<text x="562" y="136" font-size="10" font-family="monospace" fill="#5f6b7c">AUC = 0.7279</text>
+<polyline points="70.0,440.0 80.5,440.0 174.7,440.0 174.7,402.0 216.5,402.0 216.5,364.0 237.4,364.0 237.4,326.0 258.4,326.0 258.4,288.0 268.8,288.0 268.8,250.0 279.3,250.0 279.3,212.0 363.0,212.0 363.0,174.0 425.8,174.0 425.8,136.0 457.2,136.0 457.2,98.0 499.1,98.0 499.1,60.0 520.0,60.0" fill="none" stroke="#b45309" stroke-width="2.5"/>
+<line x1="535" y1="156" x2="555" y2="156" stroke="#b45309" stroke-width="2.5"/>
+<text x="562" y="160" font-size="11" font-weight="600" fill="#1f2937">Model S (Spatial)</text>
+<text x="562" y="174" font-size="10" font-family="monospace" fill="#5f6b7c">AUC = 0.4488</text>
+<line x1="535" y1="194" x2="555" y2="194" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4,4"/>
+<text x="562" y="198" font-size="11" fill="#6b7280">Random Baseline</text>
+<text x="562" y="212" font-size="10" font-family="monospace" fill="#5f6b7c">AUC = 0.5000</text>
+</svg>

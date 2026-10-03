@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 420" width="750" height="420" style="background-color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;">
+<rect width="750" height="420" fill="#ffffff"/>
+<text x="70" y="30" font-size="16" font-weight="bold" fill="#182026">Physical IRWIN Brightness Temperature Distribution (N=347 Observations)</text>
+<text x="70" y="46" font-size="11" fill="#5f6b7c">NOAA HURSAT-B1 10.8 µm Clean Window: Minimum Core Cloud Tops vs Synoptic Domain Mean</text>
+<rect x="70" y="60" width="630" height="300" fill="#fcfcfd" stroke="#d1d5db" stroke-width="1"/>
+<line x1="115.0" y1="60" x2="115.0" y2="360" stroke="#e5e7eb" stroke-width="1"/>
+<text x="115.0" y="378" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="middle">180 K</text>
+<line x1="205.0" y1="60" x2="205.0" y2="360" stroke="#e5e7eb" stroke-width="1"/>
+<text x="205.0" y="378" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="middle">200 K</text>
+<line x1="295.0" y1="60" x2="295.0" y2="360" stroke="#e5e7eb" stroke-width="1"/>
+<text x="295.0" y="378" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="middle">220 K</text>
+<line x1="385.0" y1="60" x2="385.0" y2="360" stroke="#e5e7eb" stroke-width="1"/>
+<text x="385.0" y="378" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="middle">240 K</text>
+<line x1="475.00000000000006" y1="60" x2="475.00000000000006" y2="360" stroke="#e5e7eb" stroke-width="1"/>
+<text x="475.00000000000006" y="378" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="middle">260 K</text>
+<line x1="565.0" y1="60" x2="565.0" y2="360" stroke="#e5e7eb" stroke-width="1"/>
+<text x="565.0" y="378" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="middle">280 K</text>
+<line x1="655.0" y1="60" x2="655.0" y2="360" stroke="#e5e7eb" stroke-width="1"/>
+<text x="655.0" y="378" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="middle">300 K</text>
+<line x1="70" y1="360.0" x2="700" y2="360.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62" y="364.0" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="end">0</text>
+<line x1="70" y1="300.0" x2="700" y2="300.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62" y="304.0" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="end">26</text>
+<line x1="70" y1="240.00000000000003" x2="700" y2="240.00000000000003" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62" y="244.00000000000003" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="end">52</text>
+<line x1="70" y1="180.0" x2="700" y2="180.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62" y="184.0" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="end">79</text>
+<line x1="70" y1="120.00000000000003" x2="700" y2="120.00000000000003" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62" y="124.00000000000003" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="end">105</text>
+<line x1="70" y1="60.0" x2="700" y2="60.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62" y="64.0" font-size="10" font-family="monospace" fill="#5f6b7c" text-anchor="end">132</text>
+<line x1="354.175" y1="60" x2="354.175" y2="360" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="3,3"/>
+<text x="349.175" y="85" font-size="9" fill="#dc2626" text-anchor="end">233.15 K (-40°C Deep Convection)</text>
+<line x1="291.175" y1="60" x2="291.175" y2="360" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="3,3"/>
+<text x="286.175" y="105" font-size="9" fill="#7c3aed" text-anchor="end">219.15 K (-54°C Cold Eyewall)</text>
+<rect x="116.0" y="348.7" width="10.1" height="11.3" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="138.5" y="228.4" width="10.1" height="131.6" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="161.0" y="99.1" width="10.1" height="260.9" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="183.5" y="160.4" width="10.1" height="199.6" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="193.3" y="357.7" width="10.1" height="2.3" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="206.0" y="296.5" width="10.1" height="63.5" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="215.8" y="355.5" width="10.1" height="4.5" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="228.5" y="321.4" width="10.1" height="38.6" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="238.3" y="350.9" width="10.1" height="9.1" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="251.0" y="335.0" width="10.1" height="25.0" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="260.8" y="287.4" width="10.1" height="72.6" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="273.5" y="346.4" width="10.1" height="13.6" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="283.3" y="285.1" width="10.1" height="74.9" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="296.0" y="346.4" width="10.1" height="13.6" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="305.8" y="267.0" width="10.1" height="93.0" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="318.5" y="350.9" width="10.1" height="9.1" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="328.3" y="278.3" width="10.1" height="81.7" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="341.0" y="355.5" width="10.1" height="4.5" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="350.8" y="282.9" width="10.1" height="77.1" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="363.5" y="355.5" width="10.1" height="4.5" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="373.3" y="264.7" width="10.1" height="95.3" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="386.0" y="357.7" width="10.1" height="2.3" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="395.8" y="276.1" width="10.1" height="83.9" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="418.3" y="303.3" width="10.1" height="56.7" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="440.8" y="328.2" width="10.1" height="31.8" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="463.3" y="348.7" width="10.1" height="11.3" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="476.0" y="357.7" width="10.1" height="2.3" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="485.8" y="346.4" width="10.1" height="13.6" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="508.3" y="344.1" width="10.1" height="15.9" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="521.0" y="355.5" width="10.1" height="4.5" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="530.8" y="348.7" width="10.1" height="11.3" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="543.5" y="357.7" width="10.1" height="2.3" fill="#0f5b6c" opacity="0.85" rx="1"/>
+<rect x="553.3" y="346.4" width="10.1" height="13.6" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="575.8" y="344.1" width="10.1" height="15.9" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="598.3" y="346.4" width="10.1" height="13.6" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="620.8" y="350.9" width="10.1" height="9.1" fill="#2563eb" opacity="0.85" rx="1"/>
+<rect x="90" y="130" width="14" height="14" fill="#0f5b6c" rx="2"/>
+<text x="112" y="142" font-size="11" font-weight="600" fill="#182026">Minimum Cloud-Top Temperature (T_min)</text>
+<rect x="90" y="154" width="14" height="14" fill="#2563eb" rx="2"/>
+<text x="112" y="166" font-size="11" font-weight="600" fill="#182026">Domain Mean Brightness Temperature (T_mean)</text>
+<text x="385.0" y="405" font-size="12" font-weight="600" fill="#374151" text-anchor="middle">Physical Brightness Temperature (Kelvin)</text>
+<text x="25" y="210.0" font-size="12" font-weight="600" fill="#374151" text-anchor="middle" transform="rotate(-90 25 210.0)">Observation Frequency</text>
+</svg>

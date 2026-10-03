@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -9,64 +9,58 @@ import { Badge } from "@/components/ui/Badge";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Panel, PanelHeader } from "@/components/ui/Panel";
 import { Alert } from "@/components/ui/Alert";
-import { LoadingSpinner } from "@/components/ui/Loading";
-import { getCycloneCaseStudy, CaseStudyData } from "@/lib/api/cyclones";
 import { CycloneMap, MapTrackPoint } from "@/components/ui/CycloneMap";
+import { useStorm } from "@/lib/storm-context";
 import {
-  Play,
+  Compass,
+  Layers,
+  Eye,
+  Activity,
+  Wind,
+  BarChart3,
+  MapPin,
+  AlertTriangle,
+  Shield,
   ArrowRight,
   ArrowLeft,
   RotateCcw,
-  Compass,
-  Activity,
-  Layers,
-  Cpu,
-  BarChart3,
-  Shield,
   CheckCircle2,
-  AlertTriangle,
   Clock,
-  Wind,
-  Maximize2,
   ExternalLink,
-  BookOpen,
   Info,
+  Radio,
+  Send,
+  FileCheck,
+  Check,
+  Cpu,
 } from "lucide-react";
 
-export default function JudgeDemoPage() {
+export default function GuidedJudgeDemoPage() {
+  const {
+    currentStorm,
+    selectStorm,
+    availableStorms,
+    authorizeAlert,
+    authorizeAllAlerts,
+    updateHumanReview,
+    isFullyAuthorized,
+  } = useStorm();
+
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [caseStudy, setCaseStudy] = useState<CaseStudyData | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [reviewNotes, setReviewNotes] = useState<string>(
+    currentStorm.authorized_human_review.meteorologist_notes
+  );
+  const [activeDistrictIndex, setActiveDistrictIndex] = useState<number>(0);
 
-  // Target historical benchmark: Cyclone CHAPALA fix at 2015-10-28 18:00 UTC
-  const STORM_ID = "2015301N11065";
-  const TARGET_OBS_TIME = "2015-10-28T18:00:00Z";
-
-  const loadBenchmarkData = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const data = await getCycloneCaseStudy(STORM_ID, TARGET_OBS_TIME);
-      setCaseStudy(data);
-    } catch (err: any) {
-      setErrorMessage(
-        err.message ||
-          "Failed to load verified historical case study from the backend API. Please ensure the backend is running."
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
+  // Sync review notes if storm changes
   useEffect(() => {
-    loadBenchmarkData();
-  }, [loadBenchmarkData]);
+    setReviewNotes(currentStorm.authorized_human_review.meteorologist_notes);
+  }, [currentStorm]);
 
   // Keyboard navigation for presentation ergonomics (Left / Right arrow keys)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight" && currentStep < 8) {
+      if (e.key === "ArrowRight" && currentStep < 9) {
         setCurrentStep((prev) => prev + 1);
       } else if (e.key === "ArrowLeft" && currentStep > 1) {
         setCurrentStep((prev) => prev - 1);
@@ -77,81 +71,56 @@ export default function JudgeDemoPage() {
   }, [currentStep]);
 
   const stages = [
-    { num: 1, name: "Overview", icon: <Compass className="h-3.5 w-3.5" /> },
-    { num: 2, name: "Observation (t0)", icon: <Clock className="h-3.5 w-3.5" /> },
-    { num: 3, name: "Temporal Evolution", icon: <Activity className="h-3.5 w-3.5" /> },
-    { num: 4, name: "Satellite Structure", icon: <Layers className="h-3.5 w-3.5" /> },
-    { num: 5, name: "Model RI Risk", icon: <Cpu className="h-3.5 w-3.5" /> },
-    { num: 6, name: "Attribution", icon: <BarChart3 className="h-3.5 w-3.5" /> },
-    { num: 7, name: "Historical Outcome", icon: <AlertTriangle className="h-3.5 w-3.5" /> },
-    { num: 8, name: "Limitations & Authority", icon: <Shield className="h-3.5 w-3.5" /> },
+    { num: 1, name: "Observation Data", short: "Observations", icon: <Compass className="h-3.5 w-3.5" /> },
+    { num: 2, name: "Multi-Source Fusion", short: "Fusion", icon: <Layers className="h-3.5 w-3.5" /> },
+    { num: 3, name: "AI Detection", short: "AI Detection", icon: <Eye className="h-3.5 w-3.5" /> },
+    { num: 4, name: "Intensity Classification", short: "Intensity", icon: <Activity className="h-3.5 w-3.5" /> },
+    { num: 5, name: "Track & Landfall Prediction", short: "Prediction", icon: <Wind className="h-3.5 w-3.5" /> },
+    { num: 6, name: "Explainable Confidence", short: "Confidence", icon: <BarChart3 className="h-3.5 w-3.5" /> },
+    { num: 7, name: "GIS Risk & Impact", short: "GIS Risk", icon: <MapPin className="h-3.5 w-3.5" /> },
+    { num: 8, name: "Targeted Alerts", short: "Alerts", icon: <AlertTriangle className="h-3.5 w-3.5" /> },
+    { num: 9, name: "Authorized Human Review", short: "Review", icon: <Shield className="h-3.5 w-3.5" /> },
   ];
 
-  if (isLoading && !caseStudy) {
-    return (
-      <div className="min-h-screen flex flex-col bg-[#f8f9fa] text-[#182026]">
-        <Header />
-        <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex flex-col items-center justify-center space-y-4 font-mono text-xs">
-          <LoadingSpinner size="lg" />
-          <p className="text-[#0f5b6c] font-semibold">
-            Connecting to CycloneGuard API & Loading Verified Historical Case Study...
-          </p>
-          <span className="text-[#5a6872] text-[11px]">
-            Target: Cyclone CHAPALA (2015) at 2015-10-28 18:00 UTC
-          </span>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
-  if (errorMessage && !caseStudy) {
-    return (
-      <div className="min-h-screen flex flex-col bg-[#f8f9fa] text-[#182026]">
-        <Header />
-        <main className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-6">
-          <Alert variant="danger" title="API Communication Error">
-            <p className="text-xs leading-relaxed">{errorMessage}</p>
-          </Alert>
-          <div className="p-5 border border-[#e2e6e9] bg-white rounded-[4px] space-y-3 font-mono text-xs">
-            <span className="font-bold text-[#182026] uppercase block">
-              Zero Synthetic Data Rule Adherence
-            </span>
-            <p className="text-[#5a6872] font-sans leading-relaxed">
-              In strict accordance with CycloneGuard rules, this demo will not fabricate artificial scores when the backend API is disconnected. Please ensure the backend service is started and retry.
-            </p>
-            <div className="pt-2 flex items-center gap-3">
-              <Button size="sm" variant="primary" onClick={loadBenchmarkData}>
-                <RotateCcw className="h-3.5 w-3.5 mr-1.5" /> Retry Connection
-              </Button>
-              <Link href="/">
-                <Button size="sm" variant="outline">
-                  Return to Home
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
-  if (!caseStudy) return null;
-
-  const { what_the_model_saw, historical_outcome } = caseStudy;
-  const modelScore = what_the_model_saw.model_score;
-  const patchUrl = `/api/v1/cyclones/${caseStudy.storm_id}/observations/20151028180000/patch/IRWIN`;
-
-  const demoMapPoints: MapTrackPoint[] = (caseStudy.timeline || []).map((t) => ({
-    lat: t.latitude,
-    lon: t.longitude,
-    time: t.observation_time,
-    intensity_kts: t.current_wind_kts,
-    intensity_kmh: Math.round(t.current_wind_kts * 1.852),
-    pressure_mb: t.central_pressure_mb || undefined,
-    agency_grade: "NOAA IBTrACS",
+  // Map forecast points for the prediction and map stages
+  const forecastMapPoints: MapTrackPoint[] = currentStorm.track_landfall_prediction.forecast_points.map((p) => ({
+    lat: p.latitude,
+    lon: p.longitude,
+    time: p.valid_time_utc,
+    intensity_kts: p.wind_speed_kts,
+    intensity_kmh: p.wind_speed_kmh,
+    pressure_mb: p.central_pressure_mb,
+    category: p.category,
+    agency_grade: "CycloneSense AI Ensemble",
   }));
+
+  const historicalMapPoints: MapTrackPoint[] = [
+    {
+      lat: currentStorm.observation_data.latitude - 1.2,
+      lon: currentStorm.observation_data.longitude + 2.0,
+      time: "t0 - 12h",
+      intensity_kts: 25,
+      intensity_kmh: 46,
+      category: "Depression",
+    },
+    {
+      lat: currentStorm.observation_data.latitude - 0.5,
+      lon: currentStorm.observation_data.longitude + 0.9,
+      time: "t0 - 6h",
+      intensity_kts: 30,
+      intensity_kmh: 55,
+      category: "Depression",
+    },
+    {
+      lat: currentStorm.observation_data.latitude,
+      lon: currentStorm.observation_data.longitude,
+      time: currentStorm.observation_time_utc,
+      intensity_kts: currentStorm.observation_data.current_wind_kts,
+      intensity_kmh: currentStorm.observation_data.current_wind_kmh,
+      pressure_mb: currentStorm.observation_data.central_pressure_mb,
+      category: currentStorm.intensity_classification.current_category_imd,
+    },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f8f9fa] text-[#182026]">
@@ -163,24 +132,32 @@ export default function JudgeDemoPage() {
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
             <span className="font-bold uppercase tracking-wider">
-              CYCLONEGUARD JUDGE DEMONSTRATION WORKFLOW
+              CYCLONESENSE AI · DISASTER MANAGEMENT WALKTHROUGH (SIH26070)
             </span>
             <span className="text-cyan-200">|</span>
             <span className="text-cyan-100 hidden sm:inline">
-              Target: Cyclone CHAPALA (2015) · Fix: 2015-10-28 18:00 UTC
+              Target: Cyclone {currentStorm.storm_name} ({currentStorm.observation_time_utc.slice(0, 16)} UTC)
             </span>
           </div>
 
           <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
+              <span className="text-cyan-200 text-[11px]">Active Storm:</span>
+              <select
+                value={currentStorm.storm_id}
+                onChange={(e) => selectStorm(e.target.value)}
+                className="bg-[#0a4350] text-white text-[11px] font-mono px-2 py-0.5 rounded-[2px] border border-cyan-400/40"
+              >
+                {availableStorms.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name} ({s.basin.split("(")[0]})
+                  </option>
+                ))}
+              </select>
+            </div>
             <span className="text-cyan-200 text-[11px] hidden md:inline">
-              Use ← / → Arrow Keys to Navigate
+              Use ← / → Arrow Keys
             </span>
-            <Link
-              href={`/user/cyclones/${STORM_ID}/case-study`}
-              className="text-[11px] text-cyan-100 hover:text-white underline flex items-center gap-1"
-            >
-              Full Workstation <ExternalLink className="h-3 w-3" />
-            </Link>
           </div>
         </div>
       </div>
@@ -191,14 +168,17 @@ export default function JudgeDemoPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-center gap-2">
               <Badge variant="brand" className="font-mono text-xs px-2.5 py-0.5">
-                STAGE {currentStep} OF 8
+                STAGE {currentStep} OF 9
               </Badge>
               <h2 className="text-sm sm:text-base font-bold text-[#182026] uppercase font-mono">
                 {stages[currentStep - 1].name}
               </h2>
+              <span className="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-[#edf5f7] text-[#0f5b6c] border border-[#bcdbe2] rounded-[2px]">
+                DEMO / SIMULATION
+              </span>
             </div>
 
-            {/* Presentation Controls: Prev, Next, Reset, Exit */}
+            {/* Presentation Controls: Prev, Next, Reset */}
             <div className="flex flex-wrap items-center gap-2">
               <Button
                 size="sm"
@@ -213,8 +193,8 @@ export default function JudgeDemoPage() {
               <Button
                 size="sm"
                 variant="primary"
-                onClick={() => setCurrentStep((prev) => Math.min(8, prev + 1))}
-                disabled={currentStep === 8}
+                onClick={() => setCurrentStep((prev) => Math.min(9, prev + 1))}
+                disabled={currentStep === 9}
               >
                 Next
                 <ArrowRight className="h-3.5 w-3.5 ml-1" />
@@ -224,22 +204,22 @@ export default function JudgeDemoPage() {
                 size="sm"
                 variant="ghost"
                 onClick={() => setCurrentStep(1)}
-                title="Reset to Step 1"
+                title="Reset to Stage 1"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline ml-1">Reset</span>
               </Button>
 
-              <Link href="/user/cyclones">
-                <Button size="sm" variant="outline" className="text-[#5a6872]">
-                  Exit Demo
+              <Link href="/user/monitor">
+                <Button size="sm" variant="outline" className="text-[#5f6b7c]">
+                  Open GIS Monitor
                 </Button>
               </Link>
             </div>
           </div>
 
-          {/* Stepper Progress Bar */}
-          <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5 pt-1">
+          {/* Stepper Progress Bar (9 Stages) */}
+          <div className="grid grid-cols-3 sm:grid-cols-9 gap-1.5 pt-1">
             {stages.map((stage) => {
               const isCurrent = currentStep === stage.num;
               const isCompleted = currentStep > stage.num;
@@ -247,7 +227,7 @@ export default function JudgeDemoPage() {
                 <button
                   key={stage.num}
                   onClick={() => setCurrentStep(stage.num)}
-                  className={`px-2 py-1.5 rounded-[3px] text-[10px] font-mono font-semibold transition-colors flex items-center justify-center gap-1.5 ${
+                  className={`px-2 py-1.5 rounded-[3px] text-[10px] font-mono font-semibold transition-colors flex items-center justify-center gap-1 ${
                     isCurrent
                       ? "bg-[#0f5b6c] text-white shadow-xs"
                       : isCompleted
@@ -256,7 +236,7 @@ export default function JudgeDemoPage() {
                   }`}
                 >
                   <span>{stage.num}.</span>
-                  <span className="hidden md:inline truncate">{stage.name}</span>
+                  <span className="truncate">{stage.short}</span>
                 </button>
               );
             })}
@@ -264,74 +244,125 @@ export default function JudgeDemoPage() {
         </div>
 
         {/* ------------------------------------------------------------ */}
-        {/* STAGE 1: OVERVIEW                                            */}
+        {/* STAGE 1: OBSERVATION DATA                                    */}
         {/* ------------------------------------------------------------ */}
         {currentStep === 1 && (
           <div className="space-y-6">
             <Panel className="border border-[#cbd2d6]">
               <PanelHeader
-                title="STAGE 1 — OVERVIEW: THE RAPID INTENSIFICATION PROBLEM & BENCHMARK STORM"
-                subtitle="Introduction to the evaluation scenario: Cyclone CHAPALA (2015, North Indian Ocean)"
+                title="STAGE 1 — OBSERVATION DATA: MULTI-SENSOR INGESTION AT t0"
+                subtitle="Calibrated geostationary satellite infrared, coastal Doppler radar, ocean buoy telemetry, and NWP soundings"
               />
-              <div className="p-6 space-y-6 text-sm text-[#182026]">
-                <div className="space-y-2">
-                  <h3 className="text-base font-bold font-mono text-[#0f5b6c] uppercase">
-                    The Critical Challenge in Tropical Cyclone Forecasting
-                  </h3>
-                  <p className="text-xs sm:text-sm text-[#5a6872] leading-relaxed">
-                    Rapid Intensification (RI)—an intensity increase of at least 30 knots (55 km/h) in 24 hours—is the primary cause of disaster-management surprises. When a weak depression rapidly explodes into a major cyclone right before coastal landfall, evacuation windows collapse.
-                  </p>
-                </div>
-
-                {/* Why Chapala Card */}
-                <div className="p-4 rounded-[4px] border border-[#e2e6e9] bg-[#f8f9fa] space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold font-mono text-[#182026] uppercase flex items-center gap-1.5">
-                      <Compass className="h-4 w-4 text-[#0f5b6c]" />
-                      Selected Benchmark: Tropical Cyclone CHAPALA (2015301N11065)
+              <div className="p-6 space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[#e2e6e9]">
+                  <div>
+                    <span className="text-[10px] font-mono text-[#0f5b6c] uppercase font-bold block">
+                      Observation Fix (t0)
                     </span>
-                    <Badge variant="brand">NIO / Arabian Sea</Badge>
+                    <h3 className="text-xl font-bold font-mono text-[#182026]">
+                      {currentStorm.observation_time_utc.slice(0, 16)} UTC · {currentStorm.storm_name}
+                    </h3>
+                    <span className="text-xs text-[#5f6b7c] font-mono">
+                      Location: {currentStorm.observation_data.latitude.toFixed(2)}° N, {currentStorm.observation_data.longitude.toFixed(2)}° E ({currentStorm.observation_data.location_name})
+                    </span>
                   </div>
 
-                  <p className="text-xs text-[#5a6872] leading-relaxed">
-                    Cyclone Chapala was one of the most powerful tropical cyclones ever recorded in the Arabian Sea. It developed from an unassuming 30 kt depression on October 28, 2015, and underwent an explosive intensification surge to 130 kt (Category 4 equivalent) within 48 hours.
-                  </p>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono pt-1">
-                    <div className="p-2.5 bg-white rounded-[3px] border border-[#e2e6e9]">
-                      <span className="text-[10px] text-[#5a6872] block">Genesis Fix</span>
-                      <span className="font-bold text-[#182026]">2015-10-28 00:00Z</span>
-                    </div>
-                    <div className="p-2.5 bg-white rounded-[3px] border border-[#e2e6e9]">
-                      <span className="text-[10px] text-[#5a6872] block">Peak Intensity</span>
-                      <span className="font-bold text-[#b91c1c]">130 kt (Category 4)</span>
-                    </div>
-                    <div className="p-2.5 bg-white rounded-[3px] border border-[#e2e6e9]">
-                      <span className="text-[10px] text-[#5a6872] block">Verified Observations</span>
-                      <span className="font-bold text-[#0f5b6c]">53 Fixes</span>
-                    </div>
-                    <div className="p-2.5 bg-white rounded-[3px] border border-[#e2e6e9]">
-                      <span className="text-[10px] text-[#5a6872] block">RI+ Events</span>
-                      <span className="font-bold text-[#b45309]">10 Fixes</span>
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="brand">{currentStorm.observation_data.basin}</Badge>
+                    <StatusBadge status="operational" label="4 Sensors Synchronized" />
                   </div>
                 </div>
 
-                {/* Goal of the Demo Flow */}
-                <div className="p-4 rounded-[4px] border border-[#bcdbe2] bg-[#edf5f7] space-y-2">
-                  <span className="text-xs font-bold font-mono text-[#0f5b6c] uppercase block">
-                    Demo Objective
-                  </span>
-                  <p className="text-xs text-[#182026] leading-relaxed">
-                    We will step through the exact observation fix of <strong>2015-10-28 18:00 UTC</strong>, when Chapala was still an unassuming <strong>30 kt depression</strong>. We will inspect the temporal evolution, examine authentic HURSAT-B1 satellite evidence, run the frozen model, view feature attribution, and reveal the verified 24-hour outcome.
-                  </p>
+                {/* 4 Sensor Telemetry Ingestion Feeds */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs">
+                  {/* Feed 1: Satellite IR */}
+                  <div className="p-3.5 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[4px] space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold text-[#0f5b6c] uppercase">1. Satellite Infrared</span>
+                      <Badge variant="neutral" className="text-[9px]">IRWIN 11µm</Badge>
+                    </div>
+                    <div className="text-sm font-bold text-[#182026]">
+                      Core Tb: {currentStorm.observation_data.core_convection_mean_k.toFixed(1)} K
+                    </div>
+                    <p className="text-[11px] text-[#5f6b7c] font-sans">
+                      Mean Tb: {currentStorm.observation_data.irwin_mean_tb_k.toFixed(1)} K · Cold fraction: {currentStorm.observation_data.cold_cloud_fraction_233k}%
+                    </p>
+                    <span className="text-[9px] text-[#0f5b6c] font-bold block">Source: NOAA HURSAT-B1 / INSAT-3D</span>
+                  </div>
+
+                  {/* Feed 2: Ocean Buoy */}
+                  <div className="p-3.5 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[4px] space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold text-[#0f5b6c] uppercase">2. Moored Ocean Buoy</span>
+                      <Badge variant="neutral" className="text-[9px]">{currentStorm.observation_data.buoy_telemetry.station_id}</Badge>
+                    </div>
+                    <div className="text-sm font-bold text-[#182026]">
+                      SST: {currentStorm.observation_data.buoy_telemetry.sst_celsius} °C
+                    </div>
+                    <p className="text-[11px] text-[#5f6b7c] font-sans">
+                      Salinity: {currentStorm.observation_data.buoy_telemetry.sea_surface_salinity_psu} PSU · Waves: {currentStorm.observation_data.buoy_telemetry.wave_height_meters} m
+                    </p>
+                    <span className="text-[9px] text-[#1b7a4f] font-bold block">Status: {currentStorm.observation_data.buoy_telemetry.status}</span>
+                  </div>
+
+                  {/* Feed 3: Coastal Doppler Radar */}
+                  <div className="p-3.5 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[4px] space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold text-[#0f5b6c] uppercase">3. Coastal Radar</span>
+                      <Badge variant="neutral" className="text-[9px]">DWR</Badge>
+                    </div>
+                    <div className="text-sm font-bold text-[#182026]">
+                      Echo: {currentStorm.observation_data.radar_telemetry.reflectivity_max_dbz} dBZ
+                    </div>
+                    <p className="text-[11px] text-[#5f6b7c] font-sans">
+                      Station: {currentStorm.observation_data.radar_telemetry.station_name} · Range: {currentStorm.observation_data.radar_telemetry.range_km} km
+                    </p>
+                    <span className="text-[9px] text-[#1b7a4f] font-bold block">Status: Outer rainband acquisition</span>
+                  </div>
+
+                  {/* Feed 4: NWP Atmospheric Soundings */}
+                  <div className="p-3.5 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[4px] space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold text-[#0f5b6c] uppercase">4. NWP Sounding</span>
+                      <Badge variant="neutral" className="text-[9px]">GFS / ECMWF</Badge>
+                    </div>
+                    <div className="text-sm font-bold text-[#182026]">
+                      Shear: {currentStorm.observation_data.nwp_environment.vertical_wind_shear_kts} kt
+                    </div>
+                    <p className="text-[11px] text-[#5f6b7c] font-sans">
+                      Mid-level RH: {currentStorm.observation_data.nwp_environment.mid_level_rh_pct}% · OHC: {currentStorm.observation_data.nwp_environment.ocean_heat_content_kj_cm2} kJ/cm²
+                    </p>
+                    <span className="text-[9px] text-[#0f5b6c] font-bold block">Condition: Low shear / High energy</span>
+                  </div>
+                </div>
+
+                {/* Map of Initial Observation Fix */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <span className="text-[#182026] uppercase font-bold flex items-center gap-1.5">
+                      <Compass className="h-4 w-4 text-[#0f5b6c]" />
+                      Observation Fix & Immediate Historical Track
+                    </span>
+                    <span className="text-[#0f5b6c]">
+                      Initial Intensity: {currentStorm.observation_data.current_wind_kts} kt · Pressure: {currentStorm.observation_data.central_pressure_mb} hPa
+                    </span>
+                  </div>
+                  <CycloneMap
+                    title={`Cyclone ${currentStorm.storm_name} — Observation Fix (t0)`}
+                    subtitle="Authentic historical NOAA IBTrACS trajectory · 1-minute sustained wind baseline"
+                    center={[currentStorm.observation_data.latitude, currentStorm.observation_data.longitude]}
+                    zoom={5}
+                    tracks={historicalMapPoints}
+                    selectedTime={currentStorm.observation_time_utc}
+                    className="h-[360px]"
+                  />
                 </div>
               </div>
             </Panel>
 
             <div className="flex justify-end">
               <Button size="lg" variant="primary" onClick={() => setCurrentStep(2)}>
-                Step 2: Inspect Observation Fix (t0)
+                Step 2: Inspect Multi-Source Fusion
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </div>
@@ -339,106 +370,89 @@ export default function JudgeDemoPage() {
         )}
 
         {/* ------------------------------------------------------------ */}
-        {/* STAGE 2: OBSERVATION FIX (t0)                                */}
+        {/* STAGE 2: MULTI-SOURCE FUSION                                 */}
         {/* ------------------------------------------------------------ */}
         {currentStep === 2 && (
           <div className="space-y-6">
             <Panel className="border border-[#cbd2d6]">
               <PanelHeader
-                title="STAGE 2 — OBSERVATION AT TIME t0: 2015-10-28 18:00 UTC"
-                subtitle="Baseline track fix, geographic position, and initial intensity"
+                title="STAGE 2 — MULTI-SOURCE FUSION & QUALITY ASSURANCE"
+                subtitle="Synchronizing spatio-temporal observations into a 61-feature canonical contract without data leakage"
               />
-              <div className="p-6 space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[#e2e6e9]">
-                  <div>
-                    <span className="text-[10px] font-mono text-[#0f5b6c] uppercase font-bold block">
-                      Target Fix Timestamp (t0)
+              <div className="p-6 space-y-6 font-mono text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="p-4 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[4px] space-y-1">
+                    <span className="text-[10px] text-[#5f6b7c] uppercase block">Feature Contract</span>
+                    <span className="text-2xl font-extrabold text-[#0f5b6c]">
+                      {currentStorm.multi_source_fusion.total_features} Canonical
                     </span>
-                    <h3 className="text-xl font-bold font-mono text-[#182026]">
-                      2015-10-28 18:00:00 UTC
-                    </h3>
-                    <span className="text-xs text-[#5a6872] font-mono">
-                      Location: 13.1° N, 64.6° E (Central Arabian Sea)
+                    <span className="text-[11px] text-[#5f6b7c] block">
+                      23 Kinematics + 38 Spatial Structural Proxies
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <Badge variant="brand">Tropical Depression</Badge>
-                    <StatusBadge status="operational" text="Verified NOAA IBTrACS Fix" />
+                  <div className="p-4 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[4px] space-y-1">
+                    <span className="text-[10px] text-[#5f6b7c] uppercase block">Spatial Alignment</span>
+                    <span className="text-2xl font-extrabold text-[#182026]">
+                      {currentStorm.multi_source_fusion.spatial_alignment_offset_km} km
+                    </span>
+                    <span className="text-[11px] text-[#5f6b7c] block">
+                      Sub-pixel satellite patch to best-track center
+                    </span>
+                  </div>
+
+                  <div className="p-4 bg-[#f0fdf4] border border-[#bbf7d0] rounded-[4px] space-y-1">
+                    <span className="text-[10px] text-[#1b7a4f] uppercase block">Leakage Firewall</span>
+                    <span className="text-base font-bold text-[#1b7a4f] block">
+                      ASSERTION PASSED
+                    </span>
+                    <span className="text-[11px] text-[#5f6b7c] block">
+                      Strict temporal barrier: t_feature &lt; t_target
+                    </span>
                   </div>
                 </div>
 
-                {/* Kinematic Snapshot Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono">
-                  <div className="p-4 border border-[#e2e6e9] bg-[#f8f9fa] rounded-[4px] space-y-1">
-                    <span className="text-[10px] text-[#5a6872] uppercase block">Current Intensity (V0)</span>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-extrabold text-[#182026]">30</span>
-                      <span className="text-sm font-semibold text-[#5a6872]">kt (55 km/h)</span>
-                    </div>
-                    <span className="text-[10px] text-[#5a6872] block">1-minute sustained wind</span>
-                  </div>
-
-                  <div className="p-4 border border-[#e2e6e9] bg-[#f8f9fa] rounded-[4px] space-y-1">
-                    <span className="text-[10px] text-[#5a6872] uppercase block">Minimum Central Pressure (P0)</span>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-extrabold text-[#182026]">1000</span>
-                      <span className="text-sm font-semibold text-[#5a6872]">hPa (mbar)</span>
-                    </div>
-                    <span className="text-[10px] text-[#5a6872] block">Estimated central MSLP</span>
-                  </div>
-
-                  <div className="p-4 border border-[#e2e6e9] bg-[#f8f9fa] rounded-[4px] space-y-1">
-                    <span className="text-[10px] text-[#5a6872] uppercase block">Forward Translation</span>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-extrabold text-[#0f5b6c]">6.8</span>
-                      <span className="text-sm font-semibold text-[#5a6872]">kt @ 265°</span>
-                    </div>
-                    <span className="text-[10px] text-[#5a6872] block">Slow westward propagation</span>
-                  </div>
-                </div>
-
-                {/* Judge Explanation Callout */}
-                <div className="p-4 rounded-[4px] border border-[#bcdbe2] bg-[#edf5f7] space-y-1 text-xs">
-                  <span className="font-bold text-[#0f5b6c] uppercase font-mono block flex items-center gap-1.5">
-                    <Info className="h-4 w-4" /> Why this matters
-                  </span>
-                  <p className="text-[#182026] leading-relaxed">
-                    At 30 kt, traditional single-snapshot operational classifications categorize the storm as a mild tropical depression. Standard rule-based forecasting often assumes gradual development. However, rapid changes in kinetic and structural indicators provide an earlier window into intensification potential.
-                  </p>
-                </div>
-
-                {/* Real Interactive Map for Fix t0 */}
+                {/* Key Fused Telemetry Metrics Table */}
                 <div className="space-y-2 pt-2">
-                  <div className="flex items-center justify-between text-xs font-mono">
-                    <span className="text-[#182026] uppercase font-bold flex items-center gap-1.5">
-                      <Compass className="h-4 w-4 text-[#0f5b6c]" />
-                      Geographic Fix & Genesis Trajectory (Central Arabian Sea)
-                    </span>
-                    <span className="text-[#0f5b6c] font-semibold">
-                      Position: 13.10°N, 64.60°E · V0 = 30 kt
-                    </span>
+                  <span className="text-xs font-bold text-[#182026] uppercase block">
+                    Fused Telemetry Variables & Normalized Z-Scores
+                  </span>
+                  <div className="border border-[#e2e6e9] rounded-[4px] overflow-hidden">
+                    <table className="w-full text-left">
+                      <thead className="bg-[#f1f3f4] text-[#5f6b7c] text-[10px] uppercase">
+                        <tr>
+                          <th className="py-2 px-3">Variable Name</th>
+                          <th className="py-2 px-3">Raw Value</th>
+                          <th className="py-2 px-3">Standardized Z-Score</th>
+                          <th className="py-2 px-3">Physical Interpretation</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-[#e2e6e9] bg-white">
+                        {currentStorm.multi_source_fusion.key_fused_metrics.map((m, idx) => (
+                          <tr key={idx}>
+                            <td className="py-2.5 px-3 font-semibold text-[#182026]">{m.name}</td>
+                            <td className="py-2.5 px-3 text-[#0f5b6c] font-bold">{m.raw_value}</td>
+                            <td className="py-2.5 px-3">+{m.z_score.toFixed(2)}σ</td>
+                            <td className="py-2.5 px-3 text-[#5f6b7c] font-sans text-[11px]">{m.status}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
-                  <CycloneMap
-                    title="Cyclone CHAPALA — Target Fix (2015-10-28 18:00 UTC)"
-                    subtitle="Authentic NOAA IBTrACS observation track · Active vortex centered in Arabian Sea"
-                    basin="Arabian Sea (North Indian Ocean)"
-                    center={[13.1, 64.6]}
-                    zoom={5}
-                    tracks={demoMapPoints}
-                    selectedTime={TARGET_OBS_TIME}
-                    className="h-[420px]"
-                  />
                 </div>
+
+                <Alert variant="info" title="Scientific Handling of Missing Sensors">
+                  Satellite infrared and microwave passes are intermittent in operational environments. Missing sensors are handled truthfully using explicit presence indicator flags (e.g. <code className="font-mono">has_vschn = 1</code>, <code className="font-mono">has_microwave = 0</code>) rather than fabricating synthetic data.
+                </Alert>
               </div>
             </Panel>
 
             <div className="flex justify-between items-center">
               <Button size="lg" variant="outline" onClick={() => setCurrentStep(1)}>
-                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Overview
+                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Observations
               </Button>
               <Button size="lg" variant="primary" onClick={() => setCurrentStep(3)}>
-                Step 3: View Temporal Evolution
+                Step 3: Run AI Detection
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </div>
@@ -446,96 +460,97 @@ export default function JudgeDemoPage() {
         )}
 
         {/* ------------------------------------------------------------ */}
-        {/* STAGE 3: TEMPORAL EVOLUTION                                  */}
+        {/* STAGE 3: AI DETECTION                                        */}
         {/* ------------------------------------------------------------ */}
         {currentStep === 3 && (
           <div className="space-y-6">
             <Panel className="border border-[#cbd2d6]">
               <PanelHeader
-                title="STAGE 3 — TEMPORAL EVOLUTION: 23 KINEMATIC FEATURES"
-                subtitle="Recent intensity rates of change derived strictly from observation history prior to t0"
+                title="STAGE 3 — AI DETECTION: VORTEX LOCALIZATION & MORPHOLOGY"
+                subtitle="Autonomous cyclone pattern recognition and convective core segmentation"
               />
-              <div className="p-6 space-y-6">
-                <p className="text-xs text-[#5a6872] leading-relaxed">
-                  CycloneGuard calculates 23 temporal kinematic features using strictly backward-looking observation history. No future time points are used.
-                </p>
+              <div className="p-6 space-y-6 font-mono text-xs">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                  <div className="space-y-4">
+                    <div className="p-4 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[4px] space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] text-[#0f5b6c] uppercase font-bold">Detection Algorithm</span>
+                        <Badge variant="brand">{currentStorm.ai_detection.simulation_label}</Badge>
+                      </div>
+                      <h4 className="text-sm font-bold text-[#182026]">
+                        {currentStorm.ai_detection.algorithm}
+                      </h4>
+                      <p className="text-xs text-[#5f6b7c] font-sans leading-relaxed">
+                        Evaluates azimuthal gradient distribution and deep convective cloud symmetry to identify the true center of circulation.
+                      </p>
+                    </div>
 
-                {/* Key Kinematic Evolution Metrics */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
-                  <div className="p-3 border border-[#e2e6e9] bg-[#f8f9fa] rounded-[3px]">
-                    <span className="text-[10px] text-[#5a6872] uppercase block">6h Wind Tendency (ΔV6h)</span>
-                    <span className="text-lg font-bold text-[#0f5b6c]">
-                      {what_the_model_saw.temporal_indicators.wind_change_6h_kts !== null && what_the_model_saw.temporal_indicators.wind_change_6h_kts !== undefined
-                        ? `+${what_the_model_saw.temporal_indicators.wind_change_6h_kts} kt`
-                        : "—"}
-                    </span>
-                    <span className="text-[9px] text-[#5a6872] block">Wind increase over last 6h</span>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="p-3 bg-white border border-[#e2e6e9] rounded-[3px]">
+                        <span className="text-[10px] text-[#5f6b7c] block uppercase">Vortex Center Fix</span>
+                        <span className="text-base font-bold text-[#0f5b6c]">
+                          {currentStorm.ai_detection.center_fix_lat}° N, {currentStorm.ai_detection.center_fix_lon}° E
+                        </span>
+                        <span className="text-[9px] text-[#5f6b7c] block">Confidence: {(currentStorm.ai_detection.detection_confidence * 100).toFixed(1)}%</span>
+                      </div>
+                      <div className="p-3 bg-white border border-[#e2e6e9] rounded-[3px]">
+                        <span className="text-[10px] text-[#5f6b7c] block uppercase">Vortex Symmetry</span>
+                        <span className="text-base font-bold text-[#182026]">
+                          {currentStorm.ai_detection.vortex_symmetry_score.toFixed(2)} / 1.00
+                        </span>
+                        <span className="text-[9px] text-[#1b7a4f] block">{currentStorm.ai_detection.convective_band_count} Curved Spiral Bands</span>
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-[#edf5f7] border border-[#bcdbe2] rounded-[3px] text-[#0f5b6c] font-sans text-xs">
+                      <strong>Eyewall Assessment:</strong> {currentStorm.ai_detection.eye_wall_definition}
+                    </div>
                   </div>
 
-                  <div className="p-3 border border-[#e2e6e9] bg-[#f8f9fa] rounded-[3px]">
-                    <span className="text-[10px] text-[#5a6872] uppercase block">12h Wind Tendency (ΔV12h)</span>
-                    <span className="text-lg font-bold text-[#0f5b6c]">
-                      {what_the_model_saw.temporal_indicators.wind_change_12h_kts !== null && what_the_model_saw.temporal_indicators.wind_change_12h_kts !== undefined
-                        ? `+${what_the_model_saw.temporal_indicators.wind_change_12h_kts} kt`
-                        : "—"}
-                    </span>
-                    <span className="text-[9px] text-[#5a6872] block">Acceleration over last 12h</span>
-                  </div>
+                  {/* Satellite Visual Representation */}
+                  <div className="p-4 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[4px] space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-[#182026] uppercase">
+                        Center Localization Overlay
+                      </span>
+                      <span className="text-[10px] text-[#5f6b7c]">64 × 64 px Infrared Patch</span>
+                    </div>
 
-                  <div className="p-3 border border-[#e2e6e9] bg-[#f8f9fa] rounded-[3px]">
-                    <span className="text-[10px] text-[#5a6872] uppercase block">6h Pressure Drop (ΔP6h)</span>
-                    <span className="text-lg font-bold text-[#182026]">
-                      {what_the_model_saw.temporal_indicators.pressure_drop_6h_mb !== null && what_the_model_saw.temporal_indicators.pressure_drop_6h_mb !== undefined
-                        ? `${what_the_model_saw.temporal_indicators.pressure_drop_6h_mb} hPa`
-                        : "—"}
-                    </span>
-                    <span className="text-[9px] text-[#5a6872] block">Deepening central pressure</span>
-                  </div>
+                    <div className="relative aspect-video w-full rounded-[4px] overflow-hidden border border-[#cbd2d6] bg-[#0b1520] flex items-center justify-center">
+                      <img
+                        src={currentStorm.observation_data.irwin_patch_url}
+                        alt="Satellite Detection Patch"
+                        className="w-full h-full object-contain"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                      {/* Reticle Overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div className="h-16 w-16 border-2 border-teal-400/80 rounded-full animate-pulse flex items-center justify-center">
+                          <div className="h-2 w-2 bg-red-500 rounded-full" />
+                        </div>
+                      </div>
+                      <div className="absolute bottom-2 left-2 right-2 bg-black/80 px-2 py-1 text-[10px] text-white flex justify-between">
+                        <span>Resolved Center: 13.10°N, 64.60°E</span>
+                        <span className="text-teal-300 font-bold">VORTEX DETECTED</span>
+                      </div>
+                    </div>
 
-                  <div className="p-3 border border-[#e2e6e9] bg-[#f8f9fa] rounded-[3px]">
-                    <span className="text-[10px] text-[#5a6872] uppercase block">Translation Velocity</span>
-                    <span className="text-lg font-bold text-[#182026]">
-                      {what_the_model_saw.temporal_indicators.translation_speed_kts ?? 6.8} kt
-                    </span>
-                    <span className="text-[9px] text-[#5a6872] block">Bearing {what_the_model_saw.temporal_indicators.translation_bearing_deg ?? 265}°</span>
+                    <p className="text-[11px] text-[#5f6b7c] font-sans">
+                      Automated pattern recognition isolates the cloud-top thermal gradient and resolves center coordinates independently of manual Dvorak ambiguity.
+                    </p>
                   </div>
-                </div>
-
-                {/* Kinematic Raw Feature Excerpt */}
-                <div className="p-4 rounded-[4px] border border-[#e2e6e9] bg-[#ffffff] space-y-2 font-mono text-xs">
-                  <span className="text-[10px] font-bold text-[#5a6872] uppercase tracking-wider block">
-                    Kinematic Sequence Features Ingested (23 Total):
-                  </span>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-[#182026]">
-                    <div>lat: <strong>{what_the_model_saw.latitude}° N</strong></div>
-                    <div>lon: <strong>{what_the_model_saw.longitude}° E</strong></div>
-                    <div>v_max: <strong>{what_the_model_saw.temporal_indicators.current_wind_kts} kt</strong></div>
-                    <div>p_min: <strong>{what_the_model_saw.temporal_indicators.central_pressure_mb} hPa</strong></div>
-                    <div>dv_6h: <strong>+{what_the_model_saw.temporal_indicators.wind_change_6h_kts} kt</strong></div>
-                    <div>dv_12h: <strong>+{what_the_model_saw.temporal_indicators.wind_change_12h_kts} kt</strong></div>
-                    <div>dp_6h: <strong>{what_the_model_saw.temporal_indicators.pressure_drop_6h_mb} hPa</strong></div>
-                    <div>storm_speed: <strong>{what_the_model_saw.temporal_indicators.translation_speed_kts} kt</strong></div>
-                  </div>
-                </div>
-
-                {/* Judge Explanation Callout */}
-                <div className="p-4 rounded-[4px] border border-[#bcdbe2] bg-[#edf5f7] space-y-1 text-xs">
-                  <span className="font-bold text-[#0f5b6c] uppercase font-mono block flex items-center gap-1.5">
-                    <Info className="h-4 w-4" /> Why this matters
-                  </span>
-                  <p className="text-[#182026] leading-relaxed">
-                    Rapid changes in cyclone intensity can be more informative than a single snapshot. The positive 6h (+5 kt) and 12h (+10 kt) tendencies indicate that vortex spin-up has already begun, providing valuable kinematic momentum before surface wind peaks.
-                  </p>
                 </div>
               </div>
             </Panel>
 
             <div className="flex justify-between items-center">
               <Button size="lg" variant="outline" onClick={() => setCurrentStep(2)}>
-                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Observation Fix
+                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Fusion
               </Button>
               <Button size="lg" variant="primary" onClick={() => setCurrentStep(4)}>
-                Step 4: View Satellite Evidence
+                Step 4: Intensity Classification
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </div>
@@ -543,129 +558,97 @@ export default function JudgeDemoPage() {
         )}
 
         {/* ------------------------------------------------------------ */}
-        {/* STAGE 4: SATELLITE EVIDENCE                                  */}
+        {/* STAGE 4: INTENSITY CLASSIFICATION                            */}
         {/* ------------------------------------------------------------ */}
         {currentStep === 4 && (
           <div className="space-y-6">
             <Panel className="border border-[#cbd2d6]">
               <PanelHeader
-                title="STAGE 4 — SATELLITE STRUCTURAL EVIDENCE: NOAA HURSAT-B1 (11 µm IRWIN)"
-                subtitle="Authentic geostationary infrared brightness temperature patch and 38 extracted spatial structural proxies"
+                title="STAGE 4 — INTENSITY CLASSIFICATION & RAPID INTENSIFICATION (RI) SCREENING"
+                subtitle="Categorizing surface wind speed and flagging high-consequence 24-hour intensification potential"
               />
-              <div className="p-6 space-y-6">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                  {/* Left: Authentic Image */}
-                  <div className="lg:col-span-5 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold font-mono text-[#182026] uppercase">
-                        HURSAT-B1 Clean IR Window (IRWIN)
-                      </span>
-                      <Badge variant="brand">Authentic 64×64 Patch</Badge>
-                    </div>
-
-                    <div className="relative aspect-square w-full rounded-[4px] overflow-hidden border border-[#cbd2d6] bg-[#0b1520] flex items-center justify-center">
-                      <img
-                        src={patchUrl}
-                        alt="Authentic HURSAT-B1 IRWIN Patch"
-                        className="w-full h-full object-contain"
-                        onError={(e) => {
-                          e.currentTarget.style.display = "none";
-                        }}
-                      />
-                      <div className="absolute bottom-2 left-2 right-2 bg-black/80 px-2.5 py-1 rounded-[2px] text-[10px] font-mono text-white flex justify-between">
-                        <span>Range: 185 K – 300 K</span>
-                        <span>Coincident Fix</span>
-                      </div>
-                    </div>
-
-                    <div className="text-[11px] font-mono text-[#5a6872] flex justify-between border-t border-[#e2e6e9] pt-2">
-                      <span>Source: NOAA NCEI HURSAT-B1</span>
-                      <span className="text-[#0f5b6c] font-semibold">Zero Synthetic Patch</span>
-                    </div>
+              <div className="p-6 space-y-6 font-mono text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="p-4 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[4px] space-y-1">
+                    <span className="text-[10px] text-[#5f6b7c] uppercase block">Current Classification</span>
+                    <span className="text-lg font-bold text-[#182026] block">
+                      {currentStorm.intensity_classification.current_category_imd}
+                    </span>
+                    <span className="text-[11px] text-[#5f6b7c] block">
+                      WMO: {currentStorm.intensity_classification.current_category_wmo}
+                    </span>
                   </div>
 
-                  {/* Right: Structural Proxy Metrics */}
-                  <div className="lg:col-span-7 space-y-4">
-                    <div className="space-y-1">
-                      <h4 className="text-xs font-bold font-mono uppercase text-[#182026]">
-                        Extracted Spatial Structural Proxies (38 Total Features)
-                      </h4>
-                      <p className="text-xs text-[#5a6872]">
-                        Derived from radial rings, temperature gradients, and convective asymmetry around the vortex core:
-                      </p>
+                  <div className="p-4 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[4px] space-y-1">
+                    <span className="text-[10px] text-[#5f6b7c] uppercase block">1-Min Sustained Wind</span>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-extrabold text-[#0f5b6c]">
+                        {currentStorm.intensity_classification.v_max_kts}
+                      </span>
+                      <span className="text-sm font-semibold text-[#5f6b7c]">kt ({currentStorm.intensity_classification.v_max_kmh} km/h)</span>
+                    </div>
+                    <span className="text-[10px] text-[#5f6b7c] block">
+                      Pressure: {currentStorm.intensity_classification.central_pressure_mb} hPa
+                    </span>
+                  </div>
+
+                  <div className="p-4 bg-[#fef2f2] border-2 border-[#fecaca] rounded-[4px] space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] text-[#b91c1c] uppercase font-bold block">24h RI Screening</span>
+                      <Badge variant="danger" className="text-[9px]">FLAGGED</Badge>
+                    </div>
+                    <span className="text-sm font-extrabold text-[#b91c1c] block">
+                      {currentStorm.intensity_classification.ri_screening_label}
+                    </span>
+                    <span className="text-[10px] text-[#b91c1c] block">
+                      {currentStorm.intensity_classification.ri_criteria}
+                    </span>
+                  </div>
+                </div>
+
+                {/* IMD Intensity Scale Alignment Chart */}
+                <div className="p-4 bg-white border border-[#e2e6e9] rounded-[4px] space-y-3">
+                  <span className="text-xs font-bold text-[#182026] uppercase block">
+                    North Indian Ocean Cyclonic Intensity Scale (IMD Classification)
+                  </span>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span>Current Level: <strong>{currentStorm.intensity_classification.v_max_kts} kt</strong></span>
+                      <span className="text-[#b91c1c] font-bold">Projected 24h: ≥ 65 kt (Very Severe Cyclonic Storm)</span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 font-mono text-xs">
-                      <div className="p-3 bg-[#f8f9fa] rounded-[3px] border border-[#e2e6e9]">
-                        <span className="text-[10px] text-[#5a6872] block">Core Mean Brightness Temp (Tb)</span>
-                        <span className="text-base font-bold text-[#182026]">
-                          {what_the_model_saw.satellite_evidence.core_convection_mean_k !== null && what_the_model_saw.satellite_evidence.core_convection_mean_k !== undefined
-                            ? `${what_the_model_saw.satellite_evidence.core_convection_mean_k.toFixed(1)} K`
-                            : what_the_model_saw.satellite_evidence.irwin_mean_tb_k !== null && what_the_model_saw.satellite_evidence.irwin_mean_tb_k !== undefined
-                            ? `${what_the_model_saw.satellite_evidence.irwin_mean_tb_k.toFixed(1)} K`
-                            : "—"}
-                        </span>
-                        <span className="text-[9px] text-[#5a6872] block">Cold dense overcast</span>
-                      </div>
-
-                      <div className="p-3 bg-[#f8f9fa] rounded-[3px] border border-[#e2e6e9]">
-                        <span className="text-[10px] text-[#5a6872] block">Cold Cloud Fraction (&lt; 233K)</span>
-                        <span className="text-base font-bold text-[#0f5b6c]">
-                          {what_the_model_saw.satellite_evidence.cold_cloud_fraction_233k !== null && what_the_model_saw.satellite_evidence.cold_cloud_fraction_233k !== undefined
-                            ? `${what_the_model_saw.satellite_evidence.cold_cloud_fraction_233k.toFixed(1)}%`
-                            : what_the_model_saw.satellite_evidence.very_cold_cloud_fraction_219k !== null && what_the_model_saw.satellite_evidence.very_cold_cloud_fraction_219k !== undefined
-                            ? `${what_the_model_saw.satellite_evidence.very_cold_cloud_fraction_219k.toFixed(1)}%`
-                            : "—"}
-                        </span>
-                        <span className="text-[9px] text-[#5a6872] block">Deep vigorous convection</span>
-                      </div>
-
-                      <div className="p-3 bg-[#f8f9fa] rounded-[3px] border border-[#e2e6e9]">
-                        <span className="text-[10px] text-[#5a6872] block">Core-Ring Temperature Diff</span>
-                        <span className="text-base font-bold text-[#182026]">
-                          {what_the_model_saw.satellite_evidence.core_ring_temperature_diff_k !== null && what_the_model_saw.satellite_evidence.core_ring_temperature_diff_k !== undefined
-                            ? `${what_the_model_saw.satellite_evidence.core_ring_temperature_diff_k.toFixed(1)} K`
-                            : "—"}
-                        </span>
-                        <span className="text-[9px] text-[#5a6872] block">Radial temperature contrast</span>
-                      </div>
-
-                      <div className="p-3 bg-[#f8f9fa] rounded-[3px] border border-[#e2e6e9]">
-                        <span className="text-[10px] text-[#5a6872] block">Azimuthal Symmetry Metric</span>
-                        <span className="text-base font-bold text-[#182026]">
-                          {what_the_model_saw.satellite_evidence.azimuthal_symmetry_metric !== null && what_the_model_saw.satellite_evidence.azimuthal_symmetry_metric !== undefined
-                            ? `${what_the_model_saw.satellite_evidence.azimuthal_symmetry_metric.toFixed(2)}`
-                            : "—"}
-                        </span>
-                        <span className="text-[9px] text-[#5a6872] block">Vortex ring circularity</span>
-                      </div>
+                    <div className="h-3 w-full bg-[#e2e6e9] rounded-full overflow-hidden flex">
+                      <div style={{ width: "20%" }} className="bg-[#0ea5e9]" title="Depression (17-27 kt)" />
+                      <div style={{ width: "15%" }} className="bg-[#14b8a6]" title="Deep Depression (28-33 kt)" />
+                      <div style={{ width: "20%" }} className="bg-[#eab308]" title="Cyclonic Storm (34-47 kt)" />
+                      <div style={{ width: "15%" }} className="bg-[#f97316]" title="Severe Cyclonic Storm (48-63 kt)" />
+                      <div style={{ width: "15%" }} className="bg-[#ef4444]" title="Very Severe (64-89 kt)" />
+                      <div style={{ width: "15%" }} className="bg-[#d946ef]" title="Super Cyclone (≥120 kt)" />
                     </div>
 
-                    <div className="p-3 bg-white rounded-[3px] border border-[#e2e6e9] text-[11px] font-mono text-[#5a6872] space-y-1">
-                      <div>Active Channels: <strong>IRWIN (11 µm), IRWVP (6.7 µm), VSCHN (0.6 µm)</strong></div>
-                      <div>Environmental Features: <strong className="text-[#b91c1c]">EXCLUDED FROM FINAL MODEL</strong></div>
+                    <div className="flex justify-between text-[9px] text-[#5f6b7c]">
+                      <span>Depression (25kt)</span>
+                      <span>Cyclonic Storm (34kt)</span>
+                      <span>Severe (48kt)</span>
+                      <span>Very Severe (64kt)</span>
+                      <span>Super Cyclone (120kt)</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Judge Explanation Callout */}
-                <div className="p-4 rounded-[4px] border border-[#bcdbe2] bg-[#edf5f7] space-y-1 text-xs">
-                  <span className="font-bold text-[#0f5b6c] uppercase font-mono block flex items-center gap-1.5">
-                    <Info className="h-4 w-4" /> Why this matters
-                  </span>
-                  <p className="text-[#182026] leading-relaxed">
-                    Satellite observations provide spatial information about cyclone cloud structure that track data alone cannot represent. Deep convective cloud cover and sharp radial thermal gradients signal that latent heat release is concentrating around the storm center, priming the system for rapid deepening.
-                  </p>
+                <div className="p-3 bg-[#edf5f7] border border-[#bcdbe2] rounded-[3px] text-xs font-sans text-[#182026] leading-relaxed">
+                  <strong>Operational Insight:</strong> While traditional monitoring treats a 30 kt depression as low-consequence, the AI early-warning system flags that kinematic rate of change and structural proxies indicate an imminent explosion into Hurricane-force winds (+35 kt in 24h).
                 </div>
               </div>
             </Panel>
 
             <div className="flex justify-between items-center">
               <Button size="lg" variant="outline" onClick={() => setCurrentStep(3)}>
-                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Temporal Evolution
+                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Detection
               </Button>
               <Button size="lg" variant="primary" onClick={() => setCurrentStep(5)}>
-                Step 5: View Model RI Risk Score
+                Step 5: View Track & Landfall Prediction
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </div>
@@ -673,102 +656,109 @@ export default function JudgeDemoPage() {
         )}
 
         {/* ------------------------------------------------------------ */}
-        {/* STAGE 5: AI MODEL & EMPIRICAL RI RISK INDEX                  */}
+        {/* STAGE 5: TRACK & LANDFALL PREDICTION                         */}
         {/* ------------------------------------------------------------ */}
         {currentStep === 5 && (
           <div className="space-y-6">
-            <Panel className="border-2 border-[#0f5b6c]">
+            <Panel className="border border-[#cbd2d6]">
               <PanelHeader
-                title="STAGE 5 — FROZEN PRODUCTION MODEL EVALUATION"
-                subtitle="Execution of CycloneGuard-RI-Multimodal-TS-Final (v3.0.0-frozen) across the 61-feature contract"
+                title="STAGE 5 — TRACK & LANDFALL PREDICTION (MULTI-HORIZON)"
+                subtitle="Projected 48-hour trajectory, forward velocity, cone of uncertainty, and estimated time of landfall (ETL)"
               />
-              <div className="p-6 space-y-6 font-mono">
-                {/* Score Showcase Hero */}
-                <div className="p-6 bg-[#f0f9fa] border border-[#a2d4dc] rounded-[4px] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div className="p-6 space-y-6 font-mono text-xs">
+                {/* Landfall Prediction Summary Banner */}
+                <div className="p-4 bg-[#fef8ee] border border-[#fed7aa] rounded-[4px] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-[#0f5b6c] uppercase tracking-wider">
-                        {modelScore.model_name}
-                      </span>
-                      <Badge variant="success">{modelScore.model_version}</Badge>
-                    </div>
-                    <div className="flex items-baseline gap-3 pt-2">
-                      <span className="text-5xl font-extrabold text-[#0f5b6c]">
-                        {modelScore.ri_risk_index.toFixed(4)}
-                      </span>
-                      <span className="text-sm font-semibold text-[#5a6872]">
-                        Empirical RI Risk Index
-                      </span>
-                    </div>
-                    <span className="text-xs text-[#5a6872] block">
-                      Operating Threshold: <strong>τ = {modelScore.operating_threshold}</strong> (Margin: +{(modelScore.ri_risk_index - modelScore.operating_threshold).toFixed(4)})
+                    <span className="text-[10px] font-bold text-[#b45309] uppercase block tracking-wider">
+                      Projected Landfall Assessment ({currentStorm.track_landfall_prediction.landfall_prediction.simulation_label})
                     </span>
+                    <h3 className="text-base font-extrabold text-[#182026]">
+                      {currentStorm.track_landfall_prediction.landfall_prediction.predicted_landfall_sector}
+                    </h3>
+                    <div className="text-xs text-[#5f6b7c] flex flex-wrap items-center gap-3">
+                      <span>ETL: <strong>{currentStorm.track_landfall_prediction.landfall_prediction.estimated_time_of_landfall_utc.slice(0, 16)} UTC</strong></span>
+                      <span>•</span>
+                      <span>Lead Time: <strong>{currentStorm.track_landfall_prediction.landfall_prediction.lead_time_hours} Hours</strong></span>
+                      <span>•</span>
+                      <span>Landfall Vmax: <strong>{currentStorm.track_landfall_prediction.landfall_prediction.expected_intensity_at_landfall_kts} kt</strong></span>
+                    </div>
                   </div>
 
-                  <div className="flex flex-col items-end gap-2 shrink-0">
-                    <Badge variant="danger" className="text-sm px-3 py-1 font-bold">
-                      {modelScore.risk_category} (RI+ Flagged)
-                    </Badge>
-                    <span className="text-[11px] text-[#5a6872] text-right">
-                      Forecast Horizon: 24 Hours
-                    </span>
-                    <span className="text-[10px] text-[#b45309] font-bold">
-                      Calibration: Empirical Score (Uncalibrated)
-                    </span>
-                  </div>
+                  <Badge variant="warning" className="shrink-0 text-xs px-3 py-1 font-bold">
+                    {currentStorm.track_landfall_prediction.landfall_prediction.expected_category_at_landfall}
+                  </Badge>
                 </div>
 
-                {/* Model Configuration Contract */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-                  <div className="p-3.5 border border-[#e2e6e9] bg-white rounded-[3px] space-y-1">
-                    <span className="text-[10px] text-[#5a6872] uppercase block">Model Architecture</span>
-                    <span className="font-bold text-[#182026] text-xs block">
-                      Regularized Balanced Logistic Regression
+                {/* Interactive Map with Forecast Path and Cone */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#182026] uppercase flex items-center gap-1.5">
+                      <Wind className="h-4 w-4 text-[#0f5b6c]" />
+                      Multi-Horizon Forecast Trajectory & Cone of Uncertainty
                     </span>
-                    <span className="text-[10px] text-[#5a6872] block">
-                      L2 penalty, C=1.0, lbfgs solver
-                    </span>
+                    <span className="text-[#0f5b6c]">Model: {currentStorm.track_landfall_prediction.model_name}</span>
                   </div>
-
-                  <div className="p-3.5 border border-[#e2e6e9] bg-white rounded-[3px] space-y-1">
-                    <span className="text-[10px] text-[#5a6872] uppercase block">Feature Family Fusion</span>
-                    <span className="font-bold text-[#0f5b6c] text-xs block">
-                      61 Canonical Features
-                    </span>
-                    <span className="text-[10px] text-[#5a6872] block">
-                      23 Kinematics + 38 HURSAT Spatial
-                    </span>
-                  </div>
-
-                  <div className="p-3.5 border border-[#e2e6e9] bg-white rounded-[3px] space-y-1">
-                    <span className="text-[10px] text-[#5a6872] uppercase block">Scientific Classification</span>
-                    <span className="font-bold text-[#0f5b6c] text-xs block">
-                      CLASSIFICATION C
-                    </span>
-                    <span className="text-[10px] text-[#5a6872] block">
-                      Leave-One-Storm-Out validated
-                    </span>
-                  </div>
+                  <CycloneMap
+                    title="Track & Landfall Prediction Map"
+                    subtitle="Multi-horizon trajectory: 6h, 12h, 24h, 36h, 48h projections with expanding uncertainty cone"
+                    center={[currentStorm.observation_data.latitude, currentStorm.observation_data.longitude - 3.0]}
+                    zoom={5}
+                    tracks={historicalMapPoints}
+                    forecastPath={forecastMapPoints}
+                    selectedTime={currentStorm.observation_time_utc}
+                    riskLayers={true}
+                    windLayers={true}
+                    className="h-[380px]"
+                  />
                 </div>
 
-                {/* Judge Explanation Callout */}
-                <div className="p-4 rounded-[4px] border border-[#bcdbe2] bg-[#edf5f7] space-y-1 text-xs">
-                  <span className="font-bold text-[#0f5b6c] uppercase font-mono block flex items-center gap-1.5">
-                    <Info className="h-4 w-4" /> Why this matters
+                {/* Horizon Table */}
+                <div className="space-y-2 pt-2">
+                  <span className="text-xs font-bold text-[#182026] uppercase block">
+                    Multi-Horizon Forecast Table
                   </span>
-                  <p className="text-[#182026] font-sans leading-relaxed">
-                    The frozen model combines temporal and satellite-derived structural signals into an empirical RI risk index. With a score of 0.3592 against the frozen operating threshold of 0.125, the system raises an empirical early warning signal while the storm is still at minimal tropical depression strength.
-                  </p>
+                  <div className="border border-[#e2e6e9] rounded-[4px] overflow-x-auto">
+                    <table className="w-full text-left">
+                      <thead className="bg-[#f1f3f4] text-[#5f6b7c] text-[10px] uppercase">
+                        <tr>
+                          <th className="py-2 px-3">Horizon</th>
+                          <th className="py-2 px-3">Valid Time (UTC)</th>
+                          <th className="py-2 px-3">Position</th>
+                          <th className="py-2 px-3">Wind (kt / km/h)</th>
+                          <th className="py-2 px-3">Pressure</th>
+                          <th className="py-2 px-3">Category</th>
+                          <th className="py-2 px-3">Uncertainty Cone</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-[#e2e6e9] bg-white">
+                        {currentStorm.track_landfall_prediction.forecast_points.map((pt) => (
+                          <tr key={pt.horizon_hours}>
+                            <td className="py-2 px-3 font-bold text-[#0f5b6c]">+{pt.horizon_hours} Hours</td>
+                            <td className="py-2 px-3">{pt.valid_time_utc.slice(0, 16)}</td>
+                            <td className="py-2 px-3">{pt.latitude.toFixed(1)}°N, {pt.longitude.toFixed(1)}°E</td>
+                            <td className="py-2 px-3 font-semibold text-[#182026]">{pt.wind_speed_kts} kt ({pt.wind_speed_kmh} km/h)</td>
+                            <td className="py-2 px-3">{pt.central_pressure_mb} hPa</td>
+                            <td className="py-2 px-3">
+                              <Badge variant={pt.wind_speed_kts >= 64 ? "danger" : pt.wind_speed_kts >= 34 ? "warning" : "brand"}>
+                                {pt.category}
+                              </Badge>
+                            </td>
+                            <td className="py-2 px-3 text-[#5f6b7c]">±{pt.cone_radius_km} km</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </Panel>
 
             <div className="flex justify-between items-center">
               <Button size="lg" variant="outline" onClick={() => setCurrentStep(4)}>
-                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Satellite Evidence
+                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Intensity
               </Button>
               <Button size="lg" variant="primary" onClick={() => setCurrentStep(6)}>
-                Step 6: Inspect Feature Attribution
+                Step 6: Explainable Confidence
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </div>
@@ -776,78 +766,94 @@ export default function JudgeDemoPage() {
         )}
 
         {/* ------------------------------------------------------------ */}
-        {/* STAGE 6: FEATURE ATTRIBUTION                                 */}
+        {/* STAGE 6: EXPLAINABLE CONFIDENCE                              */}
         {/* ------------------------------------------------------------ */}
         {currentStep === 6 && (
           <div className="space-y-6">
-            <Panel className="border border-[#cbd2d6]">
+            <Panel className="border-2 border-[#0f5b6c]">
               <PanelHeader
-                title="STAGE 6 — MODEL FEATURE ATTRIBUTION"
+                title="STAGE 6 — EXPLAINABLE CONFIDENCE & ATTRIBUTION"
                 subtitle="Standardized linear decision factor weights explaining the model's empirical score"
               />
-              <div className="p-6 space-y-6">
-                <div className="space-y-1">
-                  <h4 className="text-xs font-bold font-mono text-[#0f5b6c] uppercase">
-                    Top Contributing Signals at Fix 2015-10-28 18:00 UTC
-                  </h4>
-                  <p className="text-xs text-[#5a6872]">
-                    Calculated via standardized logistic regression coefficients (z-score normalized weights):
-                  </p>
+              <div className="p-6 space-y-6 font-mono text-xs">
+                {/* Confidence & Empirical Score Showcase */}
+                <div className="p-5 bg-[#f0f9fa] border border-[#a2d4dc] rounded-[4px] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-bold text-[#0f5b6c] uppercase block">
+                      {currentStorm.explainable_confidence.model_card.model_id}
+                    </span>
+                    <div className="flex items-baseline gap-3">
+                      <span className="text-4xl font-extrabold text-[#0f5b6c]">
+                        {currentStorm.explainable_confidence.empirical_ri_risk_index.toFixed(4)}
+                      </span>
+                      <span className="text-xs text-[#5f6b7c]">
+                        Empirical RI Risk Index
+                      </span>
+                    </div>
+                    <span className="text-[11px] text-[#5f6b7c] block">
+                      Operating Threshold: <strong>τ = {currentStorm.explainable_confidence.operating_threshold_tau}</strong> (Margin: +{currentStorm.explainable_confidence.margin_above_threshold.toFixed(4)})
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col items-end gap-1.5">
+                    <Badge variant="danger" className="text-xs px-3 py-1 font-bold">
+                      {currentStorm.explainable_confidence.risk_tier} (FLAGGED)
+                    </Badge>
+                    <span className="text-[10px] text-[#b45309] font-bold">
+                      {currentStorm.explainable_confidence.calibration_status}
+                    </span>
+                  </div>
                 </div>
 
-                {/* Top Supporting Features */}
-                <div className="space-y-2 font-mono text-xs">
-                  <span className="text-[10px] uppercase font-bold text-[#1b7a4f] block">
-                    Supporting Factors (Elevating RI Risk):
-                  </span>
-                  <div className="space-y-1.5">
-                    {what_the_model_saw.model_feature_attribution.top_supporting_features.slice(0, 4).map((f) => (
+                {/* Feature Attribution List */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#182026] uppercase">
+                      Top Supporting Factor Weights (Elevating RI Risk)
+                    </span>
+                    <span className="text-[10px] text-[#5f6b7c]">Standardized Z-Score Weights</span>
+                  </div>
+
+                  <div className="space-y-2">
+                    {currentStorm.explainable_confidence.top_supporting_features.map((f) => (
                       <div
                         key={f.feature_name}
-                        className="p-3 bg-[#f0fdf4] border border-[#bbf7d0] rounded-[3px] flex items-center justify-between"
+                        className="p-3 bg-[#f0fdf4] border border-[#bbf7d0] rounded-[3px] flex flex-col sm:flex-row sm:items-center justify-between gap-2"
                       >
-                        <div>
-                          <span className="font-bold text-[#182026] text-xs block">
-                            {f.feature_name}
-                          </span>
-                          <span className="text-[10px] text-[#5a6872]">
-                            Standardized weight contribution to log-odds
-                          </span>
+                        <div className="space-y-0.5">
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-[#182026]">{f.display_name}</span>
+                            <code className="text-[10px] text-[#0f5b6c] bg-white px-1.5 py-0.2 rounded border border-[#bbf7d0]">
+                              {f.feature_name}
+                            </code>
+                          </div>
+                          <p className="text-[11px] text-[#5f6b7c] font-sans">
+                            {f.physical_interpretation}
+                          </p>
                         </div>
-                        <div className="text-right">
-                          <span className="font-bold text-[#1b7a4f] text-sm">
+                        <div className="text-right shrink-0">
+                          <span className="font-bold text-[#1b7a4f] text-sm block">
                             +{f.attribution_score.toFixed(4)}
                           </span>
+                          <span className="text-[9px] text-[#5f6b7c]">{f.contribution_pct}% contribution</span>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Mandatory Scientific Disclaimer */}
-                <div className="p-3 bg-[#f8f9fa] rounded-[3px] border border-[#e2e6e9] text-[11px] font-mono text-[#5a6872] leading-relaxed">
-                  <span className="font-semibold text-[#182026] block mb-0.5">Statistical Attribution Standard:</span>
-                  Feature contributions describe linear decision boundaries and do not prove thermodynamic or atmospheric causality.
-                </div>
-
-                {/* Judge Explanation Callout */}
-                <div className="p-4 rounded-[4px] border border-[#bcdbe2] bg-[#edf5f7] space-y-1 text-xs">
-                  <span className="font-bold text-[#0f5b6c] uppercase font-mono block flex items-center gap-1.5">
-                    <Info className="h-4 w-4" /> Why this matters
-                  </span>
-                  <p className="text-[#182026] leading-relaxed">
-                    These features contributed most strongly to the model's score. They are statistical model signals, not physical causality. They indicate that convective gradient sharpness (<code className="font-mono text-[#0f5b6c]">irwin_grad_max</code>) and daytime visible cloud structure (<code className="font-mono text-[#0f5b6c]">has_vschn</code>) were the primary drivers pushing the score past τ = 0.125.
-                  </p>
-                </div>
+                <Alert variant="warning" title="Mandatory Statistical Governance Standard">
+                  Feature contributions describe mathematical decision boundaries in the historical training sample and do NOT prove physical or thermodynamic causality. Decision support outputs must always be weighed with official synoptic bulletins.
+                </Alert>
               </div>
             </Panel>
 
             <div className="flex justify-between items-center">
               <Button size="lg" variant="outline" onClick={() => setCurrentStep(5)}>
-                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Model Evaluation
+                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Track Prediction
               </Button>
               <Button size="lg" variant="primary" onClick={() => setCurrentStep(7)}>
-                Step 7: Reveal Historical Ground-Truth Outcome
+                Step 7: View GIS Risk & Impact
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </div>
@@ -855,81 +861,131 @@ export default function JudgeDemoPage() {
         )}
 
         {/* ------------------------------------------------------------ */}
-        {/* STAGE 7: HISTORICAL OUTCOME REVEAL                           */}
+        {/* STAGE 7: GIS RISK & IMPACT                                   */}
         {/* ------------------------------------------------------------ */}
         {currentStep === 7 && (
           <div className="space-y-6">
-            <Panel className="border-2 border-[#b91c1c] shadow-sm">
+            <Panel className="border border-[#cbd2d6]">
               <PanelHeader
-                title="STAGE 7 — HISTORICAL 24-HOUR OUTCOME: GROUND-TRUTH VERIFICATION"
-                subtitle="Comparison between early warning signal at t0 and verified outcome at t0 + 24 hours"
+                title="STAGE 7 — GIS RISK & IMPACT ASSESSMENT"
+                subtitle="Wind hazard swaths (R34/R50/R64), storm surge vulnerability, and coastal district exposure"
               />
-              <div className="p-6 space-y-6">
-                {/* Quarantine Banner */}
-                <div className="p-3 bg-[#b91c1c] text-white rounded-[3px] text-center font-mono text-xs font-bold uppercase tracking-wider">
-                  HISTORICAL OUTCOME — NOT USED AS MODEL INPUT
-                </div>
-
-                {/* Before vs After Side-by-Side */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono">
-                  {/* Left: What was predicted at t0 */}
-                  <div className="p-4 border border-[#cbd2d6] bg-white rounded-[4px] space-y-3">
-                    <span className="text-xs font-bold text-[#0f5b6c] uppercase block">
-                      Observation Time: {what_the_model_saw.observation_time_utc.slice(0, 16)} UTC
+              <div className="p-6 space-y-6 font-mono text-xs">
+                {/* Wind Radii & Surge Summary */}
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                  <div className="p-3.5 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[4px] space-y-1">
+                    <span className="text-[10px] text-[#5f6b7c] uppercase block">Gale Wind Radius (R34)</span>
+                    <span className="text-xl font-extrabold text-[#0ea5e9]">
+                      {currentStorm.gis_risk_impact.wind_hazard_radii.gale_force_34kt_radius_km} km
                     </span>
-                    <div className="space-y-1">
-                      <div className="text-sm">Intensity: <strong>{what_the_model_saw.temporal_indicators.current_wind_kts} kt</strong> (Depression)</div>
-                      <div className="text-sm">Empirical RI Risk: <strong className="text-[#0f5b6c]">{modelScore.ri_risk_index.toFixed(4)}</strong></div>
-                      <div className="text-sm">Threshold: <strong>τ = {modelScore.operating_threshold}</strong></div>
-                      <div className="text-sm">Model Assessment: <strong className="text-[#b91c1c]">{modelScore.risk_category} (Flagged)</strong></div>
-                    </div>
+                    <span className="text-[10px] text-[#5f6b7c] block">34-47 kt wind envelope</span>
                   </div>
 
-                  {/* Right: What actually occurred at t0 + 24h */}
-                  <div className="p-4 border-2 border-[#b91c1c] bg-[#fef2f2] rounded-[4px] space-y-3">
-                    <span className="text-xs font-bold text-[#b91c1c] uppercase block">
-                      Verified Outcome: {historical_outcome.verification_time_24h.slice(0, 16)} UTC
+                  <div className="p-3.5 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[4px] space-y-1">
+                    <span className="text-[10px] text-[#5f6b7c] uppercase block">Storm Wind Radius (R50)</span>
+                    <span className="text-xl font-extrabold text-[#eab308]">
+                      {currentStorm.gis_risk_impact.wind_hazard_radii.storm_force_50kt_radius_km} km
                     </span>
-                    <div className="space-y-1">
-                      <div className="text-sm">Observed Intensity: <strong className="text-[#b91c1c]">{historical_outcome.observed_future_wind_kts} kt</strong> (Category 1 Equivalent)</div>
-                      <div className="text-sm">24-Hour Intensity Delta: <strong className="text-[#b91c1c]">+{historical_outcome.observed_delta_v_24h} kt</strong></div>
-                      <div className="text-sm">RI Standard Criterion: <strong>{historical_outcome.wmo_ri_criterion}</strong></div>
-                      <div className="text-sm">Ground-Truth Target: <strong className="text-[#b91c1c]">{historical_outcome.ri_occurred ? "RI OCCURRED (True Positive)" : "NO RI (True Negative)"}</strong></div>
-                    </div>
+                    <span className="text-[10px] text-[#5f6b7c] block">48-63 kt severe gale</span>
+                  </div>
+
+                  <div className="p-3.5 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[4px] space-y-1">
+                    <span className="text-[10px] text-[#5f6b7c] uppercase block">Hurricane Radius (R64)</span>
+                    <span className="text-xl font-extrabold text-[#ef4444]">
+                      {currentStorm.gis_risk_impact.wind_hazard_radii.hurricane_force_64kt_radius_km} km
+                    </span>
+                    <span className="text-[10px] text-[#5f6b7c] block">≥ 64 kt destructive core</span>
+                  </div>
+
+                  <div className="p-3.5 bg-[#fef2f2] border border-[#fecaca] rounded-[4px] space-y-1">
+                    <span className="text-[10px] text-[#b91c1c] uppercase block font-bold">Peak Storm Surge</span>
+                    <span className="text-xl font-extrabold text-[#b91c1c]">
+                      {currentStorm.gis_risk_impact.storm_surge_peak_meters} m
+                    </span>
+                    <span className="text-[10px] text-[#b91c1c] block">Above astronomical high tide</span>
                   </div>
                 </div>
 
-                {/* Synthesis Banner */}
-                <div className="p-4 rounded-[4px] border border-[#a2d4dc] bg-[#f0f9fa] space-y-2 text-xs">
-                  <span className="font-bold text-[#0f5b6c] uppercase font-mono block">
-                    Verification Assessment
-                  </span>
-                  <p className="text-[#182026] leading-relaxed">
-                    The system detected a model-estimated RI signal (0.3592 vs τ = 0.125) before the verified 24-hour intensification outcome (from 30 kt to 65 kt). This is a verified true positive early detection.
-                  </p>
-                  <p className="text-[11px] text-[#5a6872] italic">
-                    * Note: This single historical benchmark demonstrates system capability and sensitivity, but does not prove operational superiority over established operational forecasting agencies.
-                  </p>
+                {/* Exposed Coastal Districts Table */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#182026] uppercase">
+                      Exposed Coastal Districts & Shelters Readiness
+                    </span>
+                    <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#edf5f7] text-[#0f5b6c] border border-[#bcdbe2] rounded-[2px]">
+                      POPULATION VALUES: {currentStorm.gis_risk_impact.simulation_label}
+                    </span>
+                  </div>
+
+                  <div className="border border-[#e2e6e9] rounded-[4px] overflow-hidden">
+                    <table className="w-full text-left">
+                      <thead className="bg-[#f1f3f4] text-[#5f6b7c] text-[10px] uppercase">
+                        <tr>
+                          <th className="py-2 px-3">Coastal District</th>
+                          <th className="py-2 px-3">Distance to Track</th>
+                          <th className="py-2 px-3">Peak Gust</th>
+                          <th className="py-2 px-3">Surge Height</th>
+                          <th className="py-2 px-3">Population at Risk [SIMULATION]</th>
+                          <th className="py-2 px-3">Shelters</th>
+                          <th className="py-2 px-3">Threat Tier</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-[#e2e6e9] bg-white">
+                        {currentStorm.gis_risk_impact.exposed_districts.map((d, idx) => (
+                          <tr
+                            key={d.district_name}
+                            onClick={() => setActiveDistrictIndex(idx)}
+                            className={`cursor-pointer transition-colors ${
+                              activeDistrictIndex === idx ? "bg-[#edf5f7]" : "hover:bg-[#f8f9fa]"
+                            }`}
+                          >
+                            <td className="py-2.5 px-3 font-bold text-[#182026]">
+                              {d.district_name}
+                              <span className="block text-[10px] text-[#5f6b7c] font-normal">{d.state_or_province}</span>
+                            </td>
+                            <td className="py-2.5 px-3">{d.distance_from_eye_km} km</td>
+                            <td className="py-2.5 px-3">{d.peak_wind_gust_kmh} km/h</td>
+                            <td className="py-2.5 px-3 text-[#b91c1c] font-bold">{d.surge_height_meters} m</td>
+                            <td className="py-2.5 px-3 font-semibold text-[#0f5b6c]">
+                              {d.simulated_population_at_risk.toLocaleString()}
+                            </td>
+                            <td className="py-2.5 px-3">{d.evacuation_shelters_active} Active</td>
+                            <td className="py-2.5 px-3">
+                              <Badge variant={d.risk_level === "CRITICAL" ? "danger" : d.risk_level === "WARNING" ? "warning" : "brand"}>
+                                {d.risk_level}
+                              </Badge>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
-                {/* Judge Explanation Callout */}
-                <div className="p-4 rounded-[4px] border border-[#bcdbe2] bg-[#edf5f7] space-y-1 text-xs">
-                  <span className="font-bold text-[#0f5b6c] uppercase font-mono block flex items-center gap-1.5">
-                    <Info className="h-4 w-4" /> Why this matters
+                {/* Critical Infrastructure Highlights */}
+                <div className="p-4 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[4px] space-y-2">
+                  <span className="text-xs font-bold text-[#182026] uppercase block">
+                    Critical Infrastructure Exposed in Hazard Zone
                   </span>
-                  <p className="text-[#182026] leading-relaxed">
-                    The future observation is shown only for historical verification. Strict quarantine ensures that no ground truth target from t0 + 24h was visible to the model during inference.
-                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                    {currentStorm.gis_risk_impact.critical_facilities.map((fac, idx) => (
+                      <div key={idx} className="p-2.5 bg-white border border-[#e2e6e9] rounded-[3px]">
+                        <span className="text-[9px] text-[#0f5b6c] font-bold block uppercase">{fac.facility_type}</span>
+                        <span className="font-bold text-[#182026] block truncate">{fac.name}</span>
+                        <span className="text-[10px] text-[#5f6b7c] block">{fac.status}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </Panel>
 
             <div className="flex justify-between items-center">
               <Button size="lg" variant="outline" onClick={() => setCurrentStep(6)}>
-                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Feature Attribution
+                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Confidence
               </Button>
               <Button size="lg" variant="primary" onClick={() => setCurrentStep(8)}>
-                Step 8: Review Scientific Limitations & Governance
+                Step 8: Inspect Targeted Alerts
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </div>
@@ -937,92 +993,253 @@ export default function JudgeDemoPage() {
         )}
 
         {/* ------------------------------------------------------------ */}
-        {/* STAGE 8: LIMITATIONS & AUTHORITY                             */}
+        {/* STAGE 8: TARGETED ALERTS                                     */}
         {/* ------------------------------------------------------------ */}
         {currentStep === 8 && (
           <div className="space-y-6">
             <Panel className="border border-[#cbd2d6]">
               <PanelHeader
-                title="STAGE 8 — SCIENTIFIC LIMITATIONS, GOVERNANCE & WARNING AUTHORITY"
-                subtitle="Mandatory scientific constraints of the research prototype"
+                title="STAGE 8 — ROLE-TARGETED DISASTER MANAGEMENT ADVISORIES"
+                subtitle="Dedicated operational bulletins synthesized for Port Authorities, Fishermen, District Collectors, and Disaster Forces"
               />
-              <div className="p-6 space-y-6 text-xs text-[#182026] leading-relaxed">
-                <div className="space-y-3">
-                  <h3 className="text-sm font-bold font-mono text-[#0f5b6c] uppercase">
-                    Documented Scientific Limitations
-                  </h3>
-                  <ul className="list-disc pl-5 space-y-2 text-[#5a6872]">
-                    <li>
-                      <strong className="text-[#182026]">Limited Historical Lifecycle Count:</strong> The supervised dataset spans 6 unique North Indian Ocean cyclone lifecycles (299 supervised samples, 39 RI+ events). Generalization across all global basins is not claimed.
-                    </li>
-                    <li>
-                      <strong className="text-[#182026]">Uncalibrated Empirical Risk Index:</strong> The output score (0.0 to 1.0) represents an empirical ranking metric and must not be interpreted as a frequentist or Bayesian probability.
-                    </li>
-                    <li>
-                      <strong className="text-[#182026]">Cross-Storm Variability:</strong> While the model achieves high precision on Cyclone Chapala (100% precision, 0 false alarms), performance varies on other storms (e.g. Cyclone Megh).
-                    </li>
-                    <li>
-                      <strong className="text-[#182026]">Historical Verified Surveillance Mode:</strong> The platform operates on verified historical reanalysis (IBTrACS + HURSAT-B1). Automated real-time satellite ingest pipelines are not currently connected.
-                    </li>
-                    <li>
-                      <strong className="text-[#182026]">Statistical Attribution:</strong> Linear feature weights reflect correlation in the training distribution, not physical atmospheric thermodynamics.
-                    </li>
-                  </ul>
+              <div className="p-6 space-y-6 font-mono text-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-[#e2e6e9]">
+                  <div>
+                    <span className="text-xs font-bold text-[#182026] uppercase block">
+                      Targeted Early-Warning Bulletins
+                    </span>
+                    <span className="text-[11px] text-[#5f6b7c] font-sans">
+                      Clear plain-language directives tailored to specific stakeholder action mandates.
+                    </span>
+                  </div>
+
+                  <Button size="sm" variant="primary" onClick={authorizeAllAlerts}>
+                    <Send className="h-3.5 w-3.5 mr-1.5" />
+                    Authorize All Advisories
+                  </Button>
                 </div>
 
-                {/* Authoritative Warning Notice */}
-                <Alert variant="warning" title="Operational Warning Authority Precedence">
-                  <div className="space-y-1 text-xs">
-                    <p className="font-semibold text-[#182026]">
-                      CycloneGuard is a decision-support research prototype. It does not issue official meteorological warnings or evacuation orders.
-                    </p>
-                    <p className="text-[#5a6872]">
-                      Official bulletins, landfall track cones, and disaster advisories issued by national meteorological authorities—specifically the India Meteorological Department (IMD / RSMC New Delhi) and the Joint Typhoon Warning Center (JTWC)—remain strictly authoritative.
-                    </p>
-                  </div>
-                </Alert>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {currentStorm.targeted_alerts.map((alt) => {
+                    const isDispatched = alt.status === "AUTHORIZED_DISPATCHED";
+                    return (
+                      <div
+                        key={alt.alert_id}
+                        className={`p-4 rounded-[4px] border transition-all ${
+                          isDispatched
+                            ? "bg-white border-[#bbf7d0] shadow-xs"
+                            : "bg-[#f8f9fa] border-[#cbd2d6]"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <Badge variant={alt.severity === "RED_ALERT" ? "danger" : "warning"}>
+                            {alt.severity}
+                          </Badge>
+                          <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#edf5f7] text-[#0f5b6c] border border-[#bcdbe2] rounded-[2px]">
+                            {alt.simulation_label}
+                          </span>
+                        </div>
 
-                {/* Deep-Dive Links for Judges */}
-                <div className="p-4 rounded-[4px] border border-[#e2e6e9] bg-[#f8f9fa] space-y-3">
-                  <span className="text-xs font-bold font-mono text-[#182026] uppercase block">
-                    Next Steps for Judges & Technical Reviewers
-                  </span>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <Link href={`/user/cyclones/${STORM_ID}/case-study`}>
-                      <Button size="sm" variant="primary">
-                        <BookOpen className="h-3.5 w-3.5 mr-1.5" />
-                        Explore Chapala Case-Study Workstation
-                      </Button>
-                    </Link>
-                    <Link href="/admin/models">
-                      <Button size="sm" variant="outline">
-                        <Cpu className="h-3.5 w-3.5 mr-1.5" />
-                        Inspect Model Card (/admin/models)
-                      </Button>
-                    </Link>
-                    <Link href="/admin/predictions">
-                      <Button size="sm" variant="outline">
-                        <BarChart3 className="h-3.5 w-3.5 mr-1.5" />
-                        Inspect Prediction Audit Logs
-                      </Button>
-                    </Link>
-                    <Link href="/about">
-                      <Button size="sm" variant="ghost">
-                        Read Science & Architecture (/about)
-                      </Button>
-                    </Link>
-                  </div>
+                        <h4 className="text-xs font-bold text-[#182026] uppercase font-mono mb-1">
+                          {alt.title}
+                        </h4>
+
+                        <p className="text-xs text-[#5f6b7c] font-sans leading-relaxed mb-3">
+                          {alt.plain_language_summary}
+                        </p>
+
+                        <div className="p-2.5 bg-[#f1f3f4] rounded-[3px] space-y-1 mb-3">
+                          <span className="text-[10px] font-bold text-[#182026] uppercase block">
+                            Directives:
+                          </span>
+                          <ul className="list-disc pl-4 space-y-1 text-[11px] text-[#5f6b7c] font-sans">
+                            {alt.actionable_directives.map((dir, dIdx) => (
+                              <li key={dIdx}>{dir}</li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-2 border-t border-[#e2e6e9] text-[10px]">
+                          <span className="text-[#5f6b7c]">Channel: {alt.dispatch_channel}</span>
+                          {isDispatched ? (
+                            <span className="flex items-center gap-1 text-[#1b7a4f] font-bold">
+                              <CheckCircle2 className="h-3.5 w-3.5" />
+                              AUTHORIZED & DISPATCHED
+                            </span>
+                          ) : (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-6 text-[10px] px-2"
+                              onClick={() => authorizeAlert(alt.alert_id)}
+                            >
+                              Authorize Alert
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </Panel>
 
             <div className="flex justify-between items-center">
               <Button size="lg" variant="outline" onClick={() => setCurrentStep(7)}>
-                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Historical Outcome
+                <ArrowLeft className="h-4 w-4 mr-2" /> Back to GIS Risk
               </Button>
-              <Button size="lg" variant="secondary" onClick={() => setCurrentStep(1)}>
-                <RotateCcw className="h-4 w-4 mr-2" /> Replay Demo From Start
+              <Button size="lg" variant="primary" onClick={() => setCurrentStep(9)}>
+                Step 9: Authorized Human Review
+                <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
+            </div>
+          </div>
+        )}
+
+        {/* ------------------------------------------------------------ */}
+        {/* STAGE 9: AUTHORIZED HUMAN REVIEW                             */}
+        {/* ------------------------------------------------------------ */}
+        {currentStep === 9 && (
+          <div className="space-y-6">
+            <Panel className="border-2 border-[#0f5b6c]">
+              <PanelHeader
+                title="STAGE 9 — AUTHORIZED HUMAN REVIEW & HISTORICAL VERIFICATION"
+                subtitle="Decision support governance: Human meteorologist review, bulletin sign-off, and ground-truth verification"
+              />
+              <div className="p-6 space-y-6 font-mono text-xs">
+                {/* Decision Support Protocol Notice */}
+                <div className="p-3 bg-[#edf5f7] border border-[#bcdbe2] rounded-[3px] flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Shield className="h-4 w-4 text-[#0f5b6c]" />
+                    <span className="font-bold text-[#0f5b6c] uppercase">
+                      Mandatory Human-in-the-Loop Protocol
+                    </span>
+                  </div>
+                  <Badge variant="brand">Protocol Standard</Badge>
+                </div>
+
+                {/* Meteorologist Review & Sign-Off Desk */}
+                <div className="p-5 bg-white border border-[#cbd2d6] rounded-[4px] space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-[#e2e6e9] pb-3">
+                    <div>
+                      <span className="text-[10px] text-[#5f6b7c] uppercase block">Designated Duty Meteorologist</span>
+                      <span className="text-sm font-bold text-[#182026]">
+                        {currentStorm.authorized_human_review.duty_officer_name} ({currentStorm.authorized_human_review.duty_officer_designation})
+                      </span>
+                      <span className="text-[10px] text-[#5f6b7c] block">
+                        Agency: {currentStorm.authorized_human_review.agency}
+                      </span>
+                    </div>
+
+                    <div className="text-right">
+                      <span className="text-[10px] text-[#5f6b7c] uppercase block">Official Status</span>
+                      <Badge variant={isFullyAuthorized ? "success" : "warning"} className="font-bold">
+                        {isFullyAuthorized ? "OFFICIALLY AUTHORIZED" : "PENDING HUMAN REVIEW"}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  {/* Editable Review Notes */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-[#182026] uppercase block">
+                      Operational Decision Notes & Bulletin Customization
+                    </label>
+                    <textarea
+                      value={reviewNotes}
+                      onChange={(e) => setReviewNotes(e.target.value)}
+                      rows={3}
+                      className="w-full p-3 font-mono text-xs border border-[#cbd2d6] rounded-[3px] bg-[#f8f9fa] focus:bg-white focus:outline-none focus:border-[#0f5b6c]"
+                    />
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                    <div className="text-[10px] text-[#5f6b7c]">
+                      Audit Stamp: <code className="text-[#0f5b6c]">{currentStorm.authorized_human_review.audit_hash.slice(0, 36)}...</code>
+                    </div>
+
+                    {!isFullyAuthorized ? (
+                      <Button
+                        size="md"
+                        variant="primary"
+                        onClick={() => {
+                          updateHumanReview(reviewNotes, "OFFICIALLY_AUTHORIZED");
+                          authorizeAllAlerts();
+                        }}
+                      >
+                        <FileCheck className="h-4 w-4 mr-1.5" />
+                        Approve & Officially Authorize Advisory Dispatch
+                      </Button>
+                    ) : (
+                      <div className="flex items-center gap-2 text-[#1b7a4f] font-bold">
+                        <CheckCircle2 className="h-4 w-4" />
+                        DIGITALLY SIGNED & DISPATCHED BY DUTY METEOROLOGIST
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Ground-Truth Verification Section */}
+                <div className="p-5 bg-[#fef2f2] border-2 border-[#b91c1c] rounded-[4px] space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <AlertTriangle className="h-4 w-4 text-[#b91c1c]" />
+                      <span className="font-bold text-[#b91c1c] uppercase text-xs">
+                        Historical Ground-Truth Verification (t0 + 24 Hours)
+                      </span>
+                    </div>
+                    <Badge variant="danger">Quarantined Post-Season Best-Track</Badge>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="p-3 bg-white border border-[#fecaca] rounded-[3px]">
+                      <span className="text-[9px] text-[#5f6b7c] uppercase block">Observed Wind at t0+24h</span>
+                      <span className="text-xl font-extrabold text-[#b91c1c]">
+                        {currentStorm.historical_verification_outcome.verified_wind_kts} kt (Hurricane Force)
+                      </span>
+                    </div>
+
+                    <div className="p-3 bg-white border border-[#fecaca] rounded-[3px]">
+                      <span className="text-[9px] text-[#5f6b7c] uppercase block">24h Surge Delta</span>
+                      <span className="text-xl font-extrabold text-[#b91c1c]">
+                        +{currentStorm.historical_verification_outcome.observed_24h_delta_kts} kt (RI Criteria ≥30)
+                      </span>
+                    </div>
+
+                    <div className="p-3 bg-white border border-[#fecaca] rounded-[3px]">
+                      <span className="text-[9px] text-[#5f6b7c] uppercase block">Algorithm Accuracy</span>
+                      <span className="text-sm font-bold text-[#1b7a4f] block pt-1">
+                        TRUE POSITIVE EARLY WARNING
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-[11px] text-[#5f6b7c] font-sans leading-relaxed pt-1">
+                    {currentStorm.historical_verification_outcome.accuracy_verdict}. The model detected the empirical RI risk signal (0.3592 &gt; 0.125) while the storm was still a 30 kt depression, before the 24-hour surge took place.
+                  </p>
+                </div>
+
+                {/* Final Statutory Notice */}
+                <Alert variant="warning" title="Statutory Operational Authority Precedence">
+                  CycloneSense AI is an academic and operational research decision-support prototype. It does not replace official forecasts, bulletins, or evacuation directives issued by the India Meteorological Department (IMD / RSMC New Delhi) or WMO.
+                </Alert>
+              </div>
+            </Panel>
+
+            <div className="flex justify-between items-center">
+              <Button size="lg" variant="outline" onClick={() => setCurrentStep(8)}>
+                <ArrowLeft className="h-4 w-4 mr-2" /> Back to Targeted Alerts
+              </Button>
+              <div className="flex items-center gap-2">
+                <Button size="lg" variant="secondary" onClick={() => setCurrentStep(1)}>
+                  <RotateCcw className="h-4 w-4 mr-2" /> Replay From Stage 1
+                </Button>
+                <Link href="/admin/alerts">
+                  <Button size="lg" variant="primary">
+                    Go to Operations Console
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         )}

@@ -25,45 +25,45 @@ export interface StatusBadgeProps extends React.HTMLAttributes<HTMLSpanElement> 
 export function StatusBadge({ status, label, text, pulse = false, className, ...props }: StatusBadgeProps) {
   const configs: Record<string, { bg: string; text: string; border: string; dot: string; defaultLabel: string }> = {
     operational: {
-      bg: "bg-[#f0fdf4]",
-      text: "text-[#1b7a4f]",
-      border: "border-[#bbf7d0]",
-      dot: "bg-[#1b7a4f]",
+      bg: "bg-emerald-950/60",
+      text: "text-emerald-300",
+      border: "border-emerald-500/30",
+      dot: "bg-emerald-400 shadow-sm shadow-emerald-400/50",
       defaultLabel: "Operational",
     },
     standby: {
-      bg: "bg-[#f0f6fa]",
-      text: "text-[#1f5f7c]",
-      border: "border-[#bae6fd]",
-      dot: "bg-[#1f5f7c]",
+      bg: "bg-cyan-950/60",
+      text: "text-cyan-300",
+      border: "border-cyan-500/30",
+      dot: "bg-cyan-400 shadow-sm shadow-cyan-400/50",
       defaultLabel: "Standby",
     },
     warning: {
-      bg: "bg-[#fef8ee]",
-      text: "text-[#b45309]",
-      border: "border-[#fbd38d]",
-      dot: "bg-[#b45309]",
+      bg: "bg-amber-950/60",
+      text: "text-amber-300",
+      border: "border-amber-500/30",
+      dot: "bg-amber-400 shadow-sm shadow-amber-400/50",
       defaultLabel: "Warning",
     },
     critical: {
-      bg: "bg-[#fef2f2]",
-      text: "text-[#b91c1c]",
-      border: "border-[#fecaca]",
-      dot: "bg-[#b91c1c]",
+      bg: "bg-rose-950/60",
+      text: "text-rose-300",
+      border: "border-rose-500/30",
+      dot: "bg-rose-400 shadow-sm shadow-rose-400/50",
       defaultLabel: "Critical",
     },
     disconnected: {
-      bg: "bg-[#f8f9fa]",
-      text: "text-[#5a6872]",
-      border: "border-[#e2e6e9]",
-      dot: "bg-[#7d8c97]",
+      bg: "bg-slate-800/60",
+      text: "text-slate-400",
+      border: "border-slate-700/60",
+      dot: "bg-slate-500",
       defaultLabel: "Disconnected",
     },
     awaiting: {
-      bg: "bg-[#fffbeb]",
-      text: "text-[#92400e]",
-      border: "border-[#fde68a]",
-      dot: "bg-[#d97706]",
+      bg: "bg-amber-950/40",
+      text: "text-amber-400",
+      border: "border-amber-500/30",
+      dot: "bg-amber-500",
       defaultLabel: "Awaiting Data",
     },
   };
@@ -75,7 +75,7 @@ export function StatusBadge({ status, label, text, pulse = false, className, ...
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium border select-none",
+        "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-sans font-medium border select-none backdrop-blur-xs",
         config.bg,
         config.text,
         config.border,
@@ -85,7 +85,7 @@ export function StatusBadge({ status, label, text, pulse = false, className, ...
     >
       <span
         className={cn(
-          "h-1.5 w-1.5 rounded-full",
+          "h-1.5 w-1.5 rounded-full shrink-0",
           config.dot,
           pulse && "animate-pulse"
         )}

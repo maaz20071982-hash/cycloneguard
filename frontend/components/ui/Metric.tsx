@@ -26,10 +26,10 @@ export function Metric({
 }: MetricProps) {
   const displayDetail = detail || trendLabel;
   const trendColors = {
-    increasing: "text-[#b45309]",
-    decreasing: "text-[#1b7a4f]",
-    steady: "text-[#5a6872]",
-    neutral: "text-[#5a6872]",
+    increasing: "text-amber-400",
+    decreasing: "text-emerald-400",
+    steady: "text-slate-400",
+    neutral: "text-slate-400",
   };
 
   const valueSizes = {
@@ -39,22 +39,22 @@ export function Metric({
   };
 
   return (
-    <div className={cn("space-y-1", className)}>
-      <div className="text-[10px] font-mono font-semibold uppercase tracking-wider text-[#5a6872]">
+    <div className={cn("space-y-1.5", className)}>
+      <div className="text-xs font-sans font-medium text-slate-400">
         {label}
       </div>
-      <div className="flex items-baseline gap-1.5 font-tabular">
-        <span className={cn("font-bold tracking-tight text-[#182026]", valueSizes[size])}>
+      <div className="flex items-baseline gap-2 font-tabular">
+        <span className={cn("font-bold tracking-tight text-white font-sans", valueSizes[size])}>
           {value}
         </span>
         {unit && (
-          <span className="text-xs font-mono font-medium text-[#7d8c97] uppercase">
+          <span className="text-xs font-mono font-medium text-slate-400">
             {unit}
           </span>
         )}
       </div>
       {(trend || displayDetail) && (
-        <div className="flex items-center gap-2 text-[11px] font-mono">
+        <div className="flex items-center gap-2 text-xs font-sans">
           {trend && (
             <span className={cn("font-semibold", trendColors[trendDirection])}>
               {trendDirection === "increasing" && "↑ "}
@@ -63,7 +63,7 @@ export function Metric({
               {trend}
             </span>
           )}
-          {displayDetail && <span className="text-[#7d8c97]">{displayDetail}</span>}
+          {displayDetail && <span className="text-slate-400">{displayDetail}</span>}
         </div>
       )}
     </div>

@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "danger" | "ghost";
+  variant?: "primary" | "secondary" | "outline" | "danger" | "ghost" | "cyan";
   size?: "sm" | "md" | "lg";
   isLoading?: boolean;
 }
@@ -10,20 +10,27 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", isLoading = false, children, disabled, ...props }, ref) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-medium transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#0f5b6c] focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none rounded-[4px] cursor-pointer select-none text-sm";
+      "inline-flex items-center justify-center font-medium font-sans transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:ring-offset-2 focus:ring-offset-[#080d16] disabled:opacity-50 disabled:pointer-events-none rounded-lg cursor-pointer select-none";
 
     const variants = {
-      primary: "bg-[#0f5b6c] text-white hover:bg-[#0a4350] active:bg-[#083640] shadow-sm",
-      secondary: "bg-white text-[#182026] hover:bg-[#f1f3f4] border border-[#e2e6e9] active:bg-[#eaedef]",
-      outline: "border border-[#cbd2d6] bg-transparent text-[#182026] hover:bg-[#f1f3f4] active:bg-[#eaedef]",
-      danger: "bg-[#b91c1c] text-white hover:bg-[#991b1b] active:bg-[#7f1d1d] shadow-sm",
-      ghost: "text-[#5a6872] hover:text-[#182026] hover:bg-[#f1f3f4] active:bg-[#eaedef]",
+      primary:
+        "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold shadow-md shadow-cyan-950/50 hover:shadow-cyan-500/25 active:scale-[0.98]",
+      cyan:
+        "bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold shadow-md shadow-cyan-950/40 hover:shadow-cyan-500/30 active:scale-[0.98]",
+      secondary:
+        "bg-slate-800/90 hover:bg-slate-700/90 text-slate-100 border border-slate-700/80 hover:border-slate-600 shadow-xs active:scale-[0.98]",
+      outline:
+        "border border-slate-700/90 bg-slate-900/50 text-slate-200 hover:bg-slate-800/80 hover:border-cyan-500/50 hover:text-white shadow-xs active:scale-[0.98]",
+      danger:
+        "bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-semibold shadow-md shadow-rose-950/40 hover:shadow-rose-500/25 active:scale-[0.98]",
+      ghost:
+        "text-slate-300 hover:text-white hover:bg-slate-800/60 active:bg-slate-800/80",
     };
 
     const sizes = {
       sm: "h-8 px-3 text-xs gap-1.5",
-      md: "h-9 px-4 text-xs font-semibold gap-2",
-      lg: "h-11 px-5 text-sm font-semibold gap-2.5",
+      md: "h-9 px-4 text-xs sm:text-sm font-medium gap-2",
+      lg: "h-11 px-5 text-sm sm:text-base font-semibold gap-2.5",
     };
 
     return (

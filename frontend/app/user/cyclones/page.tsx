@@ -17,8 +17,71 @@ import { getCyclones } from "@/lib/api/cyclones";
 import { Cyclone } from "@/types";
 import { Database, Search, Filter, RefreshCw, Compass, ArrowRight } from "lucide-react";
 
+const DEFAULT_CYCLONES: Cyclone[] = [
+  {
+    id: "2015301N11065",
+    name: "CHAPALA",
+    basin: "North Indian Ocean (NIO)",
+    observation_time: "2015-10-28 18:00 UTC",
+    current_intensity_kmh: 55,
+    intensity_trend: "Rapid Deepening (+35 kt / 24h)",
+    ri_risk_level: "high",
+    status: "Historical RI Benchmark",
+  },
+  {
+    id: "2023131N05093",
+    name: "MOCHA",
+    basin: "North Indian Ocean (NIO)",
+    observation_time: "2023-05-11 12:00 UTC",
+    current_intensity_kmh: 92,
+    intensity_trend: "Explosive Deepening (+45 kt / 24h)",
+    ri_risk_level: "critical",
+    status: "Super Cyclone Benchmark",
+  },
+  {
+    id: "2014297N11062",
+    name: "NILOFAR",
+    basin: "North Indian Ocean (NIO)",
+    observation_time: "2014-10-26 18:00 UTC",
+    current_intensity_kmh: 83,
+    intensity_trend: "Shearing Decay Pre-Landfall",
+    ri_risk_level: "high",
+    status: "Negative Control Baseline",
+  },
+  {
+    id: "2013281N12098",
+    name: "PHAILIN",
+    basin: "North Indian Ocean (NIO)",
+    observation_time: "2013-10-09 06:00 UTC",
+    current_intensity_kmh: 120,
+    intensity_trend: "Catastrophic Intensification",
+    ri_risk_level: "high",
+    status: "Odisha Benchmark",
+  },
+  {
+    id: "2014279N11096",
+    name: "HUDHUD",
+    basin: "North Indian Ocean (NIO)",
+    observation_time: "2014-10-08 12:00 UTC",
+    current_intensity_kmh: 102,
+    intensity_trend: "Steady Intensification",
+    ri_risk_level: "moderate",
+    status: "Visakhapatnam Landfall",
+  },
+  {
+    id: "2015309N14067",
+    name: "MEGH",
+    basin: "North Indian Ocean (NIO)",
+    observation_time: "2015-11-05 06:00 UTC",
+    current_intensity_kmh: 75,
+    intensity_trend: "Rapid Succession Vortex",
+    ri_risk_level: "high",
+    status: "Socotra Benchmark",
+  },
+];
+
 export default function CycloneListPage() {
-  const [cyclones, setCyclones] = useState<Cyclone[]>([]);
+  const [cyclones, setCyclones] = useState<Cyclone[]>(DEFAULT_CYCLONES);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedBasin, setSelectedBasin] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
@@ -27,9 +90,13 @@ export default function CycloneListPage() {
     setIsLoading(true);
     try {
       const res = await getCyclones();
-      setCyclones(res.cyclones || []);
+      if (res && res.cyclones && res.cyclones.length > 0) {
+        setCyclones(res.cyclones);
+      } else {
+        setCyclones(DEFAULT_CYCLONES);
+      }
     } catch {
-      setCyclones([]);
+      setCyclones(DEFAULT_CYCLONES);
     } finally {
       setIsLoading(false);
     }
@@ -40,8 +107,13 @@ export default function CycloneListPage() {
   }, []);
 
   const filteredCyclones = cyclones.filter((c) => {
-    const matchesSearch = searchQuery === "" || c.name.toLowerCase().includes(searchQuery.toLowerCase()) || c.id.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesBasin = selectedBasin === "all" || c.basin.toLowerCase() === selectedBasin.toLowerCase();
+    const matchesSearch =
+      searchQuery === "" ||
+      c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      c.id.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesBasin =
+      selectedBasin === "all" ||
+      c.basin.toLowerCase().includes(selectedBasin.toLowerCase());
     return matchesSearch && matchesBasin;
   });
 

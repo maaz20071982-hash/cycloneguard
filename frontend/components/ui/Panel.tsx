@@ -18,15 +18,15 @@ export function Panel({
   ...props
 }: PanelProps) {
   const variants = {
-    default: "bg-white border border-[#e2e6e9]",
-    muted: "bg-[#f1f3f4] border border-[#e2e6e9]",
-    bordered: "bg-transparent border border-[#cbd2d6]",
+    default: "bg-[#0e1726]/80 backdrop-blur-md border border-slate-800/80 shadow-md",
+    muted: "bg-[#111c2e]/70 backdrop-blur-md border border-slate-800/80 shadow-sm",
+    bordered: "bg-slate-900/40 backdrop-blur-xs border border-slate-800",
   };
 
   return (
     <div
       className={cn(
-        "rounded-[4px] shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden",
+        "rounded-xl overflow-hidden transition-all duration-200",
         variants[variant],
         className
       )}
@@ -35,7 +35,7 @@ export function Panel({
       {title ? (
         <>
           <PanelHeader title={title} subtitle={subtitle} action={action} />
-          <div className="p-4">{children}</div>
+          <div className="p-4 sm:p-5">{children}</div>
         </>
       ) : (
         children
@@ -58,16 +58,16 @@ export function PanelHeader({
   return (
     <div
       className={cn(
-        "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-4 py-3 border-b border-[#e2e6e9] bg-[#f8f9fa]",
+        "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-4 sm:px-5 py-3.5 border-b border-slate-800/80 bg-slate-900/50",
         className
       )}
     >
       <div>
-        <div className="text-xs font-semibold uppercase tracking-wider text-[#182026] font-mono">
+        <div className="text-sm font-semibold tracking-tight text-white font-sans">
           {title}
         </div>
         {subtitle && (
-          <div className="text-[11px] text-[#5f6b7c] mt-0.5 font-normal">
+          <div className="text-xs text-slate-400 mt-0.5 font-normal font-sans">
             {subtitle}
           </div>
         )}
@@ -83,7 +83,7 @@ export function PanelContent({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("p-4", className)} {...props}>
+    <div className={cn("p-4 sm:p-5", className)} {...props}>
       {children}
     </div>
   );

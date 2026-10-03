@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Panel, PanelHeader } from "@/components/ui/Panel";
@@ -8,30 +8,35 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/Table";
 import { Alert } from "@/components/ui/Alert";
-import { EmptyState } from "@/components/ui/EmptyState";
-import { LoadingSpinner } from "@/components/ui/Loading";
-import { fetchAdminAlerts, AdminAlertsResponse } from "@/lib/api/admin";
-import { AlertTriangle, RefreshCw, Bell, Shield, Info } from "lucide-react";
+import { Modal } from "@/components/ui/Modal";
+import { useStorm } from "@/lib/storm-context";
+import { TargetedAlertItem } from "@/lib/central-storm-store";
+import {
+  AlertTriangle,
+  RefreshCw,
+  Send,
+  CheckCircle2,
+  Clock,
+  Eye,
+  Shield,
+  FileCheck,
+  Radio,
+  ExternalLink,
+} from "lucide-react";
+import Link from "next/link";
 
 export default function AdminAlertsPage() {
-  const [data, setData] = useState<AdminAlertsResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { currentStorm, authorizeAlert, authorizeAllAlerts } = useStorm();
+  const [selectedAlert, setSelectedAlert] = useState<TargetedAlertItem | null>(null);
+  const [filterGroup, setFilterGroup] = useState<string>("ALL");
 
-  const loadAlerts = async () => {
-    setIsLoading(true);
-    try {
-      const res = await fetchAdminAlerts();
-      setData(res);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const alerts = currentStorm.targeted_alerts;
 
-  useEffect(() => {
-    loadAlerts();
-  }, []);
+  const filteredAlerts = filterGroup === "ALL"
+    ? alerts
+    : alerts.filter((a) => a.recipient_group === filterGroup);
+
+  const pendingCount = alerts.filter((a) => a.status === "DRAFT_PENDING_REVIEW").length;
 
   return (
     <AdminLayout>
@@ -40,7 +45,7 @@ export default function AdminAlertsPage() {
         <Breadcrumb
           items={[
             { label: "Admin Console", href: "/admin/dashboard" },
-            { label: "Alerts" },
+            { label: "Targeted Alerts" },
           ]}
         />
 
@@ -49,135 +54,260 @@ export default function AdminAlertsPage() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-[10px] font-mono uppercase tracking-wider text-[#5f6b7c]">
-                Advisory Dissemination
+                Operational Advisory Dissemination
               </span>
-              <Badge variant="warning">AI-Assisted Monitoring</Badge>
+              <Badge variant="brand">Cyclone {currentStorm.storm_name}</Badge>
+              <span className="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-[#edf5f7] text-[#0f5b6c] border border-[#bcdbe2] rounded-[2px]">
+                DEMO / SIMULATION
+              </span>
             </div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#182026] flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-[#b45309]" />
-              AI-Assisted Operational Alerts & Monitoring Rules
+              Targeted Early-Warning Advisories & Dispatch Center
             </h1>
             <p className="text-xs text-[#5f6b7c] mt-0.5">
-              Automated threshold triggers for Rapid Intensification, intensity fluctuations, data feed anomalies, and system health.
+              Role-specific alerts tailored for Port Authorities, Fishermen, District Administration, and Disaster Forces.
             </p>
           </div>
 
-          <Button size="sm" variant="outline" onClick={loadAlerts} isLoading={isLoading}>
-            <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
-            Check Active Triggers
-          </Button>
+          <div className="flex items-center gap-2">
+            {pendingCount > 0 && (
+              <Button size="sm" variant="primary" onClick={authorizeAllAlerts}>
+                <Send className="h-3.5 w-3.5 mr-1.5" />
+                Authorize All ({pendingCount} Pending)
+              </Button>
+            )}
+            <Link href="/demo">
+              <Button size="sm" variant="outline">
+                9-Stage Demo
+                <ExternalLink className="h-3.5 w-3.5 ml-1" />
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Critical Statutory Disclaimer */}
-        <Alert variant="warning" title="Operational Clarification & Government Warning Notice">
-          {data?.disclaimer ||
-            "CycloneGuard provides AI-assisted meteorological monitoring alerts exclusively for research and operations centers. These telemetry alerts are NOT official government warnings and DO NOT constitute evacuation orders. Official tropical cyclone warnings and landfall advisories remain the sole jurisdiction of designated meteorological agencies (e.g. IMD / RSMC New Delhi)."}
+        <Alert variant="warning" title="Statutory Operational Authority Precedence">
+          CycloneSense AI provides decision-support advisory templates for operations centers. These telemetry alerts are simulated decision-support aids and do not supersede official warnings issued by the India Meteorological Department (IMD / RSMC New Delhi).
         </Alert>
 
-        {/* Alerts Table with Prepared Structure */}
+        {/* Active Alert Queue */}
         <Panel>
           <PanelHeader
-            title="Operational Alert Queue"
-            subtitle="Triggered meteorological advisories and automated evaluation events"
+            title={`Active Advisory Queue — ${currentStorm.storm_name}`}
+            subtitle={`${alerts.length} targeted advisories generated by AI early-warning model`}
           />
 
-          {isLoading ? (
-            <div className="flex justify-center p-12">
-              <LoadingSpinner size="lg" />
-            </div>
-          ) : !data?.alerts || data.alerts.length === 0 ? (
-            <div className="p-8">
-              <EmptyState
-                icon={<Bell className="h-8 w-8 text-[#b45309]" />}
-                title="No alerts available."
-                description="Zero meteorological risk threshold breaches or system alert conditions are currently active. Real-time alert triggers are not available in current research prototype (historical surveillance mode)."
-                statusBadge="Alert Engine Standby"
-              />
+          <div className="p-4 space-y-4">
+            {/* Filter Tabs */}
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#e2e6e9] pb-3 text-xs font-mono">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] text-[#5f6b7c] uppercase">Filter by Stakeholder:</span>
+                {[
+                  { id: "ALL", label: "All Groups" },
+                  { id: "PORT_AUTHORITY", label: "Ports" },
+                  { id: "FISHERMEN", label: "Fishermen" },
+                  { id: "DISTRICT_COLLECTOR", label: "Districts" },
+                  { id: "STATE_DISASTER_MANAGEMENT", label: "NDRF/SDMA" },
+                ].map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => setFilterGroup(t.id)}
+                    className={`px-2 py-1 rounded-[2px] transition-colors cursor-pointer ${
+                      filterGroup === t.id
+                        ? "bg-[#0f5b6c] text-white font-bold"
+                        : "bg-[#f1f3f4] text-[#182026] hover:bg-[#e2e6e9]"
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
 
-              {/* Prepared Alert Architecture Structure */}
-              <div className="mt-8 border-t border-[#e2e6e9] pt-6">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#5f6b7c] font-semibold">
-                    Planned Alert Trigger Specifications
-                  </span>
-                  <div className="flex flex-wrap gap-1.5 text-[10px] font-mono">
-                    <span className="px-2 py-0.5 rounded-[2px] bg-[#fef2f2] text-[#b91c1c] border border-[#fecaca]">
-                      Rapid Intensification (RI &ge; 30kt / 24h)
-                    </span>
-                    <span className="px-2 py-0.5 rounded-[2px] bg-[#fef8ee] text-[#b45309] border border-[#fed7aa]">
-                      Intensity Change (&plusmn;15kt)
-                    </span>
-                    <span className="px-2 py-0.5 rounded-[2px] bg-[#edf5f7] text-[#0f5b6c] border border-[#b9e1e8]">
-                      Data Quality Anomaly
-                    </span>
-                    <span className="px-2 py-0.5 rounded-[2px] bg-[#f1f3f4] text-[#5f6b7c] border border-[#e2e6e9]">
-                      System Failure Alert
-                    </span>
-                  </div>
-                </div>
-
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Alert ID</TableHead>
-                        <TableHead>Timestamp</TableHead>
-                        <TableHead>Cyclone</TableHead>
-                        <TableHead>Type</TableHead>
-                        <TableHead>Severity</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Source</TableHead>
-                        <TableHead className="text-right">Action</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell colSpan={8} className="text-center text-[#5f6b7c] py-6 font-mono text-xs italic">
-                          No active monitoring alerts in current evaluation cycle
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
+              <div className="text-[11px] text-[#5f6b7c]">
+                Showing {filteredAlerts.length} of {alerts.length} Advisories
               </div>
             </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Alert ID</TableHead>
-                  <TableHead>Timestamp</TableHead>
-                  <TableHead>Cyclone</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Severity</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Source</TableHead>
-                  <TableHead className="text-right">Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.alerts.map((a, idx) => (
-                  <TableRow key={idx}>
-                    <TableCell className="font-mono text-xs">{a.id}</TableCell>
-                    <TableCell className="font-mono text-xs">{a.timestamp}</TableCell>
-                    <TableCell className="font-semibold">{a.cyclone}</TableCell>
-                    <TableCell>{a.type}</TableCell>
-                    <TableCell>
-                      <Badge variant="warning">{a.severity}</Badge>
-                    </TableCell>
-                    <TableCell>{a.status}</TableCell>
-                    <TableCell>{a.source}</TableCell>
-                    <TableCell className="text-right">
-                      <Button size="sm" variant="outline" className="h-6 text-[11px] px-2">
-                        Inspect
-                      </Button>
-                    </TableCell>
+
+            {/* Table */}
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Alert ID</TableHead>
+                    <TableHead>Recipient Group</TableHead>
+                    <TableHead>Advisory Title</TableHead>
+                    <TableHead>Severity</TableHead>
+                    <TableHead>Lead Time</TableHead>
+                    <TableHead>Dispatch Channel</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
+                </TableHeader>
+                <TableBody>
+                  {filteredAlerts.map((a) => {
+                    const isDispatched = a.status === "AUTHORIZED_DISPATCHED";
+                    return (
+                      <TableRow key={a.alert_id}>
+                        <TableCell className="font-mono text-xs font-bold text-[#0f5b6c]">
+                          {a.alert_id}
+                        </TableCell>
+                        <TableCell className="font-mono text-xs">
+                          <Badge variant="brand">{a.recipient_group.replace("_", " ")}</Badge>
+                        </TableCell>
+                        <TableCell className="font-semibold text-xs text-[#182026] max-w-xs">
+                          <span className="truncate block" title={a.title}>{a.title}</span>
+                          <span className="text-[11px] text-[#5f6b7c] font-normal truncate block font-sans">
+                            {a.plain_language_summary}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={a.severity === "RED_ALERT" ? "danger" : "warning"}>
+                            {a.severity}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="font-mono text-xs">
+                          {a.lead_time_hours} Hours
+                        </TableCell>
+                        <TableCell className="text-xs text-[#5f6b7c] font-mono">
+                          {a.dispatch_channel.split("/")[0]}
+                        </TableCell>
+                        <TableCell>
+                          {isDispatched ? (
+                            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#1b7a4f]">
+                              <CheckCircle2 className="h-3 w-3" />
+                              DISPATCHED
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#b45309]">
+                              <Clock className="h-3 w-3" />
+                              PENDING REVIEW
+                            </span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex items-center justify-end gap-1.5">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-6 text-[11px] px-2"
+                              onClick={() => setSelectedAlert(a)}
+                            >
+                              <Eye className="h-3 w-3 mr-1" /> Inspect
+                            </Button>
+                            {!isDispatched && (
+                              <Button
+                                size="sm"
+                                variant="primary"
+                                className="h-6 text-[11px] px-2"
+                                onClick={() => authorizeAlert(a.alert_id)}
+                              >
+                                Authorize
+                              </Button>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
         </Panel>
+
+        {/* Modal: Inspect Alert Detail */}
+        {selectedAlert && (
+          <Modal
+            isOpen={!!selectedAlert}
+            onClose={() => setSelectedAlert(null)}
+            title={`Advisory Inspection: ${selectedAlert.alert_id}`}
+            size="lg"
+          >
+            <div className="p-6 space-y-4 font-mono text-xs">
+              <div className="flex items-center justify-between border-b border-[#e2e6e9] pb-3">
+                <div className="space-y-0.5">
+                  <span className="text-[10px] text-[#5f6b7c] uppercase">Recipient Category</span>
+                  <div className="font-bold text-[#0f5b6c] text-sm">
+                    {selectedAlert.recipient_group.replace("_", " ")}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant={selectedAlert.severity === "RED_ALERT" ? "danger" : "warning"}>
+                    {selectedAlert.severity}
+                  </Badge>
+                  <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#edf5f7] text-[#0f5b6c] border border-[#bcdbe2] rounded-[2px]">
+                    {selectedAlert.simulation_label}
+                  </span>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-[10px] text-[#5f6b7c] uppercase block">Advisory Heading</span>
+                <h3 className="text-sm font-bold text-[#182026]">{selectedAlert.title}</h3>
+              </div>
+
+              <div className="p-3 bg-[#f8f9fa] border border-[#e2e6e9] rounded-[3px] space-y-1">
+                <span className="text-[10px] text-[#5f6b7c] uppercase block font-bold">
+                  Plain-Language Summary
+                </span>
+                <p className="text-xs text-[#182026] font-sans leading-relaxed">
+                  {selectedAlert.plain_language_summary}
+                </p>
+              </div>
+
+              <div className="space-y-1.5">
+                <span className="text-[10px] text-[#182026] uppercase font-bold block">
+                  Actionable Operational Directives
+                </span>
+                <ul className="list-disc pl-5 space-y-1 text-xs text-[#5f6b7c] font-sans">
+                  {selectedAlert.actionable_directives.map((dir, idx) => (
+                    <li key={idx} className="text-[#182026] font-medium">{dir}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
+                <div className="p-2.5 bg-white border border-[#e2e6e9] rounded-[3px]">
+                  <span className="text-[10px] text-[#5f6b7c] block uppercase">Advance Lead Time</span>
+                  <span className="font-bold text-[#0f5b6c]">{selectedAlert.lead_time_hours} Hours</span>
+                </div>
+                <div className="p-2.5 bg-white border border-[#e2e6e9] rounded-[3px]">
+                  <span className="text-[10px] text-[#5f6b7c] block uppercase">Valid Until</span>
+                  <span className="font-bold text-[#182026]">{selectedAlert.valid_until_utc.slice(0, 16)} UTC</span>
+                </div>
+              </div>
+
+              <div className="p-2.5 bg-[#edf5f7] border border-[#bcdbe2] rounded-[3px] text-[11px] text-[#0f5b6c]">
+                <strong>Dissemination Gateway:</strong> {selectedAlert.dispatch_channel}
+              </div>
+
+              <div className="flex items-center justify-between pt-4 border-t border-[#e2e6e9]">
+                <Button size="sm" variant="outline" onClick={() => setSelectedAlert(null)}>
+                  Close
+                </Button>
+
+                {selectedAlert.status !== "AUTHORIZED_DISPATCHED" ? (
+                  <Button
+                    size="sm"
+                    variant="primary"
+                    onClick={() => {
+                      authorizeAlert(selectedAlert.alert_id);
+                      setSelectedAlert(null);
+                    }}
+                  >
+                    <Send className="h-3.5 w-3.5 mr-1" />
+                    Authorize & Dispatch Advisory
+                  </Button>
+                ) : (
+                  <span className="text-[#1b7a4f] font-bold text-xs flex items-center gap-1">
+                    <CheckCircle2 className="h-4 w-4" /> Dispatched Successfully
+                  </span>
+                )}
+              </div>
+            </div>
+          </Modal>
+        )}
       </div>
     </AdminLayout>
   );

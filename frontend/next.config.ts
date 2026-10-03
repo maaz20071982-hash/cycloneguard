@@ -6,14 +6,15 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   async rewrites() {
-    return [
-      {
-        source: "/api/v1/:path*",
-        destination: process.env.BACKEND_INTERNAL_URL
-          ? `${process.env.BACKEND_INTERNAL_URL}/api/v1/:path*`
-          : "http://127.0.0.1:8000/api/v1/:path*",
-      },
-    ];
+    if (process.env.BACKEND_INTERNAL_URL) {
+      return [
+        {
+          source: "/api/v1/:path*",
+          destination: `${process.env.BACKEND_INTERNAL_URL}/api/v1/:path*`,
+        },
+      ];
+    }
+    return [];
   },
 };
 

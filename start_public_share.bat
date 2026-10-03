@@ -5,7 +5,11 @@ echo            CYCLONEGUARD - MULTI-DEVICE PUBLIC ACCESS LAUNCHER
 echo =========================================================================
 echo.
 echo  [1/3] Starting CycloneGuard Backend (FastAPI :8000)...
-start "CycloneGuard Backend" cmd /k "call venv\Scripts\activate && uvicorn app.main:app --port 8000 --host 127.0.0.1"
+if exist "venv\Scripts\activate.bat" (
+    start "CycloneGuard Backend" cmd /k "call venv\Scripts\activate.bat && python -m uvicorn app.main:app --app-dir backend --port 8000 --host 0.0.0.0"
+) else (
+    start "CycloneGuard Backend" cmd /k "python -m uvicorn app.main:app --app-dir backend --port 8000 --host 0.0.0.0"
+)
 
 echo  [2/3] Starting CycloneGuard Frontend (Next.js :3000)...
 start "CycloneGuard Frontend" cmd /k "cd frontend && npm.cmd run dev"

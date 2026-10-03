@@ -33,18 +33,21 @@ const BASIN_CONFIG: Record<string, { center: [number, number]; zoom: number; tit
   GLOBAL: { center: [15.0, 20.0], zoom: 2, title: "Global Meteorological Composite" },
 };
 
+import { MOCK_NORTH_INDIAN_OCEAN_TRACKS } from "@/lib/mock-tracks";
+import { useStorm } from "@/lib/storm-context";
+
 export default function CycloneMonitorPage() {
+  const { currentStorm, selectStorm, availableStorms } = useStorm();
   const [selectedBasin, setSelectedBasin] = useState("NIO");
-  const [stormTracks, setStormTracks] = useState<StormTrackGroup[]>([]);
-  const [activeStormId, setActiveStormId] = useState<string | undefined>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [stormTracks, setStormTracks] = useState<StormTrackGroup[]>(MOCK_NORTH_INDIAN_OCEAN_TRACKS);
+  const [activeStormId, setActiveStormId] = useState<string | undefined>(currentStorm.storm_id);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     async function loadTracks() {
-      setIsLoading(true);
       try {
         const res = await getAllCycloneTracks();
-        if (res && res.cyclones) {
+        if (res && res.cyclones && res.cyclones.length > 0) {
           const STORM_COLORS: Record<string, string> = {
             "2015301N11065": "#ef4444", // Chapala - Red
             "2014297N11062": "#0ea5e9", // Nilofar - Cyan
@@ -60,7 +63,7 @@ export default function CycloneMonitorPage() {
             status: c.status,
             basin: c.basin,
             peak_intensity_kts: c.peak_intensity_kts || undefined,
-            color: STORM_COLORS[c.cyclone_id],
+            color: STORM_COLORS[c.cyclone_id] || "#0f5b6c",
             points: (c.track_points || []).map((p) => ({
               lat: p.latitude,
               lon: p.longitude,
@@ -74,9 +77,8 @@ export default function CycloneMonitorPage() {
           setStormTracks(groups);
         }
       } catch (e) {
-        // Fallback gracefully
-      } finally {
-        setIsLoading(false);
+        // Fallback to local verified tracks
+        setStormTracks(MOCK_NORTH_INDIAN_OCEAN_TRACKS);
       }
     }
     loadTracks();
@@ -189,17 +191,120 @@ export default function CycloneMonitorPage() {
           </span>
         </div>
 
+        {/* Centralized Active Decision Support Bar */}
+        <div className="p-4 rounded-[4px] border border-[#cbd2d6] bg-white shadow-xs space-y-3 font-mono text-xs">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-[#e2e6e9] pb-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[10px] font-bold text-[#0f5b6c] uppercase tracking-wider">
+                Active Decision Support Vortex:
+              </span>
+              <span className="font-extrabold text-[#182026] text-sm">
+                CYCLONE {currentStorm.storm_name}
+              </span>
+              <Badge variant="brand">{currentStorm.intensity_classification.current_category_imd}</Badge>
+              <Badge variant="danger" className="text-[10px]">
+                {currentStorm.intensity_classification.ri_screening_label}
+              </Badge>
+              <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#edf5f7] text-[#0f5b6c] border border-[#bcdbe2] rounded-[2px]">
+                DEMO / SIMULATION
+              </span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[10px] text-[#5f6b7c]">Select Storm:</span>
+              {availableStorms.map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => {
+                    selectStorm(s.id);
+                    setActiveStormId(s.id);
+                  }}
+                  className={`px-2 py-1 text-[11px] rounded-[2px] transition-colors cursor-pointer ${
+                    currentStorm.storm_id === s.id
+                      ? "bg-[#0f5b6c] text-white font-bold"
+                      : "bg-[#f1f3f4] text-[#182026] hover:bg-[#e2e6e9]"
+                  }`}
+                >
+                  {s.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <div className="p-2.5 bg-[#f8f9fa] rounded-[3px] border border-[#e2e6e9]">
+              <span className="text-[10px] text-[#5f6b7c] block uppercase">Current Fix</span>
+              <span className="font-bold text-[#182026]">
+                {currentStorm.observation_data.latitude.toFixed(1)}°N, {currentStorm.observation_data.longitude.toFixed(1)}°E
+              </span>
+            </div>
+            <div className="p-2.5 bg-[#f8f9fa] rounded-[3px] border border-[#e2e6e9]">
+              <span className="text-[10px] text-[#5f6b7c] block uppercase">Vmax / Central Pressure</span>
+              <span className="font-bold text-[#182026]">
+                {currentStorm.observation_data.current_wind_kts} kt ({currentStorm.observation_data.current_wind_kmh} km/h) · {currentStorm.observation_data.central_pressure_mb} hPa
+              </span>
+            </div>
+            <div className="p-2.5 bg-[#f0f9fa] rounded-[3px] border border-[#a2d4dc]">
+              <span className="text-[10px] text-[#0f5b6c] block uppercase font-semibold">Empirical RI Risk</span>
+              <span className="font-bold text-[#0f5b6c]">
+                {currentStorm.explainable_confidence.empirical_ri_risk_index.toFixed(4)} (vs τ = {currentStorm.explainable_confidence.operating_threshold_tau})
+              </span>
+            </div>
+            <div className="p-2.5 bg-[#fef8ee] rounded-[3px] border border-[#fed7aa]">
+              <span className="text-[10px] text-[#b45309] block uppercase font-semibold">Projected Landfall</span>
+              <span className="font-bold text-[#b45309] truncate block" title={currentStorm.track_landfall_prediction.landfall_prediction.predicted_landfall_sector}>
+                {currentStorm.track_landfall_prediction.landfall_prediction.predicted_landfall_sector.split("/")[0]}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-[#e2e6e9]">
+            <span className="text-[10px] text-[#5f6b7c] font-sans">
+              Centralized storm state object feeding Map, AI, Risk, Alert, and Review modules.
+            </span>
+            <div className="flex items-center gap-2">
+              <Link href="/demo">
+                <Button size="sm" variant="primary">
+                  Launch 9-Stage Story
+                  <ArrowRight className="h-3.5 w-3.5 ml-1" />
+                </Button>
+              </Link>
+              <Link href="/admin/alerts">
+                <Button size="sm" variant="outline">
+                  Inspect Targeted Alerts
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+
         {/* Dominant Map Centerpiece */}
         <div className="space-y-2">
           <CycloneMap
             title={`Cyclone Monitor · ${selectedBasin} Basin`}
-            subtitle="Interactive layer canvas: Observed Track, Surface Wind, RI Risk & Satellite Basemap"
+            subtitle="Observed track, 48h forecast cone, and R34/R50/R64 wind hazard radii"
             basin={currentConfig.title}
             center={currentConfig.center}
             zoom={currentConfig.zoom}
             multiStormTracks={currentTracks}
             activeStormId={activeStormId}
-            onSelectStorm={setActiveStormId}
+            onSelectStorm={(id) => {
+              setActiveStormId(id);
+              if (id) selectStorm(id);
+            }}
+            forecastPath={currentStorm.track_landfall_prediction.forecast_points.map((p) => ({
+              lat: p.latitude,
+              lon: p.longitude,
+              time: p.valid_time_utc,
+              intensity_kts: p.wind_speed_kts,
+              intensity_kmh: p.wind_speed_kmh,
+              pressure_mb: p.central_pressure_mb,
+              category: p.category,
+              agency_grade: "CycloneSense Forecast",
+            }))}
+            selectedTime={currentStorm.observation_time_utc}
+            windLayers={true}
+            riskLayers={true}
             className="min-h-[580px]"
           />
         </div>

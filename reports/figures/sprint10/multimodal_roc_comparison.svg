@@ -1,0 +1,45 @@
+<svg width="750" height="520" viewBox="0 0 750 520" xmlns="http://www.w3.org/2000/svg">
+<rect width="100%" height="100%" fill="#0B132B" />
+<text x="375" y="36" text-anchor="middle" fill="#E0E6ED" font-family="sans-serif" font-size="19" font-weight="bold">Receiver Operating Characteristic (ROC) Comparison</text>
+<text x="375" y="58" text-anchor="middle" fill="#9BA4B5" font-family="sans-serif" font-size="12">Evaluated on Untouched Test Cyclone CHAPALA (N=53 Fixes, 10 RI+ Events)</text>
+<line x1="460" y1="360" x2="490" y2="360" stroke="#3A86FF" stroke-width="2.5" />
+<text x="500" y="364" fill="#E0E6ED" font-family="sans-serif" font-size="11">Model T (AUC = 0.8279)</text>
+<line x1="460" y1="385" x2="490" y2="385" stroke="#00F5D4" stroke-width="2.5" />
+<text x="500" y="389" fill="#E0E6ED" font-family="sans-serif" font-size="11">Model TS (AUC = 0.7349)</text>
+<line x1="460" y1="410" x2="490" y2="410" stroke="#F72585" stroke-width="2.5" />
+<text x="500" y="414" fill="#E0E6ED" font-family="sans-serif" font-size="11">Model E (AUC = 0.3581)</text>
+<line x1="460" y1="435" x2="490" y2="435" stroke="#FFB703" stroke-width="2.5" />
+<text x="500" y="439" fill="#E0E6ED" font-family="sans-serif" font-size="11">Model TE (AUC = 0.5512)</text>
+<line x1="460" y1="460" x2="490" y2="460" stroke="#7209B7" stroke-width="2.5" />
+<text x="500" y="464" fill="#E0E6ED" font-family="sans-serif" font-size="11">Model STE (AUC = 0.5070)</text>
+<line x1="100" y1="460" x2="440" y2="460" stroke="#3A4765" stroke-width="1.5" />
+<line x1="100" y1="120" x2="100" y2="460" stroke="#3A4765" stroke-width="1.5" />
+<text x="270" y="495" text-anchor="middle" fill="#E0E6ED" font-family="sans-serif" font-size="12">False Positive Rate (1 - Specificity)</text>
+<text x="45" y="290" text-anchor="middle" fill="#E0E6ED" font-family="sans-serif" font-size="12" transform="rotate(-90 45 290)">True Positive Rate (Sensitivity)</text>
+<line x1="100" y1="460" x2="440" y2="120" stroke="#6C7A9C" stroke-width="1.5" stroke-dasharray="4,4" />
+<line x1="100.0" y1="120" x2="100.0" y2="460" stroke="#1F2A44" stroke-dasharray="2,2" />
+<line x1="100" y1="460.0" x2="440" y2="460.0" stroke="#1F2A44" stroke-dasharray="2,2" />
+<text x="100.0" y="475" text-anchor="middle" fill="#9BA4B5" font-family="sans-serif" font-size="10">0.00</text>
+<text x="90" y="464.0" text-anchor="end" fill="#9BA4B5" font-family="sans-serif" font-size="10">0.00</text>
+<line x1="185.0" y1="120" x2="185.0" y2="460" stroke="#1F2A44" stroke-dasharray="2,2" />
+<line x1="100" y1="375.0" x2="440" y2="375.0" stroke="#1F2A44" stroke-dasharray="2,2" />
+<text x="185.0" y="475" text-anchor="middle" fill="#9BA4B5" font-family="sans-serif" font-size="10">0.25</text>
+<text x="90" y="379.0" text-anchor="end" fill="#9BA4B5" font-family="sans-serif" font-size="10">0.25</text>
+<line x1="270.0" y1="120" x2="270.0" y2="460" stroke="#1F2A44" stroke-dasharray="2,2" />
+<line x1="100" y1="290.0" x2="440" y2="290.0" stroke="#1F2A44" stroke-dasharray="2,2" />
+<text x="270.0" y="475" text-anchor="middle" fill="#9BA4B5" font-family="sans-serif" font-size="10">0.50</text>
+<text x="90" y="294.0" text-anchor="end" fill="#9BA4B5" font-family="sans-serif" font-size="10">0.50</text>
+<line x1="355.0" y1="120" x2="355.0" y2="460" stroke="#1F2A44" stroke-dasharray="2,2" />
+<line x1="100" y1="205.0" x2="440" y2="205.0" stroke="#1F2A44" stroke-dasharray="2,2" />
+<text x="355.0" y="475" text-anchor="middle" fill="#9BA4B5" font-family="sans-serif" font-size="10">0.75</text>
+<text x="90" y="209.0" text-anchor="end" fill="#9BA4B5" font-family="sans-serif" font-size="10">0.75</text>
+<line x1="440.0" y1="120" x2="440.0" y2="460" stroke="#1F2A44" stroke-dasharray="2,2" />
+<line x1="100" y1="120.0" x2="440" y2="120.0" stroke="#1F2A44" stroke-dasharray="2,2" />
+<text x="440.0" y="475" text-anchor="middle" fill="#9BA4B5" font-family="sans-serif" font-size="10">1.00</text>
+<text x="90" y="124.0" text-anchor="end" fill="#9BA4B5" font-family="sans-serif" font-size="10">1.00</text>
+<path d="M 100 460 L 178 154 L 440 120" fill="none" stroke="#3A86FF" stroke-width="3" />
+<path d="M 100 460 L 100 392 L 188 154 L 440 120" fill="none" stroke="#00F5D4" stroke-width="3" />
+<path d="M 100 460 L 409 120 L 440 120" fill="none" stroke="#F72585" stroke-width="2.5" />
+<path d="M 100 460 L 297 256 L 440 120" fill="none" stroke="#FFB703" stroke-width="2.5" />
+<path d="M 100 460 L 219 324 L 440 120" fill="none" stroke="#7209B7" stroke-width="2.5" />
+</svg>

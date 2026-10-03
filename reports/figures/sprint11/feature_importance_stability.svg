@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" width="820" height="480">
+  <style>
+    .bg { fill: #0f172a; }
+    .card { fill: #1e293b; rx: 8px; stroke: #334155; stroke-width: 1px; }
+    .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 18px; font-weight: 700; fill: #f8fafc; }
+    .subtitle { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #94a3b8; }
+    .axis { stroke: #475569; stroke-width: 1px; }
+    .grid { stroke: #334155; stroke-dasharray: 4,4; stroke-width: 1px; }
+    .tick-label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; fill: #cbd5e1; }
+    .legend-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; fill: #e2e8f0; }
+  </style>
+  <rect width="820" height="480" class="bg"/>
+  <text x="35" y="38" class="title">Feature Importance Stability Across Folds (Finalist TS)</text>
+  <text x="35" y="58" class="subtitle">Mean standardized logistic regression coefficients ± standard deviation across 6 Leave-One-Storm-Out folds</text>
+  <line x1="510" y1="80" x2="510" y2="440" stroke="#64748b" stroke-width="1.5"/>
+  <line x1="120" y1="80" x2="120" y2="440" class="grid"/>
+  <text x="120" y="456" text-anchor="middle" class="tick-label">-1.5</text>
+  <line x1="250" y1="80" x2="250" y2="440" class="grid"/>
+  <text x="250" y="456" text-anchor="middle" class="tick-label">-1.0</text>
+  <line x1="380" y1="80" x2="380" y2="440" class="grid"/>
+  <text x="380" y="456" text-anchor="middle" class="tick-label">-0.5</text>
+  <line x1="510" y1="80" x2="510" y2="440" class="grid"/>
+  <text x="510" y="456" text-anchor="middle" class="tick-label">+0.0</text>
+  <line x1="640" y1="80" x2="640" y2="440" class="grid"/>
+  <text x="640" y="456" text-anchor="middle" class="tick-label">+0.5</text>
+  <line x1="770" y1="80" x2="770" y2="440" class="grid"/>
+  <text x="770" y="456" text-anchor="middle" class="tick-label">+1.0</text>
+  <line x1="900" y1="80" x2="900" y2="440" class="grid"/>
+  <text x="900" y="456" text-anchor="middle" class="tick-label">+1.5</text>
+  <rect x="510" y="86.0" width="406" height="24" fill="#38bdf8" rx="2"/>
+  <line x1="853" y1="98.0" x2="979" y2="98.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="853" y1="90.0" x2="853" y2="106.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="979" y1="90.0" x2="979" y2="106.0" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="238" y="102.0" text-anchor="end" class="tick-label" font-size="11px" font-weight="500">track_pressure_val</text>
+  <text x="780" y="102.0" text-anchor="start" font-family="monospace" font-size="11px" fill="#cbd5e1">+1.56 ±0.24</text>
+  <rect x="241" y="122.0" width="269" height="24" fill="#f43f5e" rx="2"/>
+  <line x1="127" y1="134.0" x2="355" y2="134.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="127" y1="126.0" x2="127" y2="142.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="355" y1="126.0" x2="355" y2="142.0" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="238" y="138.0" text-anchor="end" class="tick-label" font-size="11px" font-weight="500">irwin_core_min</text>
+  <text x="780" y="138.0" text-anchor="start" font-family="monospace" font-size="11px" fill="#cbd5e1">-1.04 ±0.44</text>
+  <rect x="264" y="158.0" width="246" height="24" fill="#f43f5e" rx="2"/>
+  <line x1="221" y1="170.0" x2="307" y2="170.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="221" y1="162.0" x2="221" y2="178.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="307" y1="162.0" x2="307" y2="178.0" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="238" y="174.0" text-anchor="end" class="tick-label" font-size="11px" font-weight="500">irwin_p75</text>
+  <text x="780" y="174.0" text-anchor="start" font-family="monospace" font-size="11px" fill="#cbd5e1">-0.95 ±0.17</text>
+  <rect x="510" y="194.0" width="240" height="24" fill="#38bdf8" rx="2"/>
+  <line x1="656" y1="206.0" x2="844" y2="206.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="656" y1="198.0" x2="656" y2="214.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="844" y1="198.0" x2="844" y2="214.0" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="238" y="210.0" text-anchor="end" class="tick-label" font-size="11px" font-weight="500">temp_delta_wind_12h_is_observed</text>
+  <text x="780" y="210.0" text-anchor="start" font-family="monospace" font-size="11px" fill="#cbd5e1">+0.92 ±0.36</text>
+  <rect x="510" y="230.0" width="224" height="24" fill="#10b981" rx="2"/>
+  <line x1="642" y1="242.0" x2="826" y2="242.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="642" y1="234.0" x2="642" y2="250.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="826" y1="234.0" x2="826" y2="250.0" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="238" y="246.0" text-anchor="end" class="tick-label" font-size="11px" font-weight="500">irwin_min</text>
+  <text x="780" y="246.0" text-anchor="start" font-family="monospace" font-size="11px" fill="#cbd5e1">+0.86 ±0.35</text>
+  <rect x="510" y="266.0" width="215" height="24" fill="#10b981" rx="2"/>
+  <line x1="621" y1="278.0" x2="829" y2="278.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="621" y1="270.0" x2="621" y2="286.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="829" y1="270.0" x2="829" y2="286.0" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="238" y="282.0" text-anchor="end" class="tick-label" font-size="11px" font-weight="500">irwin_grad_mean</text>
+  <text x="780" y="282.0" text-anchor="start" font-family="monospace" font-size="11px" fill="#cbd5e1">+0.83 ±0.40</text>
+  <rect x="510" y="302.0" width="214" height="24" fill="#10b981" rx="2"/>
+  <line x1="549" y1="314.0" x2="899" y2="314.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="549" y1="306.0" x2="549" y2="322.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="899" y1="306.0" x2="899" y2="322.0" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="238" y="318.0" text-anchor="end" class="tick-label" font-size="11px" font-weight="500">irwin_core_very_cold_frac</text>
+  <text x="780" y="318.0" text-anchor="start" font-family="monospace" font-size="11px" fill="#cbd5e1">+0.82 ±0.67</text>
+  <rect x="302" y="338.0" width="208" height="24" fill="#fbbf24" rx="2"/>
+  <line x1="57" y1="350.0" x2="547" y2="350.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="57" y1="342.0" x2="57" y2="358.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="547" y1="342.0" x2="547" y2="358.0" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="238" y="354.0" text-anchor="end" class="tick-label" font-size="11px" font-weight="500">track_longitude_val</text>
+  <text x="780" y="354.0" text-anchor="start" font-family="monospace" font-size="11px" fill="#cbd5e1">-0.80 ±0.94</text>
+  <rect x="510" y="374.0" width="198" height="24" fill="#10b981" rx="2"/>
+  <line x1="636" y1="386.0" x2="780" y2="386.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="636" y1="378.0" x2="636" y2="394.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="780" y1="378.0" x2="780" y2="394.0" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="238" y="390.0" text-anchor="end" class="tick-label" font-size="11px" font-weight="500">irwin_core_outer_diff</text>
+  <text x="780" y="390.0" text-anchor="start" font-family="monospace" font-size="11px" fill="#cbd5e1">+0.76 ±0.28</text>
+  <rect x="335" y="410.0" width="175" height="24" fill="#f43f5e" rx="2"/>
+  <line x1="271" y1="422.0" x2="399" y2="422.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="271" y1="414.0" x2="271" y2="430.0" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="399" y1="414.0" x2="399" y2="430.0" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="238" y="426.0" text-anchor="end" class="tick-label" font-size="11px" font-weight="500">irwin_ring_mean</text>
+  <text x="780" y="426.0" text-anchor="start" font-family="monospace" font-size="11px" fill="#cbd5e1">-0.68 ±0.25</text>
+</svg>

@@ -1,77 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
 
 @layer base {
   :root {
     /* -------------------------------------------------------------------------
-       CYCLONEGUARD DESIGN SYSTEM — SPRINT 1.5 TOKENS
-       Concept: Meteorological Operations Center + Modern Editorial Interface
-       Light-First, Calm, Precise, Information-Focused
+       CYCLONESENSE AI — DEEP OCEANIC OBSERVATORY DESIGN SYSTEM
+       Theme: State-of-the-Art Meteorological & Aerospace Surveillance Center
+       Deep Obsidian Navy (#080d16), Luminous Cyan / Teal Accents, Premium Sans
        ------------------------------------------------------------------------- */
 
+    /* Typography Definitions */
+    --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
     /* Core Canvas & Surfaces */
-    --background: #f8f9fa;             /* Warm, off-white calm canvas */
-    --surface: #ffffff;                /* Crisp white panel / card surface */
-    --surface-elevated: #ffffff;       /* Slightly elevated container */
-    --surface-muted: #f1f3f4;          /* Subtle table header & secondary fill */
-    --surface-sunken: #eaedef;         /* Inset maps / data visualization frames */
+    --background: #080d16;             /* Deep Obsidian Midnight Canvas */
+    --surface: #0e1726;                /* Rich Slate-Navy Card Surface */
+    --surface-elevated: #152238;       /* Subtle Elevated Container */
+    --surface-muted: #111c2e;          /* Secondary Fill & Table Headers */
+    --surface-sunken: #05080f;         /* Inset Viewports & GIS Frames */
 
     /* Typography / Foregrounds */
-    --foreground: #182026;             /* Deep charcoal (high legibility, not harsh black) */
-    --foreground-muted: #5a6872;       /* Muted slate for captions, subtitles, labels */
-    --foreground-subtle: #7d8c97;      /* Subtle slate for metadata & tertiary info */
-    --foreground-inverse: #ffffff;     /* White text on dark elements */
+    --foreground: #f1f5f9;             /* Crisp milk white */
+    --foreground-muted: #94a3b8;       /* Soft balanced slate */
+    --foreground-subtle: #64748b;      /* Tertiary slate metadata */
+    --foreground-inverse: #080d16;     /* Deep contrast inverse */
 
-    /* Restrained Borders & Dividers */
-    --border: #e2e6e9;                 /* Light architectural boundary */
-    --border-strong: #cbd2d6;          /* Form inputs & active container outlines */
-    --border-subtle: #edf0f2;          /* Subtle internal cell dividers */
+    /* Boundaries & Dividers */
+    --border: #1a293f;                 /* Architectural micro-boundary */
+    --border-strong: #253956;          /* Active container borders */
+    --border-subtle: #121e30;          /* Internal cell dividers */
 
-    /* Primary Meteorological Brand: Deep Ocean Teal */
-    --brand: #0f5b6c;                  /* Deep ocean teal (authoritative, scientific) */
-    --brand-hover: #0a4350;            /* Dark ocean teal hover */
-    --brand-subtle: #edf5f7;           /* Pale teal background tint */
-    --brand-border: #bcdbe2;           /* Soft ocean border */
-    --brand-foreground: #ffffff;
+    /* Primary Brand: Luminous Oceanic Cyan & Electric Teal */
+    --brand: #06b6d4;                  /* Electric Cyan */
+    --brand-hover: #0891b2;            /* Deep Cyan Hover */
+    --brand-subtle: rgba(6, 182, 212, 0.12); /* Translucent Cyan Glow */
+    --brand-border: rgba(6, 182, 212, 0.35);
+    --brand-foreground: #080d16;
 
-    /* Semantic Status Colors (Restrained, Not Neon) */
-    --warning: #b45309;                /* Restrained amber for warnings & advisory alerts */
-    --warning-subtle: #fef8ee;         /* Pale amber tint */
-    --warning-border: #fbd38d;
+    /* Semantic Status Accents (Vivid, Calibrated for Dark Mode) */
+    --warning: #f59e0b;                /* Solar Amber */
+    --warning-subtle: rgba(245, 158, 11, 0.14);
+    --warning-border: rgba(245, 158, 11, 0.4);
 
-    --danger: #b91c1c;                 /* Controlled crimson for critical cyclone thresholds */
-    --danger-subtle: #fef2f2;          /* Pale red tint */
-    --danger-border: #fecaca;
+    --danger: #f43f5e;                 /* Crimson Rose */
+    --danger-subtle: rgba(244, 63, 94, 0.14);
+    --danger-border: rgba(244, 63, 94, 0.4);
 
-    --success: #1b7a4f;                /* Muted forest green for operational / healthy status */
-    --success-subtle: #f0fdf4;         /* Pale green tint */
-    --success-border: #bbf7d0;
+    --success: #10b981;                /* Aurora Emerald */
+    --success-subtle: rgba(16, 185, 129, 0.14);
+    --success-border: rgba(16, 185, 129, 0.4);
 
-    --info: #1f5f7c;                   /* Maritime slate blue for informational banners */
-    --info-subtle: #f0f6fa;            /* Pale info tint */
-    --info-border: #bae6fd;
+    --info: #38bdf8;                   /* Sky Blue */
+    --info-subtle: rgba(56, 189, 248, 0.14);
+    --info-border: rgba(56, 189, 248, 0.4);
 
-    /* Restrained Shadows */
-    --shadow-subtle: 0 1px 2px 0 rgba(24, 32, 38, 0.05);
-    --shadow-elevated: 0 4px 12px 0 rgba(24, 32, 38, 0.08);
+    /* Shadows & Glow */
+    --shadow-subtle: 0 2px 8px 0 rgba(0, 0, 0, 0.4);
+    --shadow-elevated: 0 8px 24px -4px rgba(0, 0, 0, 0.6);
 
-    /* Restrained Radius Tokens */
-    --radius-xs: 2px;
-    --radius-sm: 4px;                  /* Standard for cards, buttons, panels */
-    --radius-md: 6px;                  /* Moderate container radius */
-    --radius-lg: 8px;                  /* Maximum allowed container radius */
-    --radius-full: 9999px;             /* Strictly for status pills / tags */
+    /* Radii */
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
   }
 
   body {
-    background-color: var(--background);
-    color: var(--foreground);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #080d16;
+    background-image: 
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(6, 182, 212, 0.08), transparent 70%),
+      radial-gradient(ellipse 60% 40% at 100% 40%, rgba(37, 99, 235, 0.05), transparent 60%),
+      radial-gradient(ellipse 50% 50% at 0% 80%, rgba(16, 185, 129, 0.03), transparent 60%);
+    color: #f1f5f9;
+    font-family: var(--font-sans);
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    letter-spacing: -0.01em;
   }
+}
+
+/* ========================================================================= */
+/* TYPOGRAPHY OVERRIDES: PROPER FONTS & NATURAL CASING                       */
+/* Replaces harsh monospace/shouting uppercase with sleek executive styling  */
+/* ========================================================================= */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display) !important;
+  text-transform: none !important;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+h1 {
+  letter-spacing: -0.03em;
+}
+
+/* Ensure body, navigation, and general UI uses clean Plus Jakarta Sans */
+p, label, select, input, textarea, div.font-mono:not(.font-code) {
+  font-family: var(--font-sans);
+}
+
+/* Button & Nav link normalization */
+button, .btn, a {
+  text-transform: none !important;
+  font-family: var(--font-sans);
+}
+
+/* Soften all-caps screaming across panels and cards */
+.uppercase:not(.preserve-case) {
+  letter-spacing: 0.025em;
+}
+
+/* Clean JetBrains Mono strictly for coordinates, telemetry & tabular code */
+.font-mono, .font-code, .coords, code, pre {
+  font-family: var(--font-mono) !important;
 }
 
 /* Tabular figures for numerical precision */
@@ -80,33 +129,238 @@
   font-feature-settings: "tnum";
 }
 
-/* Editorial Map Frame / Meteorological Observation Texture */
-.meteorological-map-canvas {
-  background-color: #0b1520;
-  background-image: 
-    radial-gradient(circle at 50% 50%, rgba(15, 91, 108, 0.12) 0%, transparent 70%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 100% 100%, 48px 48px, 48px 48px;
+/* ========================================================================= */
+/* THEME HARMONIZATION: Deep Oceanic Observatory Glass Canvas                */
+/* Converts legacy wireframe/light classes to refined frosted dark glass    */
+/* ========================================================================= */
+
+/* Container Radii: Convert boxy 2px/3px/4px to smooth modern 12px */
+.rounded-\[4px\], 
+.rounded-\[3px\], 
+.rounded-\[2px\] {
+  border-radius: 12px !important;
 }
 
-/* Subtle scientific scrollbar */
+/* Badge radii to pills */
+span.rounded-\[2px\],
+span.rounded-\[3px\] {
+  border-radius: 9999px !important;
+}
+
+/* Background Canvas */
+.bg-\[\#f8f9fa\] {
+  background-color: #080d16 !important;
+}
+
+/* Card Surfaces (Frosted Obsidian Glass) */
+.bg-white,
+.bg-\[\#ffffff\],
+.bg-\[\#f8fafc\] {
+  background-color: rgba(14, 23, 38, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-color: rgba(51, 65, 85, 0.6) !important;
+  color: #f1f5f9 !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Secondary Panels & Table Headers */
+.bg-\[\#f1f3f4\], 
+.bg-\[\#eaedef\],
+.bg-\[\#f0f9fa\] {
+  background-color: rgba(17, 28, 46, 0.85) !important;
+}
+
+/* Accent Subtle Container */
+.bg-\[\#edf5f7\] {
+  background-color: rgba(6, 182, 212, 0.1) !important;
+  border-color: rgba(6, 182, 212, 0.25) !important;
+  color: #38bdf8 !important;
+}
+
+/* Architectural Micro-Borders */
+.border-\[\#cbd2d6\], 
+.border-\[\#e2e6e9\], 
+.border-\[\#bcdbe2\],
+.border-\[\#cbd5e1\],
+.border-\[\#e2e8f0\] {
+  border-color: rgba(51, 65, 85, 0.65) !important;
+}
+
+/* Text Overrides for High Legibility */
+.text-\[\#182026\] {
+  color: #ffffff !important;
+}
+
+.text-\[\#334155\],
+.text-\[\#475569\] {
+  color: #cbd5e1 !important;
+}
+
+.text-\[\#5a6872\], 
+.text-\[\#5f6b7c\] {
+  color: #94a3b8 !important;
+}
+
+.text-\[\#7d8c97\] {
+  color: #64748b !important;
+}
+
+/* Primary Brand Gradient Accents */
+.bg-\[\#0f5b6c\] {
+  background: linear-gradient(135deg, #06b6d4 0%, #2563eb 100%) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 14px rgba(6, 182, 212, 0.25) !important;
+}
+
+.text-\[\#0f5b6c\] {
+  color: #38bdf8 !important;
+}
+
+.border-\[\#0f5b6c\] {
+  border-color: #06b6d4 !important;
+}
+
+/* Status Accents (Calibrated Dark Mode) */
+/* Danger / Red Alerts */
+.bg-\[\#fee2e2\], 
+.bg-\[\#fee2e2\]\/30, 
+.bg-\[\#fee2e2\]\/40,
+.bg-\[\#fef2f2\] {
+  background-color: rgba(244, 63, 94, 0.12) !important;
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+.text-\[\#b91c1c\] {
+  color: #fb7185 !important;
+}
+
+.border-\[\#fecaca\], 
+.border-\[\#fca5a5\] {
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+.border-\[\#b91c1c\] {
+  border-color: #f43f5e !important;
+}
+
+/* Orange / Severe Alerts */
+.bg-\[\#ffedd5\], 
+.bg-\[\#ffedd5\]\/40 {
+  background-color: rgba(249, 115, 22, 0.14) !important;
+  border-color: rgba(249, 115, 22, 0.35) !important;
+}
+
+.text-\[\#c2410c\] {
+  color: #fb923c !important;
+}
+
+.border-\[\#fed7aa\] {
+  border-color: rgba(249, 115, 22, 0.35) !important;
+}
+
+/* Amber / Warning Alerts */
+.bg-\[\#fef9c3\], 
+.bg-\[\#fef9c3\]\/40, 
+.bg-\[\#fef9c3\]\/50, 
+.bg-\[\#fef8ee\],
+.bg-\[\#fef3c7\] {
+  background-color: rgba(245, 158, 11, 0.12) !important;
+  border-color: rgba(245, 158, 11, 0.35) !important;
+}
+
+.text-\[\#a16207\], 
+.text-\[\#b45309\] {
+  color: #fbbf24 !important;
+}
+
+.border-\[\#fef08a\], 
+.border-\[\#fde68a\], 
+.border-\[\#fde047\] {
+  border-color: rgba(245, 158, 11, 0.35) !important;
+}
+
+/* Green / Safe Status */
+.bg-\[\#dcfce7\], 
+.bg-\[\#dcfce7\]\/40, 
+.bg-\[\#ecfdf5\],
+.bg-\[\#f0fdf4\] {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+.text-\[\#15803d\], 
+.text-\[\#059669\], 
+.text-\[\#1b7a4f\] {
+  color: #34d399 !important;
+}
+
+.border-\[\#bbf7d0\], 
+.border-\[\#a7f3d0\],
+.border-\[\#86efac\] {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+/* Inputs, Selectors & Textareas */
+input[type="text"], 
+input[type="email"], 
+input[type="password"], 
+textarea, 
+select {
+  background-color: #0b1320 !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(51, 65, 85, 0.8) !important;
+  border-radius: 8px !important;
+}
+
+input[type="text"]:focus, 
+input[type="email"]:focus, 
+input[type="password"]:focus, 
+textarea:focus, 
+select:focus {
+  border-color: #06b6d4 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.25) !important;
+}
+
+/* Tables in Dark Mode */
+table th {
+  background-color: #0b1424 !important;
+  color: #94a3b8 !important;
+  border-color: rgba(51, 65, 85, 0.6) !important;
+  font-family: var(--font-sans) !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+}
+
+table td {
+  border-color: rgba(30, 41, 59, 0.7) !important;
+  color: #f1f5f9 !important;
+  font-family: var(--font-sans);
+}
+
+table tr:hover td {
+  background-color: rgba(21, 34, 56, 0.6) !important;
+}
+
+/* Modern Minimal Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: #080d16;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd2d6;
-  border-radius: 3px;
+  background: #1e293b;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #9aa7af;
+  background: #334155;
 }
 
-/* Cyclone radar pulse animation */
+/* Cyclone Radar Pulse Animation */
 @keyframes cyclone-radar-pulse {
   0% {
     transform: scale(0.6);
@@ -141,12 +395,12 @@
 
 /* Custom dark sleek Leaflet Popup styling */
 .leaflet-popup-content-wrapper {
-  background: #182026 !important;
+  background: #0f172a !important;
   color: #f1f5f9 !important;
   border: 1px solid #334155 !important;
-  border-radius: 4px !important;
+  border-radius: 8px !important;
   padding: 0 !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.8) !important;
 }
 
 .leaflet-popup-content {
@@ -155,13 +409,13 @@
 }
 
 .leaflet-popup-tip {
-  background: #182026 !important;
+  background: #0f172a !important;
   border: 1px solid #334155 !important;
 }
 
 .leaflet-container {
   font-family: inherit;
-  background: #0b1520 !important;
+  background: #080d16 !important;
   width: 100% !important;
   height: 100% !important;
   min-height: 380px !important;
@@ -174,13 +428,12 @@
 }
 
 .leaflet-bar a {
-  background-color: #182026 !important;
+  background-color: #0f172a !important;
   color: #94a3b8 !important;
-  border-bottom: 1px solid #334155 !important;
+  border-bottom: 1px solid #1e293b !important;
 }
 
 .leaflet-bar a:hover {
-  background-color: #0f172a !important;
+  background-color: #1e293b !important;
   color: #38bdf8 !important;
 }
-

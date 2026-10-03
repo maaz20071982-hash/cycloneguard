@@ -54,7 +54,7 @@ export interface CycloneMapProps {
   activeStormId?: string;
   onSelectStorm?: (stormId: string) => void;
   selectedTime?: string;
-  markers?: Array<{ lat: number; lon: number; label: string; icon?: React.ReactNode }>;
+  markers?: Array<{ lat: number; lon: number; label: string; sublabel?: string; type?: "landfall" | "center" | "station" }>;
   windLayers?: boolean;
   riskLayers?: boolean;
   rainfallLayers?: boolean;
@@ -77,6 +77,7 @@ export function CycloneMap({
   activeStormId: externalActiveStormId,
   onSelectStorm,
   selectedTime,
+  markers = [],
   windLayers = true,
   riskLayers = true,
   rainfallLayers = false,
@@ -283,6 +284,7 @@ export function CycloneMap({
           selectedPointTime={selectedTime}
           windRadii={windRadiiConfig}
           forecastPath={forecastPath}
+          markers={markers}
           showWindRadii={showWindRadii}
           showForecastCone={showRiskCone}
           showTrackPoints={showTracks}

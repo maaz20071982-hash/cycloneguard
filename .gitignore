@@ -74,14 +74,13 @@ pnpm-debug.log*
 *.swo
 
 # CycloneGuard Data Files & Scientific Datasets
-data/raw/*
-!data/raw/**/.gitkeep
-data/interim/*
-!data/interim/**/.gitkeep
-data/processed/*
-!data/processed/**/.gitkeep
+data/raw/
+data/interim/
+data/datasets/
+data/processed/satellite_patches/
 *.tar.gz
 *.bz2
+*.npy
 # Preserve small test samples and manifests
 !data/samples/
 !data/manifests/

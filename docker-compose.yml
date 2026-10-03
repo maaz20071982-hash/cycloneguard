@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  # ----------------------------------------------------
+  # PostgreSQL Database Service
+  # ----------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: cycloneguard-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-cyclone_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cyclone_password}
+      POSTGRES_DB: ${POSTGRES_DB:-cycloneguard_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cyclone_user} -d ${POSTGRES_DB:-cycloneguard_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cycloneguard-net
+
+  # ----------------------------------------------------
+  # FastAPI Backend Service
+  # ----------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cycloneguard-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ENVIRONMENT: development
+      DEBUG: "true"
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-cyclone_user}:${POSTGRES_PASSWORD:-cyclone_password}@postgres:5432/${POSTGRES_DB:-cycloneguard_db}
+      JWT_SECRET: ${JWT_SECRET:-dev-cycloneguard-insecure-secret-key-change-in-production-32bytes}
+      JWT_ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 1440
+      CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000,${FRONTEND_URL:-http://localhost:3000}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    networks:
+      - cycloneguard-net
+
+  # ----------------------------------------------------
+  # Next.js Frontend Service
+  # ----------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cycloneguard-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - cycloneguard-net
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  cycloneguard-net:
+    driver: bridge

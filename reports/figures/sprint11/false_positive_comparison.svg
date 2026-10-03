@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" width="760" height="440">
+  <style>
+    .bg { fill: #0f172a; }
+    .card { fill: #1e293b; rx: 8px; stroke: #334155; stroke-width: 1px; }
+    .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 18px; font-weight: 700; fill: #f8fafc; }
+    .subtitle { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #94a3b8; }
+    .axis { stroke: #475569; stroke-width: 1px; }
+    .grid { stroke: #334155; stroke-dasharray: 4,4; stroke-width: 1px; }
+    .tick-label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; fill: #cbd5e1; }
+    .legend-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; fill: #e2e8f0; }
+  </style>
+  <rect width="760" height="440" class="bg"/>
+  <text x="35" y="38" class="title">False Alarm (False Positive) Count by Cyclone Lifecycle</text>
+  <text x="35" y="58" class="subtitle">Lower count indicates superior false alarm rejection in non-intensifying environments</text>
+  <rect x="500" y="32" width="14" height="14" fill="#38bdf8" rx="2"/>
+  <text x="522" y="44" class="legend-text">Finalist T (Temporal)</text>
+  <rect x="635" y="32" width="14" height="14" fill="#10b981" rx="2"/>
+  <text x="657" y="44" class="legend-text">Finalist TS (T + S)</text>
+  <line x1="70" y1="90" x2="70" y2="380" class="axis"/>
+  <line x1="70" y1="380" x2="710" y2="380" class="axis"/>
+  <line x1="70" y1="380" x2="710" y2="380" class="grid"/>
+  <text x="60" y="384" text-anchor="end" class="tick-label">0</text>
+  <line x1="70" y1="316" x2="710" y2="316" class="grid"/>
+  <text x="60" y="320" text-anchor="end" class="tick-label">10</text>
+  <line x1="70" y1="252" x2="710" y2="252" class="grid"/>
+  <text x="60" y="256" text-anchor="end" class="tick-label">20</text>
+  <line x1="70" y1="187" x2="710" y2="187" class="grid"/>
+  <text x="60" y="191" text-anchor="end" class="tick-label">30</text>
+  <line x1="70" y1="123" x2="710" y2="123" class="grid"/>
+  <text x="60" y="127" text-anchor="end" class="tick-label">40</text>
+  <rect x="94.33333333333334" y="380" width="26" height="0" fill="#38bdf8" rx="3"/>
+  <text x="107.33333333333334" y="375" text-anchor="middle" class="tick-label" font-size="10px">0</text>
+  <rect x="126.33333333333334" y="380" width="26" height="0" fill="#10b981" rx="3"/>
+  <text x="139.33333333333334" y="375" text-anchor="middle" class="tick-label" font-size="10px">0</text>
+  <text x="123.33333333333334" y="400" text-anchor="middle" class="tick-label" font-weight="600">PHAILIN</text>
+  <rect x="201.00000000000003" y="181" width="26" height="199" fill="#38bdf8" rx="3"/>
+  <text x="214.00000000000003" y="176" text-anchor="middle" class="tick-label" font-size="10px">31</text>
+  <rect x="233.00000000000003" y="226" width="26" height="154" fill="#10b981" rx="3"/>
+  <text x="246.00000000000003" y="221" text-anchor="middle" class="tick-label" font-size="10px">24</text>
+  <text x="230.00000000000003" y="400" text-anchor="middle" class="tick-label" font-weight="600">HELEN</text>
+  <rect x="307.6666666666667" y="174" width="26" height="206" fill="#38bdf8" rx="3"/>
+  <text x="320.6666666666667" y="169" text-anchor="middle" class="tick-label" font-size="10px">32</text>
+  <rect x="339.6666666666667" y="110" width="26" height="270" fill="#10b981" rx="3"/>
+  <text x="352.6666666666667" y="105" text-anchor="middle" class="tick-label" font-size="10px">42</text>
+  <text x="336.6666666666667" y="400" text-anchor="middle" class="tick-label" font-weight="600">HUDHUD</text>
+  <rect x="414.3333333333333" y="303" width="26" height="77" fill="#38bdf8" rx="3"/>
+  <text x="427.3333333333333" y="298" text-anchor="middle" class="tick-label" font-size="10px">12</text>
+  <rect x="446.3333333333333" y="316" width="26" height="64" fill="#10b981" rx="3"/>
+  <text x="459.3333333333333" y="311" text-anchor="middle" class="tick-label" font-size="10px">10</text>
+  <text x="443.3333333333333" y="400" text-anchor="middle" class="tick-label" font-weight="600">NILOFAR</text>
+  <rect x="521.0" y="200" width="26" height="180" fill="#38bdf8" rx="3"/>
+  <text x="534.0" y="195" text-anchor="middle" class="tick-label" font-size="10px">28</text>
+  <rect x="553.0" y="258" width="26" height="122" fill="#10b981" rx="3"/>
+  <text x="566.0" y="253" text-anchor="middle" class="tick-label" font-size="10px">19</text>
+  <text x="550.0" y="400" text-anchor="middle" class="tick-label" font-weight="600">MEGH</text>
+  <rect x="627.6666666666667" y="258" width="26" height="122" fill="#38bdf8" rx="3"/>
+  <text x="640.6666666666667" y="253" text-anchor="middle" class="tick-label" font-size="10px">19</text>
+  <rect x="659.6666666666667" y="316" width="26" height="64" fill="#10b981" rx="3"/>
+  <text x="672.6666666666667" y="311" text-anchor="middle" class="tick-label" font-size="10px">10</text>
+  <text x="656.6666666666667" y="400" text-anchor="middle" class="tick-label" font-weight="600">CHAPALA</text>
+</svg>
