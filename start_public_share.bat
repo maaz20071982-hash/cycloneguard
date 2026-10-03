@@ -1,31 +1,21 @@
 @echo off
-title CycloneGuard - Public Access Launcher
+title CycloneGuard - 24/7 Permanent Cloud Platform
 echo =========================================================================
-echo            CYCLONEGUARD - MULTI-DEVICE PUBLIC ACCESS LAUNCHER
+echo            CYCLONEGUARD - 24/7 PERMANENT CLOUD PLATFORM
 echo =========================================================================
 echo.
-echo  [1/3] Starting CycloneGuard Backend (FastAPI :8000)...
-if exist "venv\Scripts\activate.bat" (
-    start "CycloneGuard Backend" cmd /k "call venv\Scripts\activate.bat && python -m uvicorn app.main:app --app-dir backend --port 8000 --host 0.0.0.0"
-) else (
-    start "CycloneGuard Backend" cmd /k "python -m uvicorn app.main:app --app-dir backend --port 8000 --host 0.0.0.0"
+echo  The CycloneGuard platform is permanently live and running in the cloud:
+echo.
+echo    PERMANENT 24/7 URL : https://cycloneguard-web.onrender.com
+echo    GUIDED JUDGE DEMO  : https://cycloneguard-web.onrender.com/demo
+echo    BACKEND API        : https://cycloneguard-api.onrender.com/api/v1/health
+echo.
+echo  No local servers or tunnels are needed. The website is active 24/7.
+echo =========================================================================
+echo.
+set /p OPEN_BROWSER="Would you like to open the live website now? (Y/N): "
+if /i "%OPEN_BROWSER%"=="Y" (
+    start https://cycloneguard-web.onrender.com
 )
-
-echo  [2/3] Starting CycloneGuard Frontend (Next.js :3000)...
-start "CycloneGuard Frontend" cmd /k "cd frontend && npm.cmd run dev"
-
 echo.
-echo  Waiting 6 seconds for local servers to initialize...
-timeout /t 6 >nul
-
-echo  [3/3] Opening Secure Cloudflare HTTPS Tunnel for Mobile & Remote Devices...
-echo.
-echo  Look at the Cloudflare window to find your unique https://*.trycloudflare.com link.
-echo  You can open that link on your smartphone, tablet, or any remote browser!
-echo.
-start "CycloneGuard Cloudflare Public Tunnel" cmd /k "cloudflared.exe tunnel --url http://localhost:3000"
-
-echo =========================================================================
-echo  All services are running! Press any key to close this launcher.
-echo =========================================================================
 pause
