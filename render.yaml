@@ -19,4 +19,17 @@ services:
       - key: PYTHONPATH
         value: ".:backend"
       - key: CORS_ORIGINS
-        value: "https://frontend-two-rho-74.vercel.app,http://localhost:3000"
+        value: "https://frontend-two-rho-74.vercel.app,https://cycloneguard.vercel.app,https://cycloneguard-web.onrender.com,http://localhost:3000"
+
+  # CycloneGuard Frontend (Next.js 16 Editorial & Decision Platform)
+  - type: web
+    name: cycloneguard-web
+    env: node
+    region: oregon
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.18.0
